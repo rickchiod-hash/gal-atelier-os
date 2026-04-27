@@ -40,8 +40,8 @@ O CORS está configurado em `WebConfiguration.kt`.
 ### Dados coletados
 - Nome da cliente
 - WhatsApp (para operacional)
-- Medidas (circunferência, Testim)
-- Preferências (cor, textura,密度)
+- Medidas (circunferência, testím)
+- Preferências (cor, textura, densidade)
 - Histórico de pedidos
 
 ### Autorização de imagem
@@ -68,3 +68,16 @@ O CORS está configurado em `WebConfiguration.kt`.
 - TraceId em todas as requisições
 - Não logar dados sensíveis (CPF, RG, dados financeiros)
 - logs em `K:\dev\logs`
+
+## Design Security (V6 — Editorial Atelier)
+
+### Imagens
+- Usar apenas imagens licenciadas ou próprias (caminho `public/gal-assets/`)
+- Não usar placeholders genéricos de terceiros
+- Fotos de produtos: lifestyle (modelo usando wig) ou detalhe (textura, lace)
+- Formato: WebP ou JPEG otimizado, máximo 200KB para thumbnails
+
+### Assets
+- Logo: `public/brand/logo-gal-atelier.svg` (vetorial, não raster)
+- Hero images: proporção 4:3 ou 16:9, mínimo 1200px width
+- Cards de catálogo: imagem full-width no topo, não lado a lado com texto

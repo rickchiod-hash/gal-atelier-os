@@ -1,4 +1,4 @@
-# API CONTRACT — Veloura Beauty OS
+# API CONTRACT — Gal Atelier OS (V6 Editorial Atelier)
 
 ## Health
 

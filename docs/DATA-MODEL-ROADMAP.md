@@ -1,4 +1,4 @@
-# DATA MODEL ROADMAP — Veloura Beauty OS
+# DATA MODEL ROADMAP — Gal Atelier OS (V6 Editorial Atelier)
 
 ## Modelo Atual (Fase 1)
 

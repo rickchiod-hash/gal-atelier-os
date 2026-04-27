@@ -209,10 +209,22 @@ e915b3f feat(sessao-b): expand service catalog to 10 technical types
 
 ## Sessão Atual (Novos Controllers)
 
+- ✅ HealthController (GET)
+- ✅ QuoteController (GET/POST)
+- ✅ ServiceController (GET)
+- ✅ PipelineController (GET)
+- ✅ DashboardController (GET)
+- ✅ LeadsController (GET/POST/PATCH)
+- ✅ DiagnosticController (POST)
+- ✅ WhatsAppTemplateController (GET)
 - ✅ CustomerController (GET/POST/PATCH)
 - ✅ OrderController (GET/POST/PATCH + timeline)
 - ✅ InventoryController (GET/POST/PATCH + summary)
 - ✅ AppointmentsController (GET/POST/PATCH + summary)
+- ✅ FinanceController (GET)
+- ✅ CampaignController (GET/POST/PATCH)
+- ✅ EmailNotificationController (POST)
+- ✅ PixWebhookController (POST)
 - ✅ CampaignController (GET/POST/PATCH)
 
 ---
@@ -237,12 +249,18 @@ e915b3f feat(sessao-b): expand service catalog to 10 technical types
 - [x] Flyway migration V1 schema
 - [x] PostgreSQL 16 config
 - [x] Docker Compose atualizado
-- [x] Entity classes JPA (5)
-- [x] Repository interfaces (5)
-- [x] Flyway migration V2 campaigns table
+- [x] Entity classes JPA (7)
+- [x] Repository interfaces (6)
+
+### Repositories Integrados ✅
+- [x] QuoteRepository (InMemory + JPA)
+- [x] CustomerRepository
+- [x] OrderRepository
+- [x] InventoryRepository
+- [x] AppointmentRepository
+- [x] CampaignRepository
 
 ### Pendente
-- [ ] Repository em controllers
 - [ ] Testes com banco H2
 - [ ] Autenticação JWT
 

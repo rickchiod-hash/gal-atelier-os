@@ -1,96 +1,132 @@
-# QA Review - Melhorias V5 Fase 1
+# QA Review - Melhorias V6 Editorial Atelier
 
 ## Data: 2026-04-27
 
+## Visão Visual Atual (V6 — Editorial Atelier)
+
+Sistema NÃO é dashboard SaaS genérico. É experiência de marca premium:
+- Loja de luxo + atelier artesanal
+- Whitespace generoso (mínimo 40% vazio)
+- Tipografia com autoridade (Playfair Display + Inter)
+- Micro-accentos (máximo 2% da página)
+- Anti-dashboard: sem card-mania, gráficos SVG falsos, Kanban colorido
+
 ## Críticas Encontradas
 
-### 🔴 Crítico
+### 🔴 Crítico (Visual)
 
-#### 1. QuoteResponse não inclui status
-- **_localização**: `backend/src/main/kotlin/com/galatelier/adapter/input/web/QuoteController.kt:120-133`
-- **problema**: `QuoteResponse` não tem campo `status`, mas `Quote` domain tem
-- **impacto**: Frontend não pode filtrar/navegar por status no CRM
-- **regra violada**: "CRM visual com cards por status" (melhoria V5)
-- **correção**: Adicionar `status: OrderStatus` ao `QuoteResponse`
+#### 1. Hero section com cara de dashboard
+- **Localização**: `frontend/app/page.tsx:413-453`
+- **Problema**: Metrics cards sobrepostas à imagem hero
+- **Violação**: Regra anti-dashboard ("Hero → Split editorial, NÃO cards")
+- **Correção V6**: Split layout (texto esquerda, imagem direita), métricas vêm depois em barra horizontal
 
-#### 2. Validação WhatsApp inconsistente
-- **localização**: `backend/src/main/kotlin/com/galatelier/application/service/QuoteApplicationService.kt:113-119`
-- **problema**: Aceita telefone sem DDD (10 dígitos), mas mensagem de erro diz "Use DDD + número"
-- **impacto**: Dados inconsistentes no banco
-- **correção**: Exigir DDD (11 dígitos) ou padronizar mensagem
+#### 2. Dashboard com metric cards coloridas
+- **Localização**: `frontend/app/page.tsx:458-545`
+- **Problema**: `.metric-card` com gradientes e sombras pesadas
+- **Violação**: "Sem card-mania", "Sem métricas em cards com borda colorida"
+- **Correção V6**: Barra horizontal de insights (não grid de cards)
 
-### 🟡 Médio
+#### 3. CRM Kanban colorido (parece Jira)
+- **Localização**: `frontend/app/page.tsx:550-603`
+- **Problema**: Colored columns, drag-and-drop, cards com badges
+- **Violação**: "CRM → Concierge list view, NÃO Kanban colorido"
+- **Correção V6**: Lista elegante com hover actions (não drag-and-drop)
 
-#### 3. Frontend - Acessibilidade melhorada
-- **localização**: `frontend/app/page.tsx:178-200`
-- **problema**: Labels sem `htmlFor`/`id` adequados
-- **correção aplicada**: Adicionados `htmlFor` e `id` em todos os inputs (linhas 178-200)
-- **status**: ✅ Corrigido na sessão anterior (pendente commit)
+### 🟡 Médio (Visual)
+
+#### 4. Catálogo em grid de cards idênticos
+- **Localização**: `frontend/app/page.tsx:608-653`
+- **Problema**: Grid uniforme, cada card idêntico
+- **Violação**: "Catalog → Lookbook layout (1 destaque full-width + 2-col grid)"
+- **Correção V6**: Featured item full-width, depois 2-column grid
+
+#### 5. Quote form em caixa com border-radius
+- **Localização**: `frontend/app/page.tsx:658-856`
+- **Problema**: `.quoteForm` com `border-radius: var(--radius-xl)`
+- **Violação**: "Quote Form → Single-column concierge (inputs border-bottom only)"
+- **Correção V6**: Remover caixa, inputs apenas border-bottom, coluna única
+
+#### 6. Botões pill-shaped (muito SaaS)
+- **Localização**: `frontend/app/globals.css` (`.button`, `.btn-*`)
+- **Problema**: `border-radius: var(--radius-full)` (9999px = pill)
+- **Violação**: "Buttons — Filled mas suaves", "border-radius: 2px"
+- **Correção V6**: `border-radius: 2px` para primários, `4px` para cards
 
 ### 🟢 Observações
 
-#### 4. Pipeline sem status visual
-- Frontend mostra lista de orçamentos mas sem indicação de status
-- Recomendado: adicionar badge ou cor por status
+#### 7. Skeleton loaders (não são premium)
+- **Regra V6**: "Não usar skeleton loaders (usar texto elegante)"
+- **Correção**: Substituir por texto: "Carregando experiência..."
 
-#### 5. Métricas resumidas
-- Dashboard atual só tem 3 métricas (quotes, revenue, deposits)
-- Melhoria V5 propõe: leads hoje, conversão, Pix pendente
+#### 8. Gráficos SVG falsos
+- **Localização**: `frontend/app/page.tsx:499-543`
+- **Regra V6**: "Remover ou usar dados reais"
+- **Correção**: Remover SVG fake, usar dados reais ou omitir
 
----
-
-## Plano de Correções
-
-### ✅ Concluído (commit 7f50792)
-
-| # | Crítica | Prioridade | Status |
-|---|--------|------------|-------|
-| 1 | QuoteResponse sem status | alta | ✅ corrigido |
-| 2 | Validação WhatsApp | média | ✅ corrigido |
-| 3 | Labels acessibilidade | média | ✅ corrigido |
-| 4 | Pipeline visual | baixa | ✅ corrigido |
-
-### ⏳ Pendente (Fase 1 continua)
-
-| # | Melhoria | Prioridade |
-|---|---------|------------|
-| 5 | Endpoint `/api/services` (catálogo) | ✅ concluído |
-| 6 | Métricas expandidas (leads, conversão) | baixa |
-| 7 | Dashboard KPIs visuais | baixa |
-| 8 | Wizard orçamento etapas | baixa |
+#### 9. Process flow 8 etapas (muito operacional)
+- **Localização**: `frontend/app/page.tsx:793-853`
+- **Regra V6**: "Process flow de 8 passos é muito operacional, não é premium"
+- **Correção**: Simplificar para 3-4 etapas ou remover
 
 ---
 
-## Avaliação Final - Sessão opencode
+## Plano de Correções V6
 
-### ✅ Concluído (opencode)
+### ✅ Concluído (sessions anteriores)
 
-| # | Melhoria | Commit | Arquivos |
-|---|---------|--------|--------|
-| 1 | Status no QuoteResponse | 7f50792 | QuoteController.kt |
-| 2 | Validação WhatsApp | 7f50792 | QuoteApplicationService.kt |
-| 3 | Acessibilidade labels | 7f50792 | page.tsx |
-| 4 | Pipeline visual | 7f50792 | globals.css |
-| 5 | Endpoint /api/services | d92dad4 | ServiceController.kt, ServiceCatalog.kt |
-| 6 | Teste ServiceController | d92dad4 | ServiceControllerTest.kt |
+| # | Melhoria | Commit | Status |
+|---|---------|--------|-------|
+| 1 | Status no QuoteResponse | 7f50792 | ✅ |
+| 2 | Validação WhatsApp | 7f50792 | ✅ |
+| 3 | Acessibilidade labels | 7f50792 | ✅ |
+| 4 | Endpoint /api/services | d92dad4 | ✅ |
+| 5 | Pix simulation | 87b2dea | ✅ |
+| 6 | Dark mode | ✅ | ✅ |
 
-### ⏳ Pendente (outra IDE)
+### ⏳ Pendente (V6 Visual Overhaul)
 
-- Wizard.tsx
-- CRMBoard.tsx
-- ServiceCatalog.tsx
-- DashboardKPIs.tsx
-- page.tsx integração
+| # | Melhoria | Prioridade | Status |
+|---|---------|------------|-------|
+| 1 | Hero split editorial (não cards) | alta | 🔄 Em progresso |
+| 2 | Dashboard horizontal bar (não grid) | alta | 🔄 Em progresso |
+| 3 | CRM Concierge list (não Kanban) | alta | 🔄 Em progresso |
+| 4 | Catálogo lookbook layout | média | 🔄 Em progresso |
+| 5 | Quote form single-column | média | 🔄 Em progresso |
+| 6 | Remover skeletons | baixa | 🔄 Em progresso |
+| 7 | Remover gráficos fake | baixa | 🔄 Em progresso |
+| 8 | Botões 2px radius (não pill) | média | 🔄 Em progresso |
+| 9 | Inputs border-bottom only | média | 🔄 Em progresso |
 
 ---
 
-## Validação
+## Validação Visual (Anti-Dashboard Checklist)
+
+- [ ] NÃO tem metric cards com borda colorida
+- [ ] NÃO tem Kanban colorido (CRM)
+- [ ] NÃO tem gráficos SVG falsos
+- [ ] NÃO tem skeleton loaders
+- [ ] NÃO tem botões pill-shaped
+- [ ] NÃO tem gradientes pesados
+- [ ] Tem whitespace (mínimo 40% vazio)
+- [ ] Tem Playfair Display para títulos
+- [ ] Tem micro-accentos (máximo 2% da página)
+- [ ] Tem micro-interações polite (400ms, não bouncy)
+
+---
+
+## Validação Técnica
 
 ```bash
 # Backend - 8 testes passando
 cd backend && mvn -B clean verify
 # Tests run: 8, Failures: 0, Errors: 0
 
-# Frontend
+# Frontend - Build sem erros
 cd frontend && npm run build
+
+# CSS - Variáveis V6 presentes
+grep -r "clamp(" frontend/app/globals.css
+grep -r "Playfair Display" frontend/app/globals.css
+grep -r "border-bottom:" frontend/app/globals.css
 ```

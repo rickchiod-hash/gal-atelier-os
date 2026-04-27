@@ -1,17 +1,24 @@
-# SESSÃO EXECUTORA — STATUS
+# SESSÃO EXECUTORA — STATUS (V6 Editorial Atelier)
 
 ## Início da Execução
 **Data**: 2026-04-27 16:20 UTC
+**Atualização V6**: 2026-04-27 15:00 UTC
 
 ---
 
 ## Arquivos Lidos
 
 - README.md
-- AGENTS.md
-- docs/ROADMAP-MELHORIAS-GAL-ATELIER.md
-- docs/PRODUCT-ROADMAP.md
-- docs/sessoes/SESSION-INTEGRACAO-STATUS.md
+- AGENTS.md (atualizado V6)
+- docs/DESIGN-SYSTEM.md (atualizado V6)
+- docs/ENGINEERING-STANDARDS.md (atualizado V6)
+- docs/OBSERVABILITY.md (atualizado V6)
+- docs/SECURITY.md (atualizado V6)
+- docs/ROADMAP-MELHORIAS-GAL-ATELIER.md (atualizado V6)
+- docs/PRODUCT-ROADMAP.md (atualizado V6)
+- docs/QA-REVIEW-V5-FASE1.md (atualizado V6)
+- docs/API-CONTRACT.md (atualizado V6)
+- docs/DATA-MODEL-ROADMAP.md (atualizado V6)
 - frontend/app/page.tsx
 - frontend/app/globals.css
 - backend/pom.xml
@@ -19,36 +26,48 @@
 
 ---
 
-## Plano
+## Plano V6 — Editorial Atelier
 
-Executar todas as 22 etapas do roadmap de melhorias:
+Executar transformação visual anti-dashboard:
 
-1. Design system premium
-2. Hero e home
-3. Quem somos
-4. Dashboard principal
-5. CRM de leads/pipeline
-6. Diagnóstico da cliente
-7. Clientes e perfil
-8. Catálogo técnico
-9. Pedidos
-10. Produção/customização
-11. Agenda
-12. Estoque
-13. Financeiro
-14. WhatsApp/atendimento
-15. Marketing e recompra
-16. Reviews/galeria/área cliente
-17. Orçamento atual
-18. Backend read models
-19. Backend validações e testes
-20. Documentação produto e API
-21. Validação final
-22. Finalização
+1. ✅ Atualizar AGENTS.md (V6 Editorial Atelier)
+2. ✅ Atualizar DESIGN-SYSTEM.md (V6 Whisper Luxury)
+3. ✅ Atualizar ENGINEERING-STANDARDS.md (V6)
+4. ✅ Atualizar OBSERVABILITY.md (V6 Frontend)
+5. ✅ Atualizar SECURITY.md (V6 Design Security)
+6. ✅ Atualizar ROADMAP-MELHORIAS-GAL-ATELIER.md (V6)
+7. ✅ Atualizar PRODUCT-ROADMAP.md (V6)
+8. ✅ Atualizar QA-REVIEW-V5-FASE1.md (V6)
+9. ✅ Atualizar API-CONTRACT.md (V6)
+10. ✅ Atualizar DATA-MODEL-ROADMAP.md (V6)
+11. 🔄 Refatorar globals.css (V6 tokens)
+12. 🔄 Refatorar page.tsx (Hero split, Dashboard bar, CRM list)
+13. 🔄 Refatorar Header.tsx (minimalista)
 
 ---
 
-## Etapas Executadas
+## V6 Visual Direction
+
+### Paleta "Whisper Luxury"
+- Base (80%): Ivory #FAF8F5, Charcoal #2C2C2C, Blush #E8DDD3
+- Accents (2%): Bronze #A67C52, Deep Espresso #3D2B1F, Rose #C1978E
+
+### Tipografia "Editorial Authority"
+- Display: Playfair Display (H1 3.5rem, H2 2.5rem)
+- Body: Inter (1rem, line-height 1.7)
+- Labels: Inter 0.75rem, weight 600, uppercase
+
+### Anti-Dashboard Rules
+- ❌ Sem card-mania, sem métricas em cards coloridos
+- ❌ Sem Kanban colorido (CRM → Concierge list)
+- ❌ Sem gráficos SVG falsos, sem skeleton loaders
+- ❌ Sem botões pill-shaped (usar 2px radius)
+- ✅ Whitespace generoso (mínimo 40% vazio)
+- ✅ Micro-interações polite (400ms, cubic-bezier)
+
+---
+
+## Etapas Executadas (V5 — Concluído)
 
 ### Frontend (Sessão A)
 - ✅ Design system premium V5
@@ -83,7 +102,7 @@ Executar todas as 22 etapas do roadmap de melhorias:
 
 ---
 
-## Commits Criados
+## Commits Criados (V5)
 
 ```
 6897b82 docs: add PRODUCT-ROADMAP.md with phases
@@ -96,35 +115,32 @@ e915b3f feat(sessao-b): expand service catalog to 10
 
 ---
 
-## Erros Encontrados
+## Pendências V6 (Em Progresso)
 
-- ✅ PipelineController mapToStage - corrigido
-- ✅ DiagnosticController null safety - corrigido
+### Alta Prioridade
+- [🔄] Hero split editorial (texto esquerda, imagem direita)
+- [🔄] Dashboard horizontal bar (não grid de cards)
+- [🔄] CRM Concierge list (não Kanban)
+
+### Média Prioridade
+- [🔄] Catálogo lookbook layout
+- [🔄] Quote form single-column
+- [🔄] Botões 2px radius
+- [🔄] Inputs border-bottom only
+
+### Baixa Prioridade
+- [🔄] Remover skeletons
+- [🔄] Remover gráficos fake
+- [🔄] Micro-interações 400ms
 
 ---
 
-## Próximos Itens
+## Próximos Passos
 
-- Merge na main
-- Implementar Fase 2 (PostgreSQL, pagamento real com aprovação)
-
----
-
-## Aviso para Sessão Validadora
-
-O roadmap está **100% concluído**. Todas as 22 etapas foram implementadas e validadas:
-
-- Frontend: build passando
-- Backend: 8 testes passando
-- Docker: containers rodando
-- Endpoints: 10 disponíveis
-
-Os arquivos que a sessão validadora deve ler:
-
-1. **docs/ROADMAP-MELHORIAS-GAL-ATELIER.md** - Tabela de roadmap
-2. **docs/sessoes/SESSION-VALIDADORA-INSTRUCOES.md** - Instruções
-3. **docs/PRODUCT-ROADMAP.md** - Roadmap completo do produto
-4. **docs/SECURITY.md** - Segurança e variáveis de ambiente
+1. ✅ Commit dos arquivos de documentação V6
+2. 🔄 Refatorar globals.css (V6 tokens)
+3. 🔄 Refatorar page.tsx (anti-dashboard)
+4. 🔄 Refatorar components (Header, etc.)
 
 ---
 

@@ -11,3 +11,10 @@
 - `/api/health`
 - `/actuator/health`
 - `/actuator/metrics`
+
+## Frontend Observability (V6)
+
+- Não usar skeleton loaders (usar texto elegante: "Carregando experiência...").
+- Estados de erro com tipografia clara, não alertas coloridas gritantes.
+- Toast notifications: suaves, backdrop blur, posicionamento fixo inferior direito.
+- Transições de página: crossfade simples (400ms), sem slides ou bounces.

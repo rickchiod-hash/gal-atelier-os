@@ -1,7 +1,25 @@
 # SESSION-B-TODO — Tarefas Técnicas para Implementação Futura
 
 ## Data: 2026-04-27
-## Status: BACKLOG
+## Status: BACKLOG (V6 Visual Overhaul Pendente)
+
+## V6 EDITORIAL ATELIER — PENDÊNCIAS VISUAIS
+
+### Alta Prioridade (Anti-Dashboard)
+- [🔄] Hero split editorial (não cards sobrepostas)
+- [🔄] Dashboard horizontal bar (não grid de metric cards)
+- [🔄] CRM Concierge list (não Kanban colorido)
+
+### Média Prioridade (Editorial Atelier)
+- [🔄] Catálogo lookbook layout (1 full-width + 2-col grid)
+- [🔄] Quote form single-column (inputs border-bottom only)
+- [🔄] Botões 2px radius (não pill-shaped)
+- [🔄] Remover gradientes pesados
+
+### Baixa Prioridade (Polish)
+- [🔄] Remover skeleton loaders (usar texto elegante)
+- [🔄] Remover gráficos SVG falsos
+- [🔄] Micro-interações polite (400ms, cubic-bezier)
 
 ---
 

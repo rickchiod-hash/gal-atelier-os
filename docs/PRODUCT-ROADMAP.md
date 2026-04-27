@@ -1,22 +1,25 @@
 # PRODUCT ROADMAP — Gal Atelier OS / Veloura Beauty OS
 
-## Visão do Produto
+## Visão do Produto (V6 — Editorial Atelier)
 
-Sistema operacional para wigmaker/perucas com:
-- CRM de clientes e leads
-- Catálogo técnico de wigs (10 tipos)
-- Pedidos personalizados
-- Gestão de produção
-- Agenda de instalação/manutenção
-- Financeiro (Pix/sinal)
-- WhatsApp operacional
-- Área da cliente
+Sistema operacional para wigmaker/perucas com estética de **loja de luxo + atelier artesanal**:
+
+- CRM de clientes e leads (Concierge list view, não Kanban colorido)
+- Catálogo técnico de wigs (10 tipos) em lookbook layout
+- Pedidos personalizados com formulário single-column (inputs border-bottom only)
+- Gestão de produção com micro-interações polite (400ms fade)
+- Agenda de instalação/manutenção com tipografia Playfair Display
+- Financeiro (Pix/sinal) com accents sutis (máximo 2% da página)
+- WhatsApp operacional integrado sem skeleton loaders
+- Área da cliente com whitespace generoso (mínimo 40% vazio)
+- Anti-dashboard: sem card-mania, sem gráficos SVG falsos
 
 ---
 
-## Versão Atual: V5 (Enterprise)
+## Versão Atual: V6 (Editorial Atelier)
 
 **Data**: 2026-04-27
+**Visual**: Anti-dashboard, loja de luxo + atelier artesanal, whitespace generoso, Playfair Display + Inter
 
 ---
 
@@ -35,20 +38,30 @@ Sistema operacional para wigmaker/perucas com:
 | 8 | /api/leads | GET/POST/PATCH | Leads | ✅ |
 | 9 | /api/diagnostics/recommendation | POST | Recomendação | ✅ |
 | 10 | /api/templates/whatsapp | GET | Templates WhatsApp | ✅ |
+| 11 | /api/customers | GET/POST/PATCH | Clientes | ✅ |
+| 12 | /api/orders | GET/POST/PATCH | Pedidos | ✅ |
+| 13 | /api/inventory | GET/POST/PATCH | Estoque | ✅ |
+| 14 | /api/appointments | GET/POST/PATCH | Agenda | ✅ |
+| 15 | /api/finance | GET | Financeiro | ✅ |
+| 16 | /api/campaign | GET/POST/PATCH | Campanhas | ✅ |
+| 17 | /api/notifications/email | POST | Email | ✅ |
+| 18 | /api/webhook/pix | POST | Pix Webhook | ✅ |
 
 ### Frontend
 | # | Componente | Status |
 |---|----------|--------|
-| 1 | Design system premium V5 | ✅ |
-| 2 | Dashboard KPIs | ✅ |
-| 3 | CRM pipeline visual | ✅ |
-| 4 | Catálogo técnico | ✅ |
-| 5 | Wizard de orçamento | ✅ |
-| 6 | Dark mode | ✅ |
-| 7 | Toast notifications | ✅ |
-| 8 | Skeleton loading | ✅ |
-| 9 | Header mobile | ✅ |
-| 10 | Acessibilidade WCAG | ✅ |
+| 1 | Design system V6 — Editorial Atelier | ✅ |
+| 2 | Hero editorial (split layout, não cards) | ✅ |
+| 3 | Dashboard insights bar (horizontal, não grid) | ✅ |
+| 4 | CRM Concierge list (não Kanban) | ✅ |
+| 5 | Catálogo lookbook (1 full-width + 2-col grid) | ✅ |
+| 6 | Quote wizard single-column (border-bottom inputs) | ✅ |
+| 7 | Dark mode (paleta específica) | ✅ |
+| 8 | Toast notifications (backdrop blur) | ✅ |
+| 9 | Micro-interações polite (400ms, cubic-bezier) | ✅ |
+| 10 | Header minimalista (logo + whitespace) | ✅ |
+| 11 | Acessibilidade WCAG | ✅ |
+| 12 | Anti-dashboard (removido skeletons, gráficos fake) | ✅ |
 
 ### Testes
 - 8 testes passando ✅
@@ -61,11 +74,11 @@ Sistema operacional para wigmaker/perucas com:
 
 ---
 
-## FASE 2 — OPERAÇÃO REAL (PENDENTE)
+## FASE 2 — OPERAÇÃO REAL (EM PROGRESSO)
 
 ### Prioridade Alta
-- [ ] Banco de dados PostgreSQL
-- [ ] Flyway/Liquibase migrations
+- [x] Banco de dados PostgreSQL
+- [x] Flyway/Liquibase migrations
 - [ ] Status automático de pagamento (Mercado Pago/Asaas)
 - [ ] Upload de fotos do processo
 
@@ -77,7 +90,25 @@ Sistema operacional para wigmaker/perucas com:
 
 ### Prioridade Baixa
 - [ ] Reviews/galeria antes/depois
-- [ ]-segmentação automática
+- [ ] Segmentação automática
+
+## FASE 3 — V6 VISUAL OVERHAUL ✅ CONCLUÍDO
+
+### Prioridade Alta (Anti-Dashboard)
+- [x] Hero split editorial (não cards sobrepostas) - v6
+- [x] Dashboard horizontal bar (não grid de metric cards) - v6
+- [x] CRM Concierge list (não Kanban colorido) - v6
+
+### Prioridade Média (Editorial Atelier)
+- [x] Catálogo lookbook layout (1 full-width + 2-col grid) - v6
+- [x] Quote form single-column (inputs border-bottom only) - v6
+- [x] Botões 2px radius (não pill-shaped) - v6
+- [x] Remover gradientes pesados - v6
+
+### Prioridade Baixa (Polish)
+- [x] Remover skeleton loaders (usar texto elegante) - v6
+- [x] Remover gráficos SVG falsos - v6
+- [x] Micro-interações polite (400ms, cubic-bezier) - v6
 
 ---
 
