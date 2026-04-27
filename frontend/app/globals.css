@@ -953,3 +953,186 @@ pre {
     display: none;
   }
 }
+
+/* ============================================
+   ENTRANCE ANIMATIONS
+   ============================================ */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate-in {
+  animation: fadeInUp 500ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.animate-scale-in {
+  animation: fadeInScale 400ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.section-animated {
+  opacity: 0;
+  animation: fadeInUp 600ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.hero .heroCopy {
+  animation: fadeInUp 700ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.hero .heroPanel {
+  animation: fadeInScale 800ms cubic-bezier(0.22, 1, 0.36, 1) 200ms forwards;
+  opacity: 0;
+}
+
+.metricGrid .metric:nth-child(1) { animation-delay: 100ms; }
+.metricGrid .metric:nth-child(2) { animation-delay: 200ms; }
+.metricGrid .metric:nth-child(3) { animation-delay: 300ms; }
+.metricGrid .metric:nth-child(4) { animation-delay: 400ms; }
+.metricGrid .metric:nth-child(5) { animation-delay: 500ms; }
+.metricGrid .metric:nth-child(6) { animation-delay: 600ms; }
+
+/* ============================================
+   FORM VALIDATION STATES
+   ============================================ */
+input:focus:invalid,
+select:focus:invalid,
+textarea:focus:invalid {
+  border-color: #b42828;
+  box-shadow: 0 0 0 3px rgba(180, 40, 40, 0.15);
+}
+
+input:valid:not(:placeholder-shown),
+select:valid:not(:invalid),
+textarea:valid:not(:placeholder-shown) {
+  border-color: var(--color-ok);
+}
+
+input:invalid:not(:focus):not(:placeholder-shown) {
+  border-color: #b42828;
+  background: rgba(180, 40, 40, 0.04);
+}
+
+input:valid:not(:focus):not(:placeholder-shown) {
+  border-color: var(--color-ok);
+  background: rgba(31, 122, 77, 0.04);
+}
+
+input[type="number"]:out-of-range {
+  border-color: #b42828;
+  background: rgba(180, 40, 40, 0.04);
+}
+
+/* ============================================
+   TOOLTIP
+   ============================================ */
+.tooltip-wrapper {
+  position: relative;
+  display: inline-flex;
+}
+
+.tooltip {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  padding: var(--space-1) var(--space-2);
+  background: var(--color-text);
+  color: var(--color-bg);
+  font-size: 0.75rem;
+  font-weight: 700;
+  border-radius: var(--radius-sm);
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 200ms ease, transform 200ms ease;
+  z-index: 100;
+}
+
+.tooltip::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 6px solid transparent;
+  border-top-color: var(--color-text);
+}
+
+.tooltip-wrapper:hover .tooltip,
+.tooltip-wrapper:focus-within .tooltip {
+  opacity: 1;
+  transform: translateX(-50%) translateY(-4px);
+}
+
+/* ============================================
+   RESULT CARDS ANIMATION
+   ============================================ */
+.resultGrid > * {
+  opacity: 0;
+  animation: fadeInUp 500ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.resultGrid > *:nth-child(1) { animation-delay: 50ms; }
+.resultGrid > *:nth-child(2) { animation-delay: 150ms; }
+.resultGrid > *:nth-child(3) { animation-delay: 250ms; }
+
+/* ============================================
+   COPY BUTTON FEEDBACK
+   ============================================ */
+.button.copied {
+  background: var(--color-ok) !important;
+  transition: background 300ms ease;
+}
+
+/* ============================================
+   STATUS BADGE
+   ============================================ */
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.25rem 0.75rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 900;
+}
+
+.status-badge.online {
+  background: rgba(31, 122, 77, 0.12);
+  color: var(--color-ok);
+}
+
+.status-badge.offline {
+  background: rgba(180, 40, 40, 0.12);
+  color: #b42828;
+}
+
+.status-badge .dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: currentColor;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
