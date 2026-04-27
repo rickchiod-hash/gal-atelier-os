@@ -4,6 +4,7 @@ import { FormEvent, useEffect, useMemo, useState, useCallback } from "react";
 import { Header } from "@/components/Header";
 import { useToast } from "@/components/Toast";
 import { useTheme } from "@/components/ThemeProvider";
+import { catalogItems, categories, CatalogItem } from "@/data/galAtelierCatalog";
 
 /* ============================================
    TYPES
@@ -70,9 +71,9 @@ const CRM_STAGES = [
   { key: "NEW_LEAD", label: "Novo Lead", color: "#C79BA5" },
   { key: "CONTACT", label: "Contato", color: "#D8C5B0" },
   { key: "DIAGNOSIS", label: "Diagnóstico", color: "#C8A96B" },
-  { key: "QUOTE_SENT", label: "Orçamento Enviado", color: "#C8A96B" },
+  { key: "QUOTE_SENT", label: "Orçamento", color: "#C8A96B" },
   { key: "NEGOTIATION", label: "Negociação", color: "#C79BA5" },
-  { key: "AWAITING_PAYMENT", label: "Aguardando Pgto", color: "#5A163B" },
+  { key: "AWAITING_PAYMENT", label: "Aguardando Pix", color: "#5A163B" },
   { key: "PAID", label: "Sinal Pago", color: "#40DCA5" },
   { key: "PRODUCTION", label: "Em Produção", color: "#C79BA5" },
   { key: "DELIVERED", label: "Entregue", color: "#40DCA5" },
@@ -149,6 +150,7 @@ export default function Home() {
   const [filterStatus, setFilterStatus] = useState<OrderStatus | "ALL">("ALL");
   const [wizardStep, setWizardStep] = useState(1);
   const [activeSection, setActiveSection] = useState("dashboard");
+  const [catalogFilter, setCatalogFilter] = useState<"all" | CatalogItem["category"]>("all");
 
   const load = useCallback(async () => {
     try {
@@ -196,6 +198,11 @@ export default function Home() {
       return matchSearch && matchStatus;
     });
   }, [quotes, searchTerm, filterStatus]);
+
+  const filteredCatalog = useMemo(() => {
+    if (catalogFilter === "all") return catalogItems;
+    return catalogItems.filter((item) => item.category === catalogFilter);
+  }, [catalogFilter]);
 
   const conversionHint = useMemo(() => {
     if (metrics.quotes === 0) return "Crie o primeiro orçamento para iniciar o pipeline.";
@@ -266,10 +273,14 @@ export default function Home() {
   }, [quotes]);
 
   const mockLeads = useMemo(() => [
-    { id: "1", name: "Juliana Costa", whatsapp: "11988884444", source: "Instagram", interest: "Lace Front 13x4", budget: "R$ 1.500 - R$ 2.000", nextAction: "Enviar orçamento", stage: "QUOTE_SENT" },
-    { id: "2", name: "Patrícia Lima", whatsapp: "11977775555", source: "Indicação", interest: "Full Lace", budget: "R$ 2.500 - R$ 3.500", nextAction: "Diagnóstico", stage: "DIAGNOSIS" },
-    { id: "3", name: "Amanda Souza", whatsapp: "11966663333", source: "TikTok", interest: "Glueless Wig", budget: "R$ 800 - R$ 1.200", nextAction: "Follow-up 24h", stage: "CONTACT" },
-    { id: "4", name: "Fernanda Alves", whatsapp: "11955552222", source: "Google", interest: "Manutenção", budget: "R$ 300 - R$ 500", nextAction: "Confirmar agendamento", stage: "NEW_LEAD" },
+    { id: "1", name: "Ana Clara", whatsapp: "11988884444", source: "Instagram", interest: "Lace Front 13x4", budget: "R$ 1.800 - R$ 2.500", nextAction: "Enviar orçamento", stage: "QUOTE_SENT" },
+    { id: "2", name: "Camila Santos", whatsapp: "11977775555", source: "Indicação", interest: "Full Lace Premium", budget: "R$ 2.500 - R$ 3.500", nextAction: "Cobrar sinal Pix", stage: "NEGOTIATION" },
+    { id: "3", name: "Bruna Oliveira", whatsapp: "11966663333", source: "TikTok", interest: "Glueless Wig", budget: "R$ 1.200 - R$ 1.800", nextAction: "Follow-up 24h", stage: "CONTACT" },
+    { id: "4", name: "Fernanda Lima", whatsapp: "11955552222", source: "Google", interest: "Manutenção", budget: "R$ 350 - R$ 500", nextAction: "Agendar prova", stage: "PRODUCTION" },
+    { id: "5", name: "Juliana Costa", whatsapp: "11944441111", source: "Instagram", interest: "Lace Front Natural", budget: "R$ 1.500 - R$ 2.000", nextAction: "Diagnóstico", stage: "DIAGNOSIS" },
+    { id: "6", name: "Larissa Rocha", whatsapp: "11933332222", source: "WhatsApp", interest: "Wig Cacheada", budget: "R$ 2.000 - R$ 3.000", nextAction: "Primeiro contato", stage: "NEW_LEAD" },
+    { id: "7", name: "Patrícia Silva", whatsapp: "11922221111", source: "Indicação", interest: "Manutenção Premium", budget: "R$ 400 - R$ 600", nextAction: "Receber sinal", stage: "AWAITING_PAYMENT" },
+    { id: "8", name: "Mariana Alves", whatsapp: "11911110000", source: "Google", interest: "Full Lace", budget: "R$ 3.000 - R$ 4.000", nextAction: "Entregar", stage: "PAID" },
   ], []);
 
   return (
@@ -277,38 +288,104 @@ export default function Home() {
       <Header whatsappReceiver={whatsappReceiver} />
 
       {/* ============================================
-          HERO SECTION
+          QUEM SOMOS — ATELIER
           ============================================ */}
-      <section className="shell hero">
-        <div className="heroCopy">
-          <span className="eyebrow">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
-            Beauty Commerce CRM
-          </span>
-          <h1>Beauty Commerce CRM para wigmakers.</h1>
-          <p className="subtitle">
-            Venda, personalize e acompanhe perucas, laces e manutenções em um fluxo premium do briefing ao pós-venda.
-          </p>
-          <div className="actions">
-            <a href="#quote" className="button primary">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 5v14M5 12h14"/></svg>
-              Criar Orçamento
-            </a>
-            <a href={`https://wa.me/${whatsappReceiver}`} target="_blank" rel="noopener noreferrer" className="button secondary">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg>
-              WhatsApp
-            </a>
-            <a href="#crm" className="button accent">Ver Pipeline</a>
+      <section id="about" className="about-section">
+        <div className="about-container">
+          <div className="about-content">
+            <span className="about-eyebrow">Sobre a Gal Atelier</span>
+            <h2>Transformamos cabelos em confiança</h2>
+            <p className="about-text">
+              Somos um atelier especializado em perucas, laces e extensões capilares de alta qualidade. 
+              Cada peça é cuidadosamente produzida sob medida, com acabamento premium e atenção aos detalhes.
+            </p>
+            <div className="about-pillars">
+              <div className="pillar">
+                <div className="pillar-icon">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="m9 12 2 2 4-4"/></svg>
+                </div>
+                <div className="pillar-text">
+                  <strong>Naturalidade</strong>
+                  <p>Texturas e linhas frontais que imitam cabelos naturais</p>
+                </div>
+              </div>
+              <div className="pillar">
+                <div className="pillar-icon">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                </div>
+                <div className="pillar-text">
+                  <strong>Personalização</strong>
+                  <p>Cada peça é única, feita sob medida para cada cliente</p>
+                </div>
+              </div>
+              <div className="pillar">
+                <div className="pillar-icon">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                </div>
+                <div className="pillar-text">
+                  <strong>Processo Seguro</strong>
+                  <p>Do diagnóstico à entrega, acompanhamento completo</p>
+                </div>
+              </div>
+              <div className="pillar">
+                <div className="pillar-icon">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                </div>
+                <div className="pillar-text">
+                  <strong>Pós-venda</strong>
+                  <p>Suporte, manutenção e care kit para cada peça</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="about-visual">
+            <img src="/gal-assets/catalog/lace-front-natural.png" alt="Lace Front Natural Gal Atelier" className="about-image" />
           </div>
         </div>
+      </section>
 
-        <div className="heroPanel" aria-label="Resumo operacional">
-          <div className="heroCard">
-            <span>Receita potencial</span>
-            <strong>{money(metrics.revenuePotential)}</strong>
-            <small>{conversionHint}</small>
+      {/* ============================================
+          HERO SECTION — PREMIUM WIGMAKER
+          ============================================ */}
+      <section className="hero-section">
+        <div className="hero-bg-pattern"></div>
+        <div className="hero-container">
+          <div className="hero-content">
+            <span className="eyebrow-tag">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+              Atelier Wigs · Beauty Commerce
+            </span>
+            <h1 className="hero-title">Wigs, laces e atendimentos premium em um fluxo visual, técnico e vendável.</h1>
+            <p className="hero-subtitle">Do diagnóstico ao Pix: organize cada lead, catálogo, pedido, produção e pós-venda com cara de atelier de verdade.</p>
+            <div className="hero-actions">
+              <a href="#quote" className="btn-primary">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 5v14M5 12h14"/></svg>
+                Criar Orçamento
+              </a>
+              <a href={`https://wa.me/${whatsappReceiver}`} target="_blank" rel="noopener noreferrer" className="btn-secondary">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg>
+                WhatsApp
+              </a>
+              <a href="#catalog" className="btn-gold">Ver Catálogo</a>
+            </div>
           </div>
-          <img src="/brand/gal-wig-hero.svg" alt="Ilustração de peruca premium Gal Atelier" />
+          <div className="hero-visual">
+            <img src="/gal-assets/catalog/hero-beauty-commerce-crm.png" alt="Beauty Commerce CRM para Wigmakers" className="hero-image" />
+            <div className="hero-metrics">
+              <div className="mini-metric">
+                <span className="mini-value">{money(metrics.revenuePotential)}</span>
+                <span className="mini-label">Receita potencial</span>
+              </div>
+              <div className="mini-metric">
+                <span className="mini-value">{metrics.quotes}</span>
+                <span className="mini-label">Orçamentos</span>
+              </div>
+              <div className="mini-metric">
+                <span className="mini-value">{money(metrics.depositsPotential)}</span>
+                <span className="mini-label">Sinais Pix</span>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -329,22 +406,22 @@ export default function Home() {
             <article className="metric animate-in">
               <span className="metric-label">Orçamentos</span>
               <span className="metric-value">{metrics.quotes}</span>
-              <div className="metric-icon">📋</div>
+              {metrics.quotes === 0 && <span className="metric-hint">Crie o primeiro orçamento</span>}
             </article>
             <article className="metric animate-in">
               <span className="metric-label">Receita potencial</span>
               <span className="metric-value">{money(metrics.revenuePotential)}</span>
-              <div className="metric-icon">💰</div>
+              {metrics.revenuePotential === 0 && <span className="metric-hint">Inicie seu pipeline</span>}
             </article>
             <article className="metric animate-in">
               <span className="metric-label">Sinais Pix</span>
               <span className="metric-value">{money(metrics.depositsPotential)}</span>
-              <div className="metric-icon">✨</div>
+              {metrics.depositsPotential === 0 && <span className="metric-hint">Configure Pix para receber</span>}
             </article>
             <article className="metric animate-in">
               <span className="metric-label">Ticket médio</span>
               <span className="metric-value">{money(metrics.avgTicket)}</span>
-              <div className="metric-icon">📊</div>
+              {metrics.avgTicket === 0 && <span className="metric-hint">Baseado em orçamentos</span>}
             </article>
             <article className="metric animate-in">
               <span className="metric-label">Taxa conversão</span>
@@ -353,76 +430,116 @@ export default function Home() {
             </article>
             <article className="metric animate-in">
               <span className="metric-label">Status</span>
-              <span className="metric-value" style={{ fontSize: "var(--text-lg)", color: "var(--luxury-green)" }}>🟢 Online</span>
+              <span className="metric-value" style={{ fontSize: "var(--text-lg)", color: "var(--luxury-green)" }}>Online</span>
             </article>
             <article className="metric animate-in">
               <span className="metric-label">Produtos</span>
-              <span className="metric-value">12</span>
-              <span className="metric-trend">Catálogo ativo</span>
+              <span className="metric-value">24</span>
+              <span className="metric-trend">No catálogo</span>
             </article>
             <article className="metric animate-in">
               <span className="metric-label">Clientes</span>
               <span className="metric-value">{metrics.quotes}</span>
-              <span className="metric-trend">No pipeline</span>
+              <span className="metric-trend">Cadastradas</span>
             </article>
           </>
         )}
       </section>
 
       {/* ============================================
-          CRM PIPELINE
+          CRM PIPELINE COM MOCK DIDÁTICO
           ============================================ */}
-      <section id="crm" className="shell section">
-        <div className="section-header">
-          <p>Pipeline</p>
+      <section id="crm" className="crm-section">
+        <div className="crm-header">
+          <span className="crm-eyebrow">Pipeline</span>
           <h2>Funil de clientes</h2>
-          <p className="section-desc">Acompanhe cada lead do primeiro contato até a entrega final.</p>
+          <p className="crm-desc">Acompanhe cada cliente do primeiro contato até a entrega final.</p>
         </div>
 
-        <div className="crmBoard" role="list">
-          {PIPELINE_COLUMNS.map((col) => (
-            <div key={col.key} className="crmColumn" role="listitem">
-              <div className="crmColumnHeader" style={{ background: `${col.color}15`, color: col.color }}>
-                <span>{col.icon} {col.label}</span>
-                <span className="crmBadge" style={{ background: col.color }}>{quotesByStatus[col.key]?.length || 0}</span>
-              </div>
-              {quotesByStatus[col.key]?.map((q) => (
-                <div key={q.id} className="crmCard" onClick={() => { setQuote(q); setWizardStep(3); }}>
-                  <strong>{q.clientName}</strong>
-                  <span>{serviceLabel(q.serviceType)}</span>
-                  <div className="card-meta">
-                    <span>{money(q.recommendedPrice)}</span>
-                    <span>{formatDate(q.createdAt)}</span>
-                  </div>
+        <div className="crm-board">
+          {CRM_STAGES.map((stage) => {
+            const stageLeads = mockLeads.filter((lead) => lead.stage === stage.key);
+            return (
+              <div key={stage.key} className="crm-stage">
+                <div className="stage-header" style={{ borderLeftColor: stage.color }}>
+                  <span className="stage-name">{stage.label}</span>
+                  <span className="stage-count">{stageLeads.length}</span>
                 </div>
-              ))}
-              {quotesByStatus[col.key]?.length === 0 && (
-                <p style={{ fontSize: "var(--text-xs)", color: "var(--color-muted)", textAlign: "center", padding: "var(--space-4)" }}>Nenhum orçamento</p>
-              )}
-            </div>
-          ))}
+                <div className="stage-leads">
+                  {stageLeads.map((lead) => (
+                    <div key={lead.id} className="lead-card">
+                      <div className="lead-avatar">
+                        {lead.name.split(" ").map((n) => n[0]).join("").slice(0, 2)}
+                      </div>
+                      <div className="lead-info">
+                        <strong>{lead.name}</strong>
+                        <span>{lead.interest}</span>
+                        <span className="lead-meta">{lead.source} · {lead.budget}</span>
+                      </div>
+                      <div className="lead-actions">
+                        <span className="lead-next">{lead.nextAction}</span>
+                        <a href={`https://wa.me/${lead.whatsapp}`} target="_blank" rel="noopener noreferrer" className="lead-whatsapp">
+                          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.296-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                        </a>
+                      </div>
+                    </div>
+                  ))}
+                  {stageLeads.length === 0 && (
+                    <div className="stage-empty">Vazio</div>
+                  )}
+                </div>
+              </div>
+            );
+          })}
         </div>
       </section>
 
       {/* ============================================
-          CATÁLOGO PREMIUM
+          CATÁLOGO PREMIUM COM IMAGENS
           ============================================ */}
-      <section id="catalog" className="shell section">
-        <div className="section-header">
-          <p>Catálogo</p>
-          <h2>Nossos serviços</h2>
-          <p className="section-desc">Soluções personalizadas para cada desejo. Qualidade artesanal, acabamento premium.</p>
+      <section id="catalog" className="catalog-section">
+        <div className="catalog-header">
+          <span className="catalog-eyebrow">Catálogo</span>
+          <h2>Coleção Atelier Wigs</h2>
+          <p className="catalog-desc">Soluções personalizadas para cada desejo. Qualidade artesanal, acabamento premium.</p>
         </div>
 
-        <div className="catalogGrid">
-          {CATALOG_SERVICES.map((service) => (
-            <div key={service.id} className="catalogCard animate-in">
-              <div className="catalog-icon">{service.icon}</div>
-              <h4>{service.name}</h4>
-              <p>{service.description}</p>
-              <span className="catalogPrice">{service.price}</span>
-              <span className="catalogDuration">⏱ {service.duration}</span>
-            </div>
+        <div className="catalog-filters">
+          {categories.map((cat) => (
+            <button
+              key={cat.id}
+              className={`filter-btn ${catalogFilter === cat.id ? "active" : ""}`}
+              onClick={() => setCatalogFilter(cat.id as typeof catalogFilter)}
+            >
+              {cat.label}
+            </button>
+          ))}
+        </div>
+
+        <div className="catalog-grid">
+          {filteredCatalog.map((item) => (
+            <article key={item.id} className="catalog-product">
+              <div className="product-image-wrap">
+                <img src={item.image} alt={item.name} className="product-image" loading="lazy" />
+                <div className="product-overlay">
+                  <a href="#quote" className="overlay-btn">Orçar</a>
+                </div>
+              </div>
+              <div className="product-info">
+                <span className="product-category">{item.subtitle}</span>
+                <h3 className="product-name">{item.name}</h3>
+                <p className="product-desc">{item.description}</p>
+                <div className="product-meta">
+                  <span className="product-price">{item.priceRange}</span>
+                  <span className="product-duration">{item.duration}</span>
+                </div>
+                <div className="product-tags">
+                  {item.technicalTags.slice(0, 3).map((tag) => (
+                    <span key={tag} className="product-tag">{tag}</span>
+                  ))}
+                </div>
+              </div>
+            </article>
           ))}
         </div>
       </section>
@@ -565,20 +682,66 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="section-header" style={{ marginBottom: "var(--space-3)" }}>
-              <p>Diagnóstico</p>
-              <h4>Solicitação para Sessão B</h4>
-            </div>
-
-            <div className="panel" style={{ padding: "var(--space-4)" }}>
-              <p style={{ fontSize: "var(--text-sm)", color: "var(--color-muted)", marginBottom: "var(--space-3)" }}>
-                Para implementar o diagnóstico consultivo completo da cliente, solicito à Sessão B:
-              </p>
-              <ul style={{ fontSize: "var(--text-sm)", color: "var(--color-text-secondary)", paddingLeft: "var(--space-4)", lineHeight: 2 }}>
-                <li>Endpoint POST /api/diagnosis</li>
-                <li>Campos: objetivo, experiência, estilo, restrições, tom pele, cor, comprimento, textura, frequência, orçamento</li>
-                <li>Lógica de recomendação em Policy</li>
-              </ul>
+            <div className="process-flow">
+              <h4 className="process-title">Como funciona</h4>
+              <div className="process-steps">
+                <div className="process-step">
+                  <span className="step-number">1</span>
+                  <div className="step-content">
+                    <strong>WhatsApp</strong>
+                    <p>Conversa inicial pela cliente</p>
+                  </div>
+                </div>
+                <div className="process-step">
+                  <span className="step-number">2</span>
+                  <div className="step-content">
+                    <strong>Diagnóstico</strong>
+                    <p>Entendemos objetivo e perfil</p>
+                  </div>
+                </div>
+                <div className="process-step">
+                  <span className="step-number">3</span>
+                  <div className="step-content">
+                    <strong>Orçamento</strong>
+                    <p>Criamos orçamento detalhado</p>
+                  </div>
+                </div>
+                <div className="process-step">
+                  <span className="step-number">4</span>
+                  <div className="step-content">
+                    <strong>Sinal Pix</strong>
+                    <p>Cliente confirma com sinal</p>
+                  </div>
+                </div>
+                <div className="process-step">
+                  <span className="step-number">5</span>
+                  <div className="step-content">
+                    <strong>Produção</strong>
+                    <p>Confecção sob medida</p>
+                  </div>
+                </div>
+                <div className="process-step">
+                  <span className="step-number">6</span>
+                  <div className="step-content">
+                    <strong>Prova</strong>
+                    <p>Ajuste final</p>
+                  </div>
+                </div>
+                <div className="process-step">
+                  <span className="step-number">7</span>
+                  <div className="step-content">
+                    <strong>Entrega</strong>
+                    <p>Cliente recebe a peruca</p>
+                  </div>
+                </div>
+                <div className="process-step">
+                  <span className="step-number">8</span>
+                  <div className="step-content">
+                    <strong>Pós-venda</strong>
+                    <p>Suporte e manutenção</p>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>

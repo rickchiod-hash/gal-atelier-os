@@ -1,0 +1,242 @@
+[
+  {
+    "file": "catalog/hero-beauty-commerce-crm.png",
+    "publicSuggestedPath": "/gal-assets/catalog/hero-beauty-commerce-crm.png",
+    "title": "Beauty CRM",
+    "subtitle": "Wigs • Laces • Atelier",
+    "category": "hero",
+    "type": "original-generated-asset",
+    "license": "Generated for this project by ChatGPT; use as project placeholder/illustration.",
+    "notes": "Original stylized illustration, not a third-party product photo."
+  },
+  {
+    "file": "catalog/lace-front-natural.png",
+    "publicSuggestedPath": "/gal-assets/catalog/lace-front-natural.png",
+    "title": "Lace Front Natural",
+    "subtitle": "Linha frontal realista",
+    "category": "wigs",
+    "type": "original-generated-asset",
+    "license": "Generated for this project by ChatGPT; use as project placeholder/illustration.",
+    "notes": "Original stylized illustration, not a third-party product photo."
+  },
+  {
+    "file": "catalog/full-lace-premium.png",
+    "publicSuggestedPath": "/gal-assets/catalog/full-lace-premium.png",
+    "title": "Full Lace Premium",
+    "subtitle": "Versatilidade total",
+    "category": "wigs",
+    "type": "original-generated-asset",
+    "license": "Generated for this project by ChatGPT; use as project placeholder/illustration.",
+    "notes": "Original stylized illustration, not a third-party product photo."
+  },
+  {
+    "file": "catalog/glueless-wig.png",
+    "publicSuggestedPath": "/gal-assets/catalog/glueless-wig.png",
+    "title": "Glueless Wig",
+    "subtitle": "Sem cola, uso rápido",
+    "category": "wigs",
+    "type": "original-generated-asset",
+    "license": "Generated for this project by ChatGPT; use as project placeholder/illustration.",
+    "notes": "Original stylized illustration, not a third-party product photo."
+  },
+  {
+    "file": "catalog/wig-cacheada.png",
+    "publicSuggestedPath": "/gal-assets/catalog/wig-cacheada.png",
+    "title": "Wig Cacheada",
+    "subtitle": "Volume e presença",
+    "category": "wigs",
+    "type": "original-generated-asset",
+    "license": "Generated for this project by ChatGPT; use as project placeholder/illustration.",
+    "notes": "Original stylized illustration, not a third-party product photo."
+  },
+  {
+    "file": "catalog/wig-lisa-sleek.png",
+    "publicSuggestedPath": "/gal-assets/catalog/wig-lisa-sleek.png",
+    "title": "Wig Lisa Sleek",
+    "subtitle": "Acabamento polido",
+    "category": "wigs",
+    "type": "original-generated-asset",
+    "license": "Generated for this project by ChatGPT; use as project placeholder/illustration.",
+    "notes": "Original stylized illustration, not a third-party product photo."
+  },
+  {
+    "file": "catalog/ruivo-cobre-editorial.png",
+    "publicSuggestedPath": "/gal-assets/catalog/ruivo-cobre-editorial.png",
+    "title": "Ruivo Cobre",
+    "subtitle": "Visual editorial",
+    "category": "wigs",
+    "type": "original-generated-asset",
+    "license": "Generated for this project by ChatGPT; use as project placeholder/illustration.",
+    "notes": "Original stylized illustration, not a third-party product photo."
+  },
+  {
+    "file": "catalog/medical-wig-soft.png",
+    "publicSuggestedPath": "/gal-assets/catalog/medical-wig-soft.png",
+    "title": "Medical Wig",
+    "subtitle": "Conforto e segurança",
+    "category": "wigs",
+    "type": "original-generated-asset",
+    "license": "Generated for this project by ChatGPT; use as project placeholder/illustration.",
+    "notes": "Original stylized illustration, not a third-party product photo."
+  },
+  {
+    "file": "catalog/braided-wig.png",
+    "publicSuggestedPath": "/gal-assets/catalog/braided-wig.png",
+    "title": "Braided Wig",
+    "subtitle": "Trança pronta premium",
+    "category": "wigs",
+    "type": "original-generated-asset",
+    "license": "Generated for this project by ChatGPT; use as project placeholder/illustration.",
+    "notes": "Original stylized illustration, not a third-party product photo."
+  },
+  {
+    "file": "catalog/headband-wig.png",
+    "publicSuggestedPath": "/gal-assets/catalog/headband-wig.png",
+    "title": "Headband Wig",
+    "subtitle": "Praticidade diária",
+    "category": "wigs",
+    "type": "original-generated-asset",
+    "license": "Generated for this project by ChatGPT; use as project placeholder/illustration.",
+    "notes": "Original stylized illustration, not a third-party product photo."
+  },
+  {
+    "file": "catalog/bundles-body-wave.png",
+    "publicSuggestedPath": "/gal-assets/catalog/bundles-body-wave.png",
+    "title": "Bundles Body Wave",
+    "subtitle": "Extensões com movimento",
+    "category": "extensoes",
+    "type": "original-generated-asset",
+    "license": "Generated for this project by ChatGPT; use as project placeholder/illustration.",
+    "notes": "Original stylized illustration, not a third-party product photo."
+  },
+  {
+    "file": "catalog/closure-frontal.png",
+    "publicSuggestedPath": "/gal-assets/catalog/closure-frontal.png",
+    "title": "Closure & Frontal",
+    "subtitle": "Base para instalação",
+    "category": "extensoes",
+    "type": "original-generated-asset",
+    "license": "Generated for this project by ChatGPT; use as project placeholder/illustration.",
+    "notes": "Original stylized illustration, not a third-party product photo."
+  },
+  {
+    "file": "catalog/clip-in-extensions.png",
+    "publicSuggestedPath": "/gal-assets/catalog/clip-in-extensions.png",
+    "title": "Clip-ins",
+    "subtitle": "Volume sem compromisso",
+    "category": "extensoes",
+    "type": "original-generated-asset",
+    "license": "Generated for this project by ChatGPT; use as project placeholder/illustration.",
+    "notes": "Original stylized illustration, not a third-party product photo."
+  },
+  {
+    "file": "catalog/ponytail-extension.png",
+    "publicSuggestedPath": "/gal-assets/catalog/ponytail-extension.png",
+    "title": "Ponytail",
+    "subtitle": "Finalização rápida",
+    "category": "extensoes",
+    "type": "original-generated-asset",
+    "license": "Generated for this project by ChatGPT; use as project placeholder/illustration.",
+    "notes": "Original stylized illustration, not a third-party product photo."
+  },
+  {
+    "file": "catalog/hair-topper.png",
+    "publicSuggestedPath": "/gal-assets/catalog/hair-topper.png",
+    "title": "Hair Topper",
+    "subtitle": "Cobertura natural",
+    "category": "extensoes",
+    "type": "original-generated-asset",
+    "license": "Generated for this project by ChatGPT; use as project placeholder/illustration.",
+    "notes": "Original stylized illustration, not a third-party product photo."
+  },
+  {
+    "file": "catalog/manutencao-premium.png",
+    "publicSuggestedPath": "/gal-assets/catalog/manutencao-premium.png",
+    "title": "Manutenção",
+    "subtitle": "Revitalização completa",
+    "category": "servicos",
+    "type": "original-generated-asset",
+    "license": "Generated for this project by ChatGPT; use as project placeholder/illustration.",
+    "notes": "Original stylized illustration, not a third-party product photo."
+  },
+  {
+    "file": "catalog/instalacao-lace.png",
+    "publicSuggestedPath": "/gal-assets/catalog/instalacao-lace.png",
+    "title": "Instalação",
+    "subtitle": "Aplicação e ajuste",
+    "category": "servicos",
+    "type": "original-generated-asset",
+    "license": "Generated for this project by ChatGPT; use as project placeholder/illustration.",
+    "notes": "Original stylized illustration, not a third-party product photo."
+  },
+  {
+    "file": "catalog/customizacao-cor.png",
+    "publicSuggestedPath": "/gal-assets/catalog/customizacao-cor.png",
+    "title": "Coloração",
+    "subtitle": "Cobre • Loira • Balayage",
+    "category": "servicos",
+    "type": "original-generated-asset",
+    "license": "Generated for this project by ChatGPT; use as project placeholder/illustration.",
+    "notes": "Original stylized illustration, not a third-party product photo."
+  },
+  {
+    "file": "catalog/plucking-bleached-knots.png",
+    "publicSuggestedPath": "/gal-assets/catalog/plucking-bleached-knots.png",
+    "title": "Plucking",
+    "subtitle": "Nós descoloridos",
+    "category": "servicos",
+    "type": "original-generated-asset",
+    "license": "Generated for this project by ChatGPT; use as project placeholder/illustration.",
+    "notes": "Original stylized illustration, not a third-party product photo."
+  },
+  {
+    "file": "catalog/higienizacao-hidratacao.png",
+    "publicSuggestedPath": "/gal-assets/catalog/higienizacao-hidratacao.png",
+    "title": "Higienização",
+    "subtitle": "Limpeza e hidratação",
+    "category": "servicos",
+    "type": "original-generated-asset",
+    "license": "Generated for this project by ChatGPT; use as project placeholder/illustration.",
+    "notes": "Original stylized illustration, not a third-party product photo."
+  },
+  {
+    "file": "catalog/wig-cap.png",
+    "publicSuggestedPath": "/gal-assets/catalog/wig-cap.png",
+    "title": "Wig Cap",
+    "subtitle": "Base confortável",
+    "category": "acessorios",
+    "type": "original-generated-asset",
+    "license": "Generated for this project by ChatGPT; use as project placeholder/illustration.",
+    "notes": "Original stylized illustration, not a third-party product photo."
+  },
+  {
+    "file": "catalog/lace-glue.png",
+    "publicSuggestedPath": "/gal-assets/catalog/lace-glue.png",
+    "title": "Lace Glue",
+    "subtitle": "Fixação profissional",
+    "category": "acessorios",
+    "type": "original-generated-asset",
+    "license": "Generated for this project by ChatGPT; use as project placeholder/illustration.",
+    "notes": "Original stylized illustration, not a third-party product photo."
+  },
+  {
+    "file": "catalog/wig-stand.png",
+    "publicSuggestedPath": "/gal-assets/catalog/wig-stand.png",
+    "title": "Wig Stand",
+    "subtitle": "Forma e conservação",
+    "category": "acessorios",
+    "type": "original-generated-asset",
+    "license": "Generated for this project by ChatGPT; use as project placeholder/illustration.",
+    "notes": "Original stylized illustration, not a third-party product photo."
+  },
+  {
+    "file": "catalog/care-kit.png",
+    "publicSuggestedPath": "/gal-assets/catalog/care-kit.png",
+    "title": "Care Kit",
+    "subtitle": "Shampoo • mousse • escova",
+    "category": "acessorios",
+    "type": "original-generated-asset",
+    "license": "Generated for this project by ChatGPT; use as project placeholder/illustration.",
+    "notes": "Original stylized illustration, not a third-party product photo."
+  }
+]
