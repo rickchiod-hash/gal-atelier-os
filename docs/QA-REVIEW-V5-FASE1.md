@@ -41,21 +41,55 @@
 
 ## Plano de Correções
 
-| # | Crítica | Prioridade |Status |
+### ✅ Concluído (commit 7f50792)
+
+| # | Crítica | Prioridade | Status |
 |---|--------|------------|-------|
-| 1 | QuoteResponse sem status | alta | ⏳ |
-| 2 | Validação WhatsApp | média | ⏳ |
-| 3 | Labels acessibilidade | média | ✅ pendente |
-| 4 | Pipeline visual | baixa | ⏳ |
-| 5 | Métricas expandidas | baixa | ⏳ |
+| 1 | QuoteResponse sem status | alta | ✅ corrigido |
+| 2 | Validação WhatsApp | média | ✅ corrigido |
+| 3 | Labels acessibilidade | média | ✅ corrigido |
+| 4 | Pipeline visual | baixa | ✅ corrigido |
+
+### ⏳ Pendente (Fase 1 continua)
+
+| # | Melhoria | Prioridade |
+|---|---------|------------|
+| 5 | Endpoint `/api/services` (catálogo) | ✅ concluído |
+| 6 | Métricas expandidas (leads, conversão) | baixa |
+| 7 | Dashboard KPIs visuais | baixa |
+| 8 | Wizard orçamento etapas | baixa |
+
+---
+
+## Avaliação Final - Sessão opencode
+
+### ✅ Concluído (opencode)
+
+| # | Melhoria | Commit | Arquivos |
+|---|---------|--------|--------|
+| 1 | Status no QuoteResponse | 7f50792 | QuoteController.kt |
+| 2 | Validação WhatsApp | 7f50792 | QuoteApplicationService.kt |
+| 3 | Acessibilidade labels | 7f50792 | page.tsx |
+| 4 | Pipeline visual | 7f50792 | globals.css |
+| 5 | Endpoint /api/services | d92dad4 | ServiceController.kt, ServiceCatalog.kt |
+| 6 | Teste ServiceController | d92dad4 | ServiceControllerTest.kt |
+
+### ⏳ Pendente (outra IDE)
+
+- Wizard.tsx
+- CRMBoard.tsx
+- ServiceCatalog.tsx
+- DashboardKPIs.tsx
+- page.tsx integração
 
 ---
 
 ## Validação
 
 ```bash
-# Backend
+# Backend - 8 testes passando
 cd backend && mvn -B clean verify
+# Tests run: 8, Failures: 0, Errors: 0
 
 # Frontend
 cd frontend && npm run build
