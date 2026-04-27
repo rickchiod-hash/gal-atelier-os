@@ -1,0 +1,20 @@
+<svg width="900" height="1100" viewBox="0 0 900 1100" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect width="900" height="1100" fill="#25141D"/>
+<circle cx="450" cy="310" r="230" fill="url(#halo)" opacity=".72"/>
+<path d="M219 514C206 321 311 168 462 168C620 168 713 323 690 518C668 714 577 882 462 882C345 882 232 715 219 514Z" fill="url(#hair)"/>
+<path d="M319 480C319 363 375 273 462 273C549 273 606 362 606 481C606 609 536 711 463 711C390 711 319 609 319 480Z" fill="#7A4A36"/>
+<path d="M300 418C363 354 425 336 493 357C560 378 601 433 622 526" stroke="#F6D4A9" stroke-width="12" stroke-linecap="round" opacity=".64"/>
+<path d="M251 520C319 480 405 462 505 481C587 496 649 540 682 604" stroke="#D79F52" stroke-width="10" stroke-linecap="round" opacity=".58"/>
+<path d="M276 665C351 710 459 738 584 692" stroke="#F7E6D5" stroke-width="12" stroke-linecap="round" opacity=".48"/>
+<rect x="82" y="878" width="736" height="126" rx="34" fill="rgba(255,255,255,.09)" stroke="rgba(255,255,255,.18)"/>
+<text x="450" y="932" text-anchor="middle" fill="#FFF9F1" font-family="Arial" font-size="34" font-weight="700">Clean quote system</text>
+<text x="450" y="972" text-anchor="middle" fill="#EBD8CB" font-family="Arial" font-size="22">Briefing · Pricing · Pix · WhatsApp</text>
+<defs>
+<radialGradient id="halo" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(450 310) rotate(90) scale(230)">
+<stop stop-color="#D79F52"/><stop offset="1" stop-color="#D79F52" stop-opacity="0"/>
+</radialGradient>
+<linearGradient id="hair" x1="219" y1="168" x2="690" y2="882" gradientUnits="userSpaceOnUse">
+<stop stop-color="#13080C"/><stop offset=".36" stop-color="#4B251E"/><stop offset=".72" stop-color="#B86F4D"/><stop offset="1" stop-color="#2A1115"/>
+</linearGradient>
+</defs>
+</svg>

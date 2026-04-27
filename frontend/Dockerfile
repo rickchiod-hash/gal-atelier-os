@@ -1,0 +1,19 @@
+FROM node:22-alpine AS build
+WORKDIR /app
+ARG NEXT_PUBLIC_API_URL=http://localhost:8080
+ARG NEXT_PUBLIC_WHATSAPP_RECEIVER=5511914136961
+ENV NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL
+ENV NEXT_PUBLIC_WHATSAPP_RECEIVER=$NEXT_PUBLIC_WHATSAPP_RECEIVER
+ENV NEXT_TELEMETRY_DISABLED=1
+COPY package*.json ./
+RUN npm install
+COPY . .
+RUN npm run build
+
+FROM node:22-alpine
+WORKDIR /app
+ENV NODE_ENV=production
+ENV NEXT_TELEMETRY_DISABLED=1
+COPY --from=build /app ./
+EXPOSE 3000
+CMD ["npm", "run", "start", "--", "--hostname", "0.0.0.0", "--port", "3000"]

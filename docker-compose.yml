@@ -1,0 +1,54 @@
+name: gal-atelier-os
+
+services:
+  backend:
+    build:
+      context: ./backend
+    container_name: gal-atelier-backend
+    restart: unless-stopped
+    environment:
+      WHATSAPP_RECEIVER: "5511914136961"
+      PIX_KEY: "coloque-a-chave-pix-real-no-env-local"
+      PIX_MERCHANT_NAME: "GAL ATELIER"
+      PIX_MERCHANT_CITY: "SAO PAULO"
+      SPRING_PROFILES_ACTIVE: "local"
+    ports:
+      - "8080:8080"
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://localhost:8080/api/health || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 18
+      start_period: 35s
+    networks:
+      - gal-atelier-net
+
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        NEXT_PUBLIC_API_URL: "http://localhost:8080"
+        NEXT_PUBLIC_WHATSAPP_RECEIVER: "5511914136961"
+    container_name: gal-atelier-frontend
+    restart: unless-stopped
+    environment:
+      NEXT_PUBLIC_API_URL: "http://localhost:8080"
+      NEXT_PUBLIC_WHATSAPP_RECEIVER: "5511914136961"
+      NEXT_TELEMETRY_DISABLED: "1"
+    ports:
+      - "3000:3000"
+    depends_on:
+      backend:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:3000 >/dev/null 2>&1 || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 18
+      start_period: 20s
+    networks:
+      - gal-atelier-net
+
+networks:
+  gal-atelier-net:
+    driver: bridge

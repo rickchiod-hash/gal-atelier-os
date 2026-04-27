@@ -1,0 +1,33 @@
+server:
+  port: 8080
+  shutdown: graceful
+
+spring:
+  application:
+    name: gal-atelier-backend
+  lifecycle:
+    timeout-per-shutdown-phase: 20s
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  endpoint:
+    health:
+      probes:
+        enabled: true
+
+logging:
+  level:
+    root: INFO
+    com.galatelier: INFO
+  pattern:
+    level: "%5p [traceId=%X{traceId:-}]"
+
+galatelier:
+  whatsappReceiver: ${WHATSAPP_RECEIVER:5511914136961}
+  pixKey: ${PIX_KEY:chave-pix-exemplo}
+  pixMerchantName: ${PIX_MERCHANT_NAME:GAL ATELIER}
+  pixMerchantCity: ${PIX_MERCHANT_CITY:SAO PAULO}
+  aiProvider: ${AI_PROVIDER:mock}
