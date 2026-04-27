@@ -201,6 +201,19 @@ e915b3f feat(sessao-b): expand service catalog to 10 technical types
 
 ---
 
+## FASE 2 — V2 MELHORIAS OPERACIONAIS (2026-04-27)
+
+| ID | Etapa | Descrição | Status | Commit |
+|---|---|---|---|---|
+| V2-1 | Pix webhook | Simulação de confirmação Pix | DONE | 87b2dea |
+| V2-2 | CRM Kanban | Drag-and-drop entre 10 estágios | DONE | 87b2dea |
+| V2-3 | Dashboard tempo real | Gráficos + métricas polling | DONE | 87b2dea |
+| V2-4 | PDF orçamento | Download de comprovativo | DONE | 87b2dea |
+| V2-5 | Histórico quotes | Lista com filtros por cliente/status | DONE | 87b2dea |
+| V2-6 | Fix H2 migration | Sintaxe PostgreSQL corrigida | DONE | 87b2dea |
+
+---
+
 ## FASE 2 — OPERAÇÃO REAL (EM PROGRESSO)
 
 ### Banco de Dados ✅
