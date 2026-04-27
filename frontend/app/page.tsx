@@ -80,6 +80,17 @@ const CRM_STAGES = [
   { key: "LOST", label: "Perdido", color: "#9B8B8B" },
 ];
 
+const mockLeadsInitial = [
+  { id: "1", name: "Ana Clara", whatsapp: "11988884444", source: "Instagram", interest: "Lace Front 13x4", budget: "R$ 1.800 - R$ 2.500", nextAction: "Enviar orçamento", stage: "QUOTE_SENT" },
+  { id: "2", name: "Camila Santos", whatsapp: "11977775555", source: "Indicação", interest: "Full Lace Premium", budget: "R$ 2.500 - R$ 3.500", nextAction: "Cobrar sinal Pix", stage: "NEGOTIATION" },
+  { id: "3", name: "Bruna Oliveira", whatsapp: "11966663333", source: "TikTok", interest: "Glueless Wig", budget: "R$ 1.200 - R$ 1.800", nextAction: "Follow-up 24h", stage: "CONTACT" },
+  { id: "4", name: "Fernanda Lima", whatsapp: "11955552222", source: "Google", interest: "Manutenção", budget: "R$ 350 - R$ 500", nextAction: "Agendar prova", stage: "PRODUCTION" },
+  { id: "5", name: "Juliana Costa", whatsapp: "11944441111", source: "Instagram", interest: "Lace Front Natural", budget: "R$ 1.500 - R$ 2.000", nextAction: "Diagnóstico", stage: "DIAGNOSIS" },
+  { id: "6", name: "Larissa Rocha", whatsapp: "11933332222", source: "WhatsApp", interest: "Wig Cacheada", budget: "R$ 2.000 - R$ 3.000", nextAction: "Primeiro contato", stage: "NEW_LEAD" },
+  { id: "7", name: "Patrícia Silva", whatsapp: "11922221111", source: "Indicação", interest: "Manutenção Premium", budget: "R$ 400 - R$ 600", nextAction: "Receber sinal", stage: "AWAITING_PAYMENT" },
+  { id: "8", name: "Mariana Alves", whatsapp: "11911110000", source: "Google", interest: "Full Lace", budget: "R$ 3.000 - R$ 4.000", nextAction: "Entregar", stage: "PAID" },
+];
+
 /* ============================================
    MONEY FORMATTER
    ============================================ */
@@ -151,6 +162,9 @@ export default function Home() {
   const [wizardStep, setWizardStep] = useState(1);
   const [activeSection, setActiveSection] = useState("dashboard");
   const [catalogFilter, setCatalogFilter] = useState<"all" | CatalogItem["category"]>("all");
+  const [quoteStatus, setQuoteStatus] = useState<Record<string, string>>({});
+  const [leads, setLeads] = useState(mockLeadsInitial);
+  const [draggedLead, setDraggedLead] = useState<string | null>(null);
 
   const load = useCallback(async () => {
     try {
@@ -264,6 +278,77 @@ export default function Home() {
     }
   }
 
+  async function simulatePixConfirmation(quoteId: string) {
+    setLoading(true);
+    try {
+      const res = await fetch(`${apiUrl}/api/pix/simulate/${quoteId}`, { method: "POST" });
+      if (res.ok) {
+        setQuoteStatus((prev) => ({ ...prev, [quoteId]: "PAID" }));
+        showToast("Pix confirmado com sucesso!", "success");
+      }
+    } catch {
+      showToast("Erro ao confirmar Pix", "error");
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  function handleDragStart(e: React.DragEvent, leadId: string) {
+    setDraggedLead(leadId);
+    e.dataTransfer.effectAllowed = "move";
+  }
+
+  function handleDragOver(e: React.DragEvent) {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = "move";
+  }
+
+  function handleDrop(e: React.DragEvent, targetStage: string) {
+    e.preventDefault();
+    if (!draggedLead) return;
+    setLeads((prev) => prev.map((lead) => lead.id === draggedLead ? { ...lead, stage: targetStage } : lead));
+    showToast(`Cliente movido para ${targetStage}`, "success");
+    setDraggedLead(null);
+  }
+
+  function generatePDF(q: QuoteResponse) {
+    const content = `
+GAL ATELIER — ORÇAMENTO
+========================
+Cliente: ${q.clientName}
+WhatsApp: ${q.clientWhatsapp}
+Serviço: ${q.serviceType}
+Data: ${new Date(q.createdAt).toLocaleDateString("pt-BR")}
+
+VALORES
+-------
+Mínimo: ${money(q.minimumPrice)}
+Recomendado: ${money(q.recommendedPrice)}
+Premium: ${money(q.premiumPrice)}
+
+SINAL PIX (35%)
+----------------
+Valor: ${money(q.depositPrice)}
+Código: ${q.pixCopyPaste}
+
+MENSAGEM WHATSAPP
+-----------------
+${q.whatsappMessage}
+
+========================
+Gal Atelier OS
+Transformamos cabelos em confiança
+    `.trim();
+    const blob = new Blob([content], { type: "text/plain" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `orcamento-${q.clientName.toLowerCase().replace(/\s+/g, "-")}-${Date.now()}.txt`;
+    a.click();
+    URL.revokeObjectURL(url);
+    showToast("PDF gerado!", "success");
+  }
+
   const quotesByStatus = useMemo(() => {
     const grouped: Record<string, QuoteResponse[]> = {};
     PIPELINE_COLUMNS.forEach((col) => {
@@ -271,17 +356,6 @@ export default function Home() {
     });
     return grouped;
   }, [quotes]);
-
-  const mockLeads = useMemo(() => [
-    { id: "1", name: "Ana Clara", whatsapp: "11988884444", source: "Instagram", interest: "Lace Front 13x4", budget: "R$ 1.800 - R$ 2.500", nextAction: "Enviar orçamento", stage: "QUOTE_SENT" },
-    { id: "2", name: "Camila Santos", whatsapp: "11977775555", source: "Indicação", interest: "Full Lace Premium", budget: "R$ 2.500 - R$ 3.500", nextAction: "Cobrar sinal Pix", stage: "NEGOTIATION" },
-    { id: "3", name: "Bruna Oliveira", whatsapp: "11966663333", source: "TikTok", interest: "Glueless Wig", budget: "R$ 1.200 - R$ 1.800", nextAction: "Follow-up 24h", stage: "CONTACT" },
-    { id: "4", name: "Fernanda Lima", whatsapp: "11955552222", source: "Google", interest: "Manutenção", budget: "R$ 350 - R$ 500", nextAction: "Agendar prova", stage: "PRODUCTION" },
-    { id: "5", name: "Juliana Costa", whatsapp: "11944441111", source: "Instagram", interest: "Lace Front Natural", budget: "R$ 1.500 - R$ 2.000", nextAction: "Diagnóstico", stage: "DIAGNOSIS" },
-    { id: "6", name: "Larissa Rocha", whatsapp: "11933332222", source: "WhatsApp", interest: "Wig Cacheada", budget: "R$ 2.000 - R$ 3.000", nextAction: "Primeiro contato", stage: "NEW_LEAD" },
-    { id: "7", name: "Patrícia Silva", whatsapp: "11922221111", source: "Indicação", interest: "Manutenção Premium", budget: "R$ 400 - R$ 600", nextAction: "Receber sinal", stage: "AWAITING_PAYMENT" },
-    { id: "8", name: "Mariana Alves", whatsapp: "11911110000", source: "Google", interest: "Full Lace", budget: "R$ 3.000 - R$ 4.000", nextAction: "Entregar", stage: "PAID" },
-  ], []);
 
   return (
     <main>
@@ -390,60 +464,95 @@ export default function Home() {
       </section>
 
       {/* ============================================
-          DASHBOARD METRICS
+          DASHBOARD TEMPO REAL
           ============================================ */}
-      <section id="overview" className="shell metricGrid">
-        <h2 className="sr-only">Dashboard de Métricas</h2>
-        {initialLoading ? (
-          <>
-            <MetricSkeleton />
-            <MetricSkeleton />
-            <MetricSkeleton />
-            <MetricSkeleton />
-          </>
-        ) : (
-          <>
-            <article className="metric animate-in">
-              <span className="metric-label">Orçamentos</span>
-              <span className="metric-value">{metrics.quotes}</span>
-              {metrics.quotes === 0 && <span className="metric-hint">Crie o primeiro orçamento</span>}
-            </article>
-            <article className="metric animate-in">
-              <span className="metric-label">Receita potencial</span>
-              <span className="metric-value">{money(metrics.revenuePotential)}</span>
-              {metrics.revenuePotential === 0 && <span className="metric-hint">Inicie seu pipeline</span>}
-            </article>
-            <article className="metric animate-in">
-              <span className="metric-label">Sinais Pix</span>
-              <span className="metric-value">{money(metrics.depositsPotential)}</span>
-              {metrics.depositsPotential === 0 && <span className="metric-hint">Configure Pix para receber</span>}
-            </article>
-            <article className="metric animate-in">
-              <span className="metric-label">Ticket médio</span>
-              <span className="metric-value">{money(metrics.avgTicket)}</span>
-              {metrics.avgTicket === 0 && <span className="metric-hint">Baseado em orçamentos</span>}
-            </article>
-            <article className="metric animate-in">
-              <span className="metric-label">Taxa conversão</span>
-              <span className="metric-value">{metrics.conversionRate}%</span>
-              <span className="metric-trend up">↑ +5% vs mês</span>
-            </article>
-            <article className="metric animate-in">
-              <span className="metric-label">Status</span>
-              <span className="metric-value" style={{ fontSize: "var(--text-lg)", color: "var(--luxury-green)" }}>Online</span>
-            </article>
-            <article className="metric animate-in">
-              <span className="metric-label">Produtos</span>
-              <span className="metric-value">24</span>
-              <span className="metric-trend">No catálogo</span>
-            </article>
-            <article className="metric animate-in">
-              <span className="metric-label">Clientes</span>
-              <span className="metric-value">{metrics.quotes}</span>
-              <span className="metric-trend">Cadastradas</span>
-            </article>
-          </>
-        )}
+      <section id="overview" className="dashboard-section">
+        <div className="dashboard-container">
+          <div className="dashboard-header">
+            <h2>Dashboard Operacional</h2>
+            <span className="dashboard-updated">Atualizado em {new Date().toLocaleTimeString("pt-BR")}</span>
+          </div>
+
+          <div className="metrics-row">
+            {initialLoading ? (
+              <>
+                <MetricSkeleton />
+                <MetricSkeleton />
+                <MetricSkeleton />
+                <MetricSkeleton />
+              </>
+            ) : (
+              <>
+                <article className="metric-card">
+                  <span className="metric-label">Orçamentos</span>
+                  <span className="metric-value">{metrics.quotes}</span>
+                  {metrics.quotes === 0 && <span className="metric-hint">Crie o primeiro orçamento</span>}
+                </article>
+                <article className="metric-card">
+                  <span className="metric-label">Receita potencial</span>
+                  <span className="metric-value">{money(metrics.revenuePotential)}</span>
+                  {metrics.revenuePotential === 0 && <span className="metric-hint">Inicie seu pipeline</span>}
+                </article>
+                <article className="metric-card">
+                  <span className="metric-label">Sinais Pix</span>
+                  <span className="metric-value">{money(metrics.depositsPotential)}</span>
+                  {metrics.depositsPotential === 0 && <span className="metric-hint">Configure Pix para receber</span>}
+                </article>
+                <article className="metric-card">
+                  <span className="metric-label">Ticket médio</span>
+                  <span className="metric-value">{money(metrics.avgTicket)}</span>
+                  {metrics.avgTicket === 0 && <span className="metric-hint">Baseado em orçamentos</span>}
+                </article>
+              </>
+            )}
+          </div>
+
+          <div className="chart-section">
+            <div className="chart-card">
+              <h4>Tendência de Orçamento</h4>
+              <div className="simple-chart">
+                <svg viewBox="0 0 400 120" className="chart-svg">
+                  <defs>
+                    <linearGradient id="chartGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                      <stop offset="0%" style={{ stopColor: "#C8A96B", stopOpacity: 0.3 }} />
+                      <stop offset="100%" style={{ stopColor: "#C8A96B", stopOpacity: 0 }} />
+                    </linearGradient>
+                  </defs>
+                  <path d="M0,100 L40,85 L80,70 L120,75 L160,55 L200,45 L240,35 L280,25 L320,15 L360,10 L400,5" fill="none" stroke="#C8A96B" strokeWidth="2" />
+                  <path d="M0,100 L40,85 L80,70 L120,75 L160,55 L200,45 L240,35 L280,25 L320,15 L360,10 L400,5 L400,120 L0,120 Z" fill="url(#chartGradient)" />
+                </svg>
+                <div className="chart-labels">
+                  <span>Jan</span><span>Fev</span><span>Mar</span><span>Abr</span><span>Mai</span><span>Jun</span>
+                </div>
+              </div>
+            </div>
+            <div className="chart-card">
+              <h4>Fontes de Lead</h4>
+              <div className="source-bars">
+                <div className="source-bar">
+                  <span>Instagram</span>
+                  <div className="bar"><div className="bar-fill" style={{ width: "45%" }}></div></div>
+                  <span className="bar-percent">45%</span>
+                </div>
+                <div className="source-bar">
+                  <span>WhatsApp</span>
+                  <div className="bar"><div className="bar-fill" style={{ width: "25%" }}></div></div>
+                  <span className="bar-percent">25%</span>
+                </div>
+                <div className="source-bar">
+                  <span>Google</span>
+                  <div className="bar"><div className="bar-fill" style={{ width: "20%" }}></div></div>
+                  <span className="bar-percent">20%</span>
+                </div>
+                <div className="source-bar">
+                  <span>Indicação</span>
+                  <div className="bar"><div className="bar-fill" style={{ width: "10%" }}></div></div>
+                  <span className="bar-percent">10%</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </section>
 
       {/* ============================================
@@ -458,16 +567,26 @@ export default function Home() {
 
         <div className="crm-board">
           {CRM_STAGES.map((stage) => {
-            const stageLeads = mockLeads.filter((lead) => lead.stage === stage.key);
+            const stageLeads = leads.filter((lead) => lead.stage === stage.key);
             return (
-              <div key={stage.key} className="crm-stage">
+              <div
+                key={stage.key}
+                className="crm-stage"
+                onDragOver={handleDragOver}
+                onDrop={(e) => handleDrop(e, stage.key)}
+              >
                 <div className="stage-header" style={{ borderLeftColor: stage.color }}>
                   <span className="stage-name">{stage.label}</span>
                   <span className="stage-count">{stageLeads.length}</span>
                 </div>
                 <div className="stage-leads">
                   {stageLeads.map((lead) => (
-                    <div key={lead.id} className="lead-card">
+                    <div
+                      key={lead.id}
+                      className={`lead-card ${draggedLead === lead.id ? "dragging" : ""}`}
+                      draggable
+                      onDragStart={(e) => handleDragStart(e, lead.id)}
+                    >
                       <div className="lead-avatar">
                         {lead.name.split(" ").map((n) => n[0]).join("").slice(0, 2)}
                       </div>
@@ -485,7 +604,7 @@ export default function Home() {
                     </div>
                   ))}
                   {stageLeads.length === 0 && (
-                    <div className="stage-empty">Vazio</div>
+                    <div className="stage-empty">Arraste um lead aqui</div>
                   )}
                 </div>
               </div>
@@ -761,17 +880,33 @@ export default function Home() {
               <span>Premium <strong>{money(quote.premiumPrice)}</strong></span>
               <span>Sinal Pix <strong>{money(quote.depositPrice)}</strong></span>
             </div>
-            <a className="button primary" href={quote.whatsappLink} target="_blank" rel="noopener noreferrer" style={{ marginTop: "var(--space-4)" }}>
-              📱 Abrir WhatsApp
-            </a>
+            <div className="result-actions">
+              <a className="button primary" href={quote.whatsappLink} target="_blank" rel="noopener noreferrer">
+                📱 WhatsApp
+              </a>
+              <button className="button secondary" onClick={() => generatePDF(quote)}>
+                📄 Baixar PDF
+              </button>
+            </div>
           </article>
 
           <article className="pixPanel">
             <p className="eyebrow">Pix cópia e cola</p>
             <textarea readOnly value={quote.pixCopyPaste} rows={6} aria-label="Código Pix" />
-            <button className="button secondary" onClick={copyPix} style={{ marginTop: "var(--space-3)" }}>
-              📋 Copiar Pix
-            </button>
+            <div style={{ display: "flex", gap: "var(--space-2)", flexWrap: "wrap", marginTop: "var(--space-3)" }}>
+              <button className="button secondary" onClick={copyPix}>
+                📋 Copiar Pix
+              </button>
+              <button className="button accent" onClick={() => simulatePixConfirmation(quote.id)} disabled={loading}>
+                ✓ Simular Confirmação
+              </button>
+            </div>
+            {quoteStatus[quote.id] === "PAID" && (
+              <div className="pix-confirmed">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20 6L9 17l-5-5"/></svg>
+                Pix confirmado! Cliente notified.
+              </div>
+            )}
           </article>
 
           <article className="messagePanel">
@@ -782,58 +917,75 @@ export default function Home() {
       )}
 
       {/* ============================================
-          PIPELINE
+          HISTÓRICO DE QUOTES
           ============================================ */}
-      <section id="pipeline" className="shell section">
-        <div className="section-header">
-          <p>Pipeline</p>
-          <h2>Orçamentos recentes</h2>
-        </div>
+      <section id="history" className="history-section">
+        <div className="history-container">
+          <div className="history-header">
+            <h2>Histórico de Orçamentos</h2>
+            <p>Todos os orçamentos criados por cliente</p>
+          </div>
 
-        <div style={{ display: "flex", gap: "var(--space-3)", marginBottom: "var(--space-4)", flexWrap: "wrap" }}>
-          <input
-            type="search"
-            placeholder="🔍 Buscar por nome..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            style={{ maxWidth: "280px" }}
-            aria-label="Buscar orçamentos"
-          />
-          <select
-            value={filterStatus}
-            onChange={(e) => setFilterStatus(e.target.value as OrderStatus | "ALL")}
-            aria-label="Filtrar por status"
-          >
-            <option value="ALL">Todos os status</option>
-            {PIPELINE_COLUMNS.map((col) => (
-              <option key={col.key} value={col.key}>{col.icon} {col.label}</option>
-            ))}
-          </select>
-        </div>
+          <div className="history-filters">
+            <input
+              type="search"
+              placeholder="Buscar por cliente..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              aria-label="Buscar orçamentos"
+            />
+            <select
+              value={filterStatus}
+              onChange={(e) => setFilterStatus(e.target.value as OrderStatus | "ALL")}
+              aria-label="Filtrar por status"
+            >
+              <option value="ALL">Todos os status</option>
+              {PIPELINE_COLUMNS.map((col) => (
+                <option key={col.key} value={col.key}>{col.label}</option>
+              ))}
+            </select>
+          </div>
 
-        <div className="table">
-          {initialLoading ? (
-            <div className="row"><Skeleton style={{ height: "2em" }} /></div>
-          ) : filteredQuotes.length === 0 ? (
-            <div style={{ textAlign: "center", padding: "var(--space-8)" }}>
-              <div style={{ fontSize: "3rem", marginBottom: "var(--space-3)" }}>📭</div>
-              <p style={{ color: "var(--color-muted)" }}>Nenhum orçamento encontrado.</p>
-              <a href="#quote" className="button primary" style={{ marginTop: "var(--space-4)", display: "inline-flex" }}>
-                Criar primeiro orçamento
-              </a>
-            </div>
-          ) : (
-            filteredQuotes.map((item) => (
-              <div className="row" key={item.id}>
-                <strong>{item.clientName}</strong>
-                <span>{serviceLabel(item.serviceType)}</span>
-                <span>{money(item.recommendedPrice)}</span>
-                <a href={item.whatsappLink} target="_blank" rel="noopener noreferrer" className="button secondary" style={{ minHeight: "36px", padding: "0.5rem 1rem", fontSize: "var(--text-xs)" }}>
-                  📱 WhatsApp
-                </a>
+          <div className="history-list">
+            {initialLoading ? (
+              <Skeleton style={{ height: "4em" }} />
+            ) : filteredQuotes.length === 0 ? (
+              <div className="history-empty">
+                <p>Nenhum orçamento encontrado.</p>
+                <a href="#quote" className="button primary">Criar primeiro orçamento</a>
               </div>
-            ))
-          )}
+            ) : (
+              filteredQuotes.map((item) => (
+                <div key={item.id} className="history-item">
+                  <div className="history-client">
+                    <div className="history-avatar">
+                      {item.clientName.split(" ").map((n) => n[0]).join("").slice(0, 2)}
+                    </div>
+                    <div className="history-info">
+                      <strong>{item.clientName}</strong>
+                      <span>{item.clientWhatsapp}</span>
+                    </div>
+                  </div>
+                  <div className="history-service">
+                    <span className="service-type">{serviceLabel(item.serviceType)}</span>
+                    <span className="service-date">{formatDate(item.createdAt)}</span>
+                  </div>
+                  <div className="history-price">
+                    <strong>{money(item.recommendedPrice)}</strong>
+                    <span className="history-status" data-status={item.status}>{item.status}</span>
+                  </div>
+                  <div className="history-actions">
+                    <button className="button secondary" onClick={() => generatePDF(item)}>
+                      📄 PDF
+                    </button>
+                    <a href={item.whatsappLink} target="_blank" rel="noopener noreferrer" className="button accent">
+                      📱 WhatsApp
+                    </a>
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
         </div>
       </section>
 
