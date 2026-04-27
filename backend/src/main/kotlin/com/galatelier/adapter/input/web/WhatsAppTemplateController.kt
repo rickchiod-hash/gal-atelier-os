@@ -1,12 +1,20 @@
 package com.galatelier.adapter.input.web
 
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import com.galatelier.application.port.output.WhatsAppMessagePort
+import org.slf4j.LoggerFactory
+import org.springframework.web.bind.annotation.*
+import java.util.UUID
+import java.util.concurrent.ConcurrentHashMap
+import java.util.concurrent.ConcurrentMap
 
 @RestController
 @RequestMapping("/api/templates")
-class WhatsAppTemplateController {
+class WhatsAppTemplateController(
+    private val whatsAppMessagePort: WhatsAppMessagePort
+) {
+    private val logger = LoggerFactory.getLogger(javaClass)
+    private val sentMessages: ConcurrentMap<UUID, WhatsAppSentMessage> = ConcurrentHashMap()
+
     @GetMapping("/whatsapp")
     fun whatsappTemplates(): List<WhatsAppTemplate> = listOf(
         WhatsAppTemplate(
@@ -75,10 +83,63 @@ class WhatsAppTemplateController {
             content = "Feliz aniversário, {nome}! 🎂🎉\n\nQue seu dia seja LINDO!\nEspero que vc ame cada momento.\n\nQuando tiver um tempinho, me conta como foi!\nTe mando um beijo! 😘"
         )
     )
+
+    @PostMapping("/whatsapp/send")
+    fun sendWhatsAppMessage(@RequestBody request: WhatsAppSendRequest): WhatsAppSendResponse {
+        val template = whatsappTemplates().find { it.id == request.templateId }
+            ?: throw IllegalArgumentException("Template não encontrado: ${request.templateId}")
+
+        var content = template.content
+        request.variables.forEach { (key, value) ->
+            content = content.replace("{$key}", value)
+        }
+
+        val messageId = UUID.randomUUID()
+        val message = WhatsAppSentMessage(
+            id = messageId,
+            recipientPhone = request.phone,
+            message = content,
+            link = whatsAppMessagePort.createLink(content)
+        )
+        sentMessages[messageId] = message
+
+        logger.info("WhatsApp mock enviado para ${request.phone} com template ${request.templateId}")
+
+        return WhatsAppSendResponse(
+            messageId = messageId,
+            message = content,
+            link = message.link,
+            sentAt = message.sentAt
+        )
+    }
+
+    @GetMapping("/whatsapp/sent")
+    fun getSentMessages(): List<WhatsAppSentMessage> = sentMessages.values.toList()
 }
 
 data class WhatsAppTemplate(
     val id: String,
     val name: String,
     val content: String
+)
+
+data class WhatsAppSentMessage(
+    val id: UUID,
+    val recipientPhone: String,
+    val message: String,
+    val link: String,
+    val sentAt: java.time.Instant = java.time.Instant.now()
+)
+
+data class WhatsAppSendRequest(
+    val phone: String,
+    val templateId: String,
+    val variables: Map<String, String> = emptyMap()
+)
+
+data class WhatsAppSendResponse(
+    val messageId: UUID,
+    val message: String,
+    val link: String,
+    val sentAt: java.time.Instant
 )

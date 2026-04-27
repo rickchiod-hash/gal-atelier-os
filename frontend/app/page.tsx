@@ -44,6 +44,14 @@ interface Service {
   icon: string;
 }
 
+interface Automation {
+  id: string;
+  name: string;
+  description: string;
+  trigger: string;
+  active: boolean;
+}
+
 /* ============================================
    CONSTANTS
    ============================================ */
@@ -80,6 +88,15 @@ const CRM_STAGES = [
   { key: "LOST", label: "Perdido", color: "#9B8B8B" },
 ];
 
+const MOCK_AUTOMATIONS: Automation[] = [
+  { id: "1", name: "Follow-up 24h", description: "Envia mensagem de acompanhamento 24h após o orçamento.", trigger: "24h após orçamento", active: true },
+  { id: "2", name: "Follow-up 48h", description: "Novo contato 48h após o primeiro follow-up.", trigger: "48h após orçamento", active: true },
+  { id: "3", name: "Follow-up 7 dias", description: "Lembrete de oferta especial após 7 dias sem resposta.", trigger: "7 dias após orçamento", active: false },
+  { id: "4", name: "Lembrete de manutenção", description: "Avisa a cliente para agendar manutenção 30 dias após a entrega.", trigger: "30 dias após entrega", active: true },
+  { id: "5", name: "Campanha de recompra", description: "Oferece nova peça ou serviço 90 dias após a entrega.", trigger: "90 dias após entrega", active: false },
+  { id: "6", name: "Aniversário da cliente", description: "Deseja feliz aniversário e envia cupom exclusivo.", trigger: "Data de aniversário", active: true },
+];
+
 const mockLeadsInitial = [
   { id: "1", name: "Ana Clara", whatsapp: "11988884444", source: "Instagram", interest: "Lace Front 13x4", budget: "R$ 1.800 - R$ 2.500", nextAction: "Enviar orçamento", stage: "QUOTE_SENT" },
   { id: "2", name: "Camila Santos", whatsapp: "11977775555", source: "Indicação", interest: "Full Lace Premium", budget: "R$ 2.500 - R$ 3.500", nextAction: "Cobrar sinal Pix", stage: "NEGOTIATION" },
@@ -89,6 +106,39 @@ const mockLeadsInitial = [
   { id: "6", name: "Larissa Rocha", whatsapp: "11933332222", source: "WhatsApp", interest: "Wig Cacheada", budget: "R$ 2.000 - R$ 3.000", nextAction: "Primeiro contato", stage: "NEW_LEAD" },
   { id: "7", name: "Patrícia Silva", whatsapp: "11922221111", source: "Indicação", interest: "Manutenção Premium", budget: "R$ 400 - R$ 600", nextAction: "Receber sinal", stage: "AWAITING_PAYMENT" },
   { id: "8", name: "Mariana Alves", whatsapp: "11911110000", source: "Google", interest: "Full Lace", budget: "R$ 3.000 - R$ 4.000", nextAction: "Entregar", stage: "PAID" },
+];
+
+/* ============================================
+   AGENDA MOCK DATA
+   ============================================ */
+const today = new Date();
+const dayOfWeek = today.getDay(); // 0 = Sunday, 1 = Monday
+const mondayOffset = dayOfWeek === 0 ? -6 : 1 - dayOfWeek;
+const monday = new Date(today);
+monday.setDate(today.getDate() + mondayOffset);
+
+function getDayLabel(date: Date) {
+  return ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"][date.getDay()];
+}
+
+const agendaDays = Array.from({ length: 7 }, (_, i) => {
+  const d = new Date(monday);
+  d.setDate(monday.getDate() + i);
+  return {
+    label: getDayLabel(d),
+    dayNumber: d.getDate(),
+    isToday: d.toDateString() === today.toDateString(),
+  };
+});
+
+const agendaTimeSlots = ["09:00", "10:00", "11:00", "14:00", "15:00", "16:00", "17:00", "18:00"];
+
+const agendaEvents = [
+  { day: "Seg", time: "09:00", client: "Ana Clara", service: "Lace Front", serviceType: "lace", status: "SCHEDULED" },
+  { day: "Seg", time: "14:00", client: "Camila Santos", service: "Full Lace", serviceType: "full-lace", status: "SCHEDULED" },
+  { day: "Ter", time: "10:00", client: "Bruna Oliveira", service: "Glueless Wig", serviceType: "glueless", status: "COMPLETED" },
+  { day: "Qua", time: "15:00", client: "Fernanda Lima", service: "Manutenção", serviceType: "maintenance", status: "SCHEDULED" },
+  { day: "Qui", time: "11:00", client: "Juliana Costa", service: "Lace Front", serviceType: "lace", status: "SCHEDULED" },
 ];
 
 /* ============================================
@@ -163,8 +213,9 @@ export default function Home() {
   const [activeSection, setActiveSection] = useState("dashboard");
   const [catalogFilter, setCatalogFilter] = useState<"all" | CatalogItem["category"]>("all");
   const [quoteStatus, setQuoteStatus] = useState<Record<string, string>>({});
-  const [leads, setLeads] = useState(mockLeadsInitial);
-  const [draggedLead, setDraggedLead] = useState<string | null>(null);
+const [leads, setLeads] = useState(mockLeadsInitial);
+const [draggedLead, setDraggedLead] = useState<string | null>(null);
+const [automations, setAutomations] = useState<Automation[]>(MOCK_AUTOMATIONS);
 
   const load = useCallback(async () => {
     try {
@@ -309,6 +360,19 @@ export default function Home() {
     setLeads((prev) => prev.map((lead) => lead.id === draggedLead ? { ...lead, stage: targetStage } : lead));
     showToast(`Cliente movido para ${targetStage}`, "success");
     setDraggedLead(null);
+  }
+
+  function toggleAutomation(id: string) {
+    setAutomations((prev) =>
+      prev.map((a) => a.id === id ? { ...a, active: !a.active } : a)
+    );
+    const target = automations.find((a) => a.id === id);
+    if (target) {
+      showToast(
+        target.active ? `Automação "${target.name}" pausada` : `Automação "${target.name}" ativada`,
+        target.active ? "warning" : "success"
+      );
+    }
   }
 
   function generatePDF(q: QuoteResponse) {
@@ -556,8 +620,66 @@ Transformamos cabelos em confiança
       </section>
 
       {/* ============================================
-          CRM PIPELINE COM MOCK DIDÁTICO
-          ============================================ */}
+           AGENDA SEMÁTICA — VISUALIZAÇÃO SEMANAL
+           ============================================ */}
+      <section id="agenda" className="agenda-section">
+        <div className="agenda-header">
+          <span className="agenda-eyebrow">Agenda</span>
+          <h2>Calendário de Atendimentos</h2>
+          <p className="agenda-desc">Visualize os próximos agendamentos da semana com horários e status.</p>
+        </div>
+
+        <div className="agenda-grid-wrapper">
+          <div className="agenda-grid">
+            {/* Cabeçalho dos dias */}
+            {agendaDays.map((day) => (
+              <div
+                key={day.label}
+                className={`agenda-day-header ${day.isToday ? "today" : ""}`}
+              >
+                <span className="day-name">{day.label}</span>
+                <span className="day-number">{day.dayNumber}</span>
+                {day.isToday && <span className="today-badge">Hoje</span>}
+              </div>
+            ))}
+
+            {/* Slots de horário */}
+            {agendaTimeSlots.map((time) => (
+              <>
+                <div key={`time-${time}`} className="agenda-time-slot">
+                  <span>{time}</span>
+                </div>
+                {agendaDays.map((day) => {
+                  const event = agendaEvents.find(
+                    (e) => e.day === day.label && e.time === time
+                  );
+                  return (
+                    <div
+                      key={`${day.label}-${time}`}
+                      className={`agenda-cell ${event ? "has-event" : ""}`}
+                    >
+                      {event && (
+                        <div className={`agenda-event service-${event.serviceType}`}>
+                          <span className="event-time">{event.time}</span>
+                          <strong className="event-client">{event.client}</strong>
+                          <span className="event-service">{event.service}</span>
+                          <span className={`event-status ${event.status.toLowerCase()}`}>
+                            {event.status === "SCHEDULED" ? "Agendado" : "Concluído"}
+                          </span>
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+              </>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ============================================
+           CRM PIPELINE COM MOCK DIDÁTICO
+           ============================================ */}
       <section id="crm" className="crm-section">
         <div className="crm-header">
           <span className="crm-eyebrow">Pipeline</span>
@@ -990,6 +1112,198 @@ Transformamos cabelos em confiança
       </section>
 
       {/* ============================================
+          GALERIA DE RESULTADOS
+          ============================================ */}
+      <section id="gallery" className="gallery-section">
+        <div className="gallery-container">
+          <div className="gallery-header">
+            <span className="gallery-eyebrow">Galeria</span>
+            <h2>Resultados Reais</h2>
+            <p className="gallery-desc">Transformações reais de nossas clientes. Cada peça feita sob medida.</p>
+          </div>
+
+          <div className="gallery-grid">
+            {[
+              { before: "/gal-assets/catalog/lace-front-natural.png", after: "/gal-assets/catalog/full-lace-premium.png", label: "Lace Front Natural" },
+              { before: "/gal-assets/catalog/wig-cacheada.png", after: "/gal-assets/catalog/braided-wig.png", label: "Wig Cacheada" },
+              { before: "/gal-assets/catalog/glueless-wig.png", after: "/gal-assets/catalog/headband-wig.png", label: "Glueless Wig" },
+              { before: "/gal-assets/catalog/medical-wig-soft.png", after: "/gal-assets/catalog/wig-lisa-sleek.png", label: "Medical Wig" },
+              { before: "/gal-assets/catalog/hair-topper.png", after: "/gal-assets/catalog/clip-in-extensions.png", label: "Topper & Extensions" },
+              { before: "/gal-assets/catalog/customizacao-cor.png", after: "/gal-assets/catalog/ruivo-cobre-editorial.png", label: "Customização Cor" },
+              { before: "/gal-assets/catalog/closure-frontal.png", after: "/gal-assets/catalog/instalacao-lace.png", label: "Closure & Instalação" },
+              { before: "/gal-assets/catalog/bundles-body-wave.png", after: "/gal-assets/catalog/ponytail-extension.png", label: "Bundles & Ponytail" },
+            ].map((item, idx) => (
+              <article key={idx} className="gallery-card">
+                <div className="gallery-comparison">
+                  <div className="gallery-image-wrap">
+                    <img src={item.before} alt={`Antes ${item.label}`} className="gallery-img" loading="lazy" />
+                    <span className="gallery-badge gallery-badge-before">Antes</span>
+                  </div>
+                  <div className="gallery-image-wrap">
+                    <img src={item.after} alt={`Depois ${item.label}`} className="gallery-img" loading="lazy" />
+                    <span className="gallery-badge gallery-badge-after">Depois</span>
+                  </div>
+                </div>
+                <span className="gallery-label">{item.label}</span>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ============================================
+          REVIEWS
+          ============================================ */}
+      <section id="reviews" className="reviews-section">
+        <div className="reviews-container">
+          <div className="reviews-header">
+            <span className="reviews-eyebrow">Depoimentos</span>
+            <h2>O que dizem nossas clientes</h2>
+            <p className="reviews-desc">A satisfação de cada cliente é nossa maior recompensa.</p>
+          </div>
+
+          <div className="reviews-grid">
+            {[
+              { name: "Juliana Costa", avatar: "JC", stars: 5, text: "Minha peruca ficou Lind demais! A linha frontal é imperceptível, minhas colegas nem acreditam que não é meu cabelo natural. Muito obrigada pelo carinho!", date: "15/04/2026" },
+              { name: "Camila Santos", avatar: "CS", stars: 5, text: "Atendimento excepcional do início ao fim. A equipe entendeu exatamente o que eu queria e entregou antes do prazo. Recomendo!", date: "10/04/2026" },
+              { name: "Bruna Oliveira", avatar: "BO", stars: 5, text: "Transformação completa! Nunca me senti tão confiante. O care kit附带 muito útil e a manutenção é tranquila. Voltei para mais duas!", date: "05/04/2026" },
+              { name: "Fernanda Lima", avatar: "FL", stars: 4, text: "Qualidade premium com preço justo. Meu full lace ficou perfeito, zero arrependimento. Só achei o prazo um pouco longo, mas compensou.", date: "28/03/2026" },
+              { name: "Ana Clara", avatar: "AC", stars: 5, text: "Agora sou cliente fiel! Já indiquei para 3 amigas que amaram o resultado. O pós-venda é nota 10, sempre respondem rapidinho.", date: "20/03/2026" },
+            ].map((review, idx) => (
+              <article key={idx} className="review-card">
+                <div className="review-header">
+                  <div className="review-avatar">{review.avatar}</div>
+                  <div className="review-meta">
+                    <strong className="review-name">{review.name}</strong>
+                    <span className="review-date">{review.date}</span>
+                  </div>
+                </div>
+                <div className="review-stars">
+                  {[...Array(5)].map((_, i) => (
+                    <svg key={i} width="16" height="16" viewBox="0 0 24 24" fill={i < review.stars ? "#C8A96B" : "none"} stroke={i < review.stars ? "#C8A96B" : "#9B8B8B"} strokeWidth="2">
+                      <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                    </svg>
+                  ))}
+                </div>
+                <p className="review-text">{review.text}</p>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ============================================
+          TRANSFORMAÇÕES
+          ============================================ */}
+      <section id="transformations" className="transformations-section">
+        <div className="transformations-container">
+          <div className="transformations-header">
+            <span className="transformations-eyebrow">Histórias</span>
+            <h2>Transformações</h2>
+            <p className="transformations-desc">Mini histórias de clientes que transformaram suas vidas.</p>
+          </div>
+
+          <div className="transformations-grid">
+            <article className="transformation-card">
+              <div className="transformation-image">
+                <img src="/gal-assets/catalog/medical-wig-soft.png" alt="Transformação Marina" loading="lazy" />
+              </div>
+              <div className="transformation-content">
+                <span className="transformation-tag">Medicina</span>
+                <h3>Marina, 34 anos</h3>
+                <p className="transformation-story">Após tratamento oncológico, Marina buscava uma solução que a fizesse sentir-se ela mesma novamente. "A peruca médica superou minhas expectativas. O触感 é natural e posso usar no dia a dia sem preocupações."</p>
+                <div className="transformation-result">
+                  <span>Resultado:</span> <strong>100% satisfeita, indica para todas as pacientes</strong>
+                </div>
+              </div>
+            </article>
+
+            <article className="transformation-card">
+              <div className="transformation-image">
+                <img src="/gal-assets/catalog/lace-front-natural.png" alt="Transformação Rafaela" loading="lazy" />
+              </div>
+              <div className="transformation-content">
+                <span className="transformation-tag">Noiva</span>
+                <h3>Rafaela, 28 anos</h3>
+                <p className="transformation-story">Queria um visual perfeito para o grande dia. "O full lace ficou exatamente como sonhei. Na lua de mel, meu marido não acreditou que era peruca. Melhor investimento!"</p>
+                <div className="transformation-result">
+                  <span>Resultado:</span> <strong>Casamento perfeito, já voltou para manutenção</strong>
+                </div>
+              </div>
+            </article>
+
+            <article className="transformation-card">
+              <div className="transformation-image">
+                <img src="/gal-assets/catalog/wig-cacheada.png" alt="Transformação Thais" loading="lazy" />
+              </div>
+              <div className="transformation-content">
+                <span className="transformation-tag">Rotina</span>
+                <h3>Thaís, 41 anos</h3>
+                <p className="transformation-story">Cansada de perder tempo diário com o cabelo. "Agora ganho 30 minutos toda manhã. A wig cacheada é prática e lindo. Minhas colegas de trabalho amaram!"</p>
+                <div className="transformation-result">
+                  <span>Resultado:</span> <strong>Clube de assinatura, 3ª peruca em制作</strong>
+                </div>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      {/* ============================================
+          AUTOMAÇÕES DE MARKETING
+          ============================================ */}
+      <section id="automations" className="automations-section">
+        <div className="automations-container">
+          <div className="automations-header">
+            <span className="automations-eyebrow">Marketing</span>
+            <h2>Automações</h2>
+            <p className="automations-desc">Gatilhos inteligentes para relacionamento e recompra.</p>
+          </div>
+
+          <div className="automations-grid">
+            {automations.map((auto) => (
+              <article key={auto.id} className={`automation-card ${auto.active ? "active" : "paused"}`}>
+                <div className="automation-header">
+                  <div className="automation-icon">
+                    {auto.active ? (
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+                    ) : (
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><path d="M10 15V9l5 3-5 3z"/></svg>
+                    )}
+                  </div>
+                  <div className="automation-status">
+                    <span className={`status-badge ${auto.active ? "active" : "paused"}`}>
+                      {auto.active ? "ATIVO" : "PAUSADO"}
+                    </span>
+                  </div>
+                </div>
+                <div className="automation-body">
+                  <h4 className="automation-name">{auto.name}</h4>
+                  <p className="automation-desc">{auto.description}</p>
+                  <div className="automation-trigger">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
+                    <span>{auto.trigger}</span>
+                  </div>
+                </div>
+                <div className="automation-footer">
+                  <button
+                    className={`toggle-btn ${auto.active ? "on" : "off"}`}
+                    onClick={() => toggleAutomation(auto.id)}
+                    aria-label={`${auto.active ? "Pausar" : "Ativar"} ${auto.name}`}
+                  >
+                    <span className="toggle-track">
+                      <span className="toggle-thumb" />
+                    </span>
+                    <span className="toggle-label">{auto.active ? "Ativo" : "Pausado"}</span>
+                  </button>
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ============================================
           FOOTER
           ============================================ */}
       <footer className="shell footer">
@@ -1024,6 +1338,359 @@ Transformamos cabelos em confiança
           font-weight: 700;
           letter-spacing: 0.08em;
           text-transform: uppercase;
+        }
+
+        /* ============================================
+           GALLERY SECTION
+           ============================================ */
+        .gallery-section {
+          padding: var(--space-6) var(--space-4);
+          background: var(--bg-primary);
+        }
+
+        .gallery-container {
+          max-width: 1200px;
+          margin: 0 auto;
+        }
+
+        .gallery-header {
+          text-align: center;
+          margin-bottom: var(--space-5);
+        }
+
+        .gallery-eyebrow {
+          font-size: var(--text-xs);
+          font-weight: 700;
+          letter-spacing: 0.12em;
+          text-transform: uppercase;
+          color: var(--accent-gold);
+        }
+
+        .gallery-header h2 {
+          font-size: var(--text-3xl);
+          font-weight: 700;
+          color: var(--text-primary);
+          margin: var(--space-2) 0;
+        }
+
+        .gallery-desc {
+          color: var(--text-secondary);
+          max-width: 500px;
+          margin: 0 auto;
+        }
+
+        .gallery-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+          gap: var(--space-4);
+        }
+
+        .gallery-card {
+          background: var(--bg-card);
+          border-radius: var(--radius-xl);
+          overflow: hidden;
+          box-shadow: var(--shadow-lg);
+          transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .gallery-card:hover {
+          transform: translateY(-4px);
+          box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .gallery-comparison {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+        }
+
+        .gallery-image-wrap {
+          position: relative;
+          aspect-ratio: 1;
+          overflow: hidden;
+        }
+
+        .gallery-img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          transition: transform 0.3s ease;
+        }
+
+        .gallery-card:hover .gallery-img {
+          transform: scale(1.05);
+        }
+
+        .gallery-badge {
+          position: absolute;
+          bottom: var(--space-2);
+          padding: var(--space-1) var(--space-2);
+          font-size: var(--text-xs);
+          font-weight: 600;
+          border-radius: var(--radius-md);
+        }
+
+        .gallery-badge-before {
+          left: var(--space-2);
+          background: rgba(155, 139, 139, 0.9);
+          color: white;
+        }
+
+        .gallery-badge-after {
+          right: var(--space-2);
+          background: rgba(64, 220, 165, 0.9);
+          color: white;
+        }
+
+        .gallery-label {
+          display: block;
+          padding: var(--space-3);
+          font-weight: 600;
+          color: var(--text-primary);
+          text-align: center;
+          border-top: 1px solid var(--border-color);
+        }
+
+        /* ============================================
+           REVIEWS SECTION
+           ============================================ */
+        .reviews-section {
+          padding: var(--space-6) var(--space-4);
+          background: linear-gradient(180deg, var(--bg-primary) 0%, rgba(200, 169, 107, 0.05) 100%);
+        }
+
+        .reviews-container {
+          max-width: 1200px;
+          margin: 0 auto;
+        }
+
+        .reviews-header {
+          text-align: center;
+          margin-bottom: var(--space-5);
+        }
+
+        .reviews-eyebrow {
+          font-size: var(--text-xs);
+          font-weight: 700;
+          letter-spacing: 0.12em;
+          text-transform: uppercase;
+          color: var(--accent-gold);
+        }
+
+        .reviews-header h2 {
+          font-size: var(--text-3xl);
+          font-weight: 700;
+          color: var(--text-primary);
+          margin: var(--space-2) 0;
+        }
+
+        .reviews-desc {
+          color: var(--text-secondary);
+          max-width: 500px;
+          margin: 0 auto;
+        }
+
+        .reviews-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+          gap: var(--space-4);
+        }
+
+        .review-card {
+          background: var(--bg-card);
+          border-radius: var(--radius-xl);
+          padding: var(--space-5);
+          box-shadow: var(--shadow-lg);
+          border: 1px solid var(--border-color);
+          transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .review-card:hover {
+          transform: translateY(-4px);
+          box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
+          border-color: var(--accent-gold);
+        }
+
+        .review-header {
+          display: flex;
+          align-items: center;
+          gap: var(--space-3);
+          margin-bottom: var(--space-3);
+        }
+
+        .review-avatar {
+          width: 48px;
+          height: 48px;
+          border-radius: 50%;
+          background: linear-gradient(135deg, var(--accent-gold) 0%, var(--primary-dark) 100%);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-weight: 700;
+          font-size: var(--text-sm);
+          color: white;
+        }
+
+        .review-meta {
+          flex: 1;
+        }
+
+        .review-name {
+          display: block;
+          color: var(--text-primary);
+          font-weight: 600;
+        }
+
+        .review-date {
+          font-size: var(--text-xs);
+          color: var(--text-secondary);
+        }
+
+        .review-stars {
+          display: flex;
+          gap: var(--space-1);
+          margin-bottom: var(--space-3);
+        }
+
+        .review-text {
+          color: var(--text-secondary);
+          line-height: 1.6;
+          font-size: var(--text-sm);
+        }
+
+        /* ============================================
+           TRANSFORMATIONS SECTION
+           ============================================ */
+        .transformations-section {
+          padding: var(--space-6) var(--space-4);
+          background: var(--bg-primary);
+        }
+
+        .transformations-container {
+          max-width: 1200px;
+          margin: 0 auto;
+        }
+
+        .transformations-header {
+          text-align: center;
+          margin-bottom: var(--space-5);
+        }
+
+        .transformations-eyebrow {
+          font-size: var(--text-xs);
+          font-weight: 700;
+          letter-spacing: 0.12em;
+          text-transform: uppercase;
+          color: var(--accent-gold);
+        }
+
+        .transformations-header h2 {
+          font-size: var(--text-3xl);
+          font-weight: 700;
+          color: var(--text-primary);
+          margin: var(--space-2) 0;
+        }
+
+        .transformations-desc {
+          color: var(--text-secondary);
+          max-width: 500px;
+          margin: 0 auto;
+        }
+
+        .transformations-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+          gap: var(--space-5);
+        }
+
+        .transformation-card {
+          background: var(--bg-card);
+          border-radius: var(--radius-xl);
+          overflow: hidden;
+          box-shadow: var(--shadow-lg);
+          transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .transformation-card:hover {
+          transform: translateY(-6px);
+          box-shadow: 0 24px 48px rgba(0, 0, 0, 0.15);
+        }
+
+        .transformation-image {
+          aspect-ratio: 16/9;
+          overflow: hidden;
+        }
+
+        .transformation-image img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          transition: transform 0.4s ease;
+        }
+
+        .transformation-card:hover .transformation-image img {
+          transform: scale(1.08);
+        }
+
+        .transformation-content {
+          padding: var(--space-5);
+        }
+
+        .transformation-tag {
+          display: inline-block;
+          padding: var(--space-1) var(--space-3);
+          background: linear-gradient(135deg, var(--accent-gold) 0%, #D4AF37 100%);
+          color: var(--primary-dark);
+          font-size: var(--text-xs);
+          font-weight: 700;
+          text-transform: uppercase;
+          letter-spacing: 0.05em;
+          border-radius: var(--radius-full);
+          margin-bottom: var(--space-3);
+        }
+
+        .transformation-content h3 {
+          font-size: var(--text-xl);
+          font-weight: 700;
+          color: var(--text-primary);
+          margin-bottom: var(--space-3);
+        }
+
+        .transformation-story {
+          color: var(--text-secondary);
+          line-height: 1.7;
+          font-size: var(--text-sm);
+          margin-bottom: var(--space-4);
+          font-style: italic;
+        }
+
+        .transformation-result {
+          padding-top: var(--space-3);
+          border-top: 1px solid var(--border-color);
+          font-size: var(--text-sm);
+          color: var(--text-secondary);
+        }
+
+        .transformation-result span {
+          font-weight: 600;
+          color: var(--accent-gold);
+        }
+
+        .transformation-result strong {
+          color: var(--luxury-green);
+        }
+
+        @media (max-width: 768px) {
+          .gallery-header h2,
+          .reviews-header h2,
+          .transformations-header h2 {
+            font-size: var(--text-2xl);
+          }
+          
+          .gallery-grid,
+          .reviews-grid,
+          .transformations-grid {
+            grid-template-columns: 1fr;
+          }
         }
       `}</style>
     </main>

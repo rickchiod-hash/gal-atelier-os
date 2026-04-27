@@ -87,8 +87,34 @@ class AppointmentsController(
             "totalToday" to appointments.count { it.date == today },
             "totalUpcoming" to appointments.count { it.date >= today && it.status == EntityAppointmentStatus.SCHEDULED },
             "totalCompleted" to appointments.count { it.status == EntityAppointmentStatus.COMPLETED },
-            "totalCancelled" to appointments.count { it.status == EntityAppointmentStatus.CANCELLED }
+            "totalCancelled" to appointments.count { it.status == EntityAppointmentStatus.CANCELLED },
+            "byStatus" to mapOf(
+                "SCHEDULED" to appointments.count { it.status == EntityAppointmentStatus.SCHEDULED },
+                "COMPLETED" to appointments.count { it.status == EntityAppointmentStatus.COMPLETED },
+                "CANCELLED" to appointments.count { it.status == EntityAppointmentStatus.CANCELLED },
+                "NO_SHOW" to appointments.count { it.status == EntityAppointmentStatus.NO_SHOW }
+            )
         )
+    }
+
+    @PostMapping("/{id}/complete")
+    fun complete(@PathVariable id: String): AppointmentResponse? {
+        val existing = appointmentRepository.findById(UUID.fromString(id)).orElse(null) ?: return null
+        val updated = existing.copy(
+            status = EntityAppointmentStatus.COMPLETED,
+            updatedAt = LocalDateTime.now()
+        )
+        return appointmentRepository.save(updated).toResponse()
+    }
+
+    @PostMapping("/{id}/cancel")
+    fun cancel(@PathVariable id: String): AppointmentResponse? {
+        val existing = appointmentRepository.findById(UUID.fromString(id)).orElse(null) ?: return null
+        val updated = existing.copy(
+            status = EntityAppointmentStatus.CANCELLED,
+            updatedAt = LocalDateTime.now()
+        )
+        return appointmentRepository.save(updated).toResponse()
     }
 }
 
