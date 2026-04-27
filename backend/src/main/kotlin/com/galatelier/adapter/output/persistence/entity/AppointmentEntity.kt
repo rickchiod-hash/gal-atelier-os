@@ -8,14 +8,12 @@ import java.util.UUID
 
 @Entity
 @Table(name = "appointments")
-class AppointmentEntity(
+data class AppointmentEntity(
     @Id
-    val id: UUID = UUID.randomUUID(),
+    var id: UUID = UUID.randomUUID(),
 
-    @Column(name = "customer_id")
     var customerId: UUID,
 
-    @Column(name = "customer_name")
     var customerName: String = "",
 
     @Column(name = "service_type", nullable = false)

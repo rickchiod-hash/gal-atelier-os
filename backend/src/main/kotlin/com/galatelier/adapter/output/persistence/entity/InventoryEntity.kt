@@ -8,9 +8,9 @@ import java.util.UUID
 
 @Entity
 @Table(name = "inventory")
-class InventoryEntity(
+data class InventoryEntity(
     @Id
-    val id: UUID = UUID.randomUUID(),
+    var id: UUID = UUID.randomUUID(),
 
     @Column(nullable = false, unique = true)
     var sku: String,

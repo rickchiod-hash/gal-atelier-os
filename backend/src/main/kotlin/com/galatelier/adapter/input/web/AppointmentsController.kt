@@ -1,5 +1,8 @@
 package com.galatelier.adapter.input.web
 
+import com.galatelier.adapter.output.persistence.entity.AppointmentEntity
+import com.galatelier.adapter.output.persistence.entity.AppointmentStatus as EntityAppointmentStatus
+import com.galatelier.adapter.output.persistence.repository.AppointmentRepository
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -7,157 +10,101 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
-import java.time.Instant
+import java.time.LocalDate
+import java.time.LocalDateTime
 import java.util.UUID
 
 @RestController
 @RequestMapping("/api/appointments")
-class AppointmentsController {
-
-    private val appointments = mutableListOf(
-        AppointmentResponse(
-            id = "1",
-            customerId = "1",
-            customerName = "Juliana Costa",
-            serviceType = "Manutenção",
-            date = "2026-04-28",
-            time = "14:00",
-            duration = 60,
-            status = AppointmentStatus.SCHEDULED,
-            notes = "Higienização + repositionamento",
-            price = 250.0,
-            createdAt = "2026-04-25"
-        ),
-        AppointmentResponse(
-            id = "2",
-            customerId = "2",
-            customerName = "Patrícia Lima",
-            serviceType = "Prova",
-            date = "2026-04-29",
-            time = "10:00",
-            duration = 45,
-            status = AppointmentStatus.SCHEDULED,
-            notes = "Prova do Full Lace",
-            price = 0.0,
-            createdAt = "2026-04-26"
-        ),
-        AppointmentResponse(
-            id = "3",
-            customerId = "3",
-            customerName = "Amanda Souza",
-            serviceType = "Instalação",
-            date = "2026-04-27",
-            time = "15:00",
-            duration = 90,
-            status = AppointmentStatus.COMPLETED,
-            notes = "Instalação Glueless",
-            price = 450.0,
-            createdAt = "2026-04-20"
-        ),
-        AppointmentResponse(
-            id = "4",
-            customerId = "5",
-            customerName = "Beatriz Santos",
-            serviceType = "Retoque",
-            date = "2026-04-30",
-            time = "11:00",
-            duration = 30,
-            status = AppointmentStatus.SCHEDULED,
-            notes = "Retoque de baby hair",
-            price = 150.0,
-            createdAt = "2026-04-27"
-        ),
-        AppointmentResponse(
-            id = "5",
-            customerId = "4",
-            customerName = "Fernanda Alves",
-            serviceType = "Consulta",
-            date = "2026-05-02",
-            time = "16:00",
-            duration = 60,
-            status = AppointmentStatus.SCHEDULED,
-            notes = "Consulta para novo projeto",
-            price = 0.0,
-            createdAt = "2026-04-27"
-        ),
-        AppointmentResponse(
-            id = "6",
-            customerId = "2",
-            customerName = "Patrícia Lima",
-            serviceType = "Instalação",
-            date = "2026-05-05",
-            time = "09:00",
-            duration = 120,
-            status = AppointmentStatus.SCHEDULED,
-            notes = "Instalação 360 Lace",
-            price = 600.0,
-            createdAt = "2026-04-26"
-        )
-    )
+class AppointmentsController(
+    private val appointmentRepository: AppointmentRepository
+) {
 
     @GetMapping
-    fun list(): List<AppointmentResponse> = appointments.sortedBy { it.date }
+    fun list(): List<AppointmentResponse> = appointmentRepository.findAll()
+        .sortedBy { it.date }
+        .map { it.toResponse() }
 
     @GetMapping("/today")
     fun today(): List<AppointmentResponse> {
-        val today = Instant.now().toString().take(10)
-        return appointments.filter { it.date == today }
+        val today = LocalDate.now()
+        return appointmentRepository.findAll()
+            .filter { it.date == today }
+            .map { it.toResponse() }
     }
 
     @GetMapping("/upcoming")
     fun upcoming(): List<AppointmentResponse> {
-        val today = Instant.now().toString().take(10)
-        return appointments.filter { it.date >= today && it.status == AppointmentStatus.SCHEDULED }
+        val today = LocalDate.now()
+        return appointmentRepository.findAll()
+            .filter { it.date >= today && it.status == EntityAppointmentStatus.SCHEDULED }
             .sortedBy { it.date }
+            .map { it.toResponse() }
     }
 
     @GetMapping("/customer/{customerId}")
     fun listByCustomer(@PathVariable customerId: String): List<AppointmentResponse> =
-        appointments.filter { it.customerId == customerId }.sortedBy { it.date }
+        appointmentRepository.findAll()
+            .filter { it.customerId.toString() == customerId }
+            .sortedBy { it.date }
+            .map { it.toResponse() }
 
     @GetMapping("/{id}")
-    fun get(@PathVariable id: String): AppointmentResponse? = appointments.find { it.id == id }
+    fun get(@PathVariable id: String): AppointmentResponse? = 
+        appointmentRepository.findById(UUID.fromString(id)).orElse(null)?.toResponse()
 
     @PostMapping
     fun create(@RequestBody request: CreateAppointmentRequest): AppointmentResponse {
-        val appointment = AppointmentResponse(
-            id = UUID.randomUUID().toString(),
-            customerId = request.customerId,
+        val appointment = AppointmentEntity(
+            customerId = UUID.fromString(request.customerId),
             customerName = request.customerName,
             serviceType = request.serviceType,
-            date = request.date,
+            date = LocalDate.parse(request.date),
             time = request.time,
             duration = request.duration,
-            status = AppointmentStatus.SCHEDULED,
-            notes = request.notes ?: "",
-            price = request.price,
-            createdAt = Instant.now().toString().take(10)
+            status = EntityAppointmentStatus.SCHEDULED,
+            notes = request.notes,
+            price = request.price.toBigDecimal()
         )
-        appointments.add(appointment)
-        return appointment
+        return appointmentRepository.save(appointment).toResponse()
     }
 
     @PatchMapping("/{id}/status")
     fun updateStatus(@PathVariable id: String, @RequestBody request: UpdateAppointmentStatusRequest): AppointmentResponse? {
-        val index = appointments.indexOfFirst { it.id == id }
-        if (index == -1) return null
-        val current = appointments[index]
-        val updated = current.copy(status = AppointmentStatus.valueOf(request.status))
-        appointments[index] = updated
-        return updated
+        val existing = appointmentRepository.findById(UUID.fromString(id)).orElse(null) ?: return null
+        val updated = existing.copy(
+            status = EntityAppointmentStatus.valueOf(request.status),
+            updatedAt = LocalDateTime.now()
+        )
+        return appointmentRepository.save(updated).toResponse()
     }
 
     @GetMapping("/summary")
     fun summary(): Map<String, Any> {
-        val today = Instant.now().toString().take(10)
+        val today = LocalDate.now()
+        val appointments = appointmentRepository.findAll()
         return mapOf(
             "totalToday" to appointments.count { it.date == today },
-            "totalUpcoming" to appointments.count { it.date >= today && it.status == AppointmentStatus.SCHEDULED },
-            "totalCompleted" to appointments.count { it.status == AppointmentStatus.COMPLETED },
-            "totalCancelled" to appointments.count { it.status == AppointmentStatus.CANCELLED }
+            "totalUpcoming" to appointments.count { it.date >= today && it.status == EntityAppointmentStatus.SCHEDULED },
+            "totalCompleted" to appointments.count { it.status == EntityAppointmentStatus.COMPLETED },
+            "totalCancelled" to appointments.count { it.status == EntityAppointmentStatus.CANCELLED }
         )
     }
 }
+
+fun AppointmentEntity.toResponse() = AppointmentResponse(
+    id = id.toString(),
+    customerId = customerId.toString(),
+    customerName = customerName,
+    serviceType = serviceType,
+    date = date.toString(),
+    time = time,
+    duration = duration,
+    status = status,
+    notes = notes ?: "",
+    price = price.toDouble(),
+    createdAt = createdAt.toLocalDate().toString()
+)
 
 data class AppointmentResponse(
     val id: String,
@@ -167,18 +114,11 @@ data class AppointmentResponse(
     val date: String,
     val time: String,
     val duration: Int,
-    val status: AppointmentStatus,
+    val status: EntityAppointmentStatus,
     val notes: String,
     val price: Double,
     val createdAt: String
 )
-
-enum class AppointmentStatus {
-    SCHEDULED,
-    COMPLETED,
-    CANCELLED,
-    NO_SHOW
-}
 
 data class CreateAppointmentRequest(
     val customerId: String,

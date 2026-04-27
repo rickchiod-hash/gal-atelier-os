@@ -7,14 +7,12 @@ import java.util.UUID
 
 @Entity
 @Table(name = "orders")
-class OrderEntity(
+data class OrderEntity(
     @Id
-    val id: UUID = UUID.randomUUID(),
+    var id: UUID = UUID.randomUUID(),
 
-    @Column(name = "customer_id")
     var customerId: UUID,
 
-    @Column(name = "customer_name")
     var customerName: String = "",
 
     @Column(name = "service_type", nullable = false)
