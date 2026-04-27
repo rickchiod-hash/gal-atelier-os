@@ -4,6 +4,7 @@ import com.galatelier.application.port.input.CreateQuoteCommand
 import com.galatelier.application.port.input.CreateQuoteUseCase
 import com.galatelier.application.port.input.ListQuotesUseCase
 import com.galatelier.domain.model.BriefingType
+import com.galatelier.domain.model.OrderStatus
 import com.galatelier.domain.model.Quote
 import jakarta.validation.Valid
 import jakarta.validation.constraints.DecimalMax
@@ -129,6 +130,7 @@ data class QuoteResponse(
     val whatsappMessage: String,
     val whatsappLink: String,
     val pixCopyPaste: String,
+    val status: OrderStatus,
     val createdAt: Instant
 )
 
@@ -145,5 +147,6 @@ private fun Quote.toResponse(): QuoteResponse =
         whatsappMessage = whatsappMessage,
         whatsappLink = whatsappLink,
         pixCopyPaste = pixCopyPaste,
+        status = status,
         createdAt = createdAt
     )

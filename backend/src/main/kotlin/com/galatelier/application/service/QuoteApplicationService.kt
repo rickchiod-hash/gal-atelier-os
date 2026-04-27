@@ -113,9 +113,11 @@ class QuoteApplicationService(
     private fun normalizeBrazilianPhone(phone: String): String {
         val digits = phone.filter { it.isDigit() }
         return when {
-            digits.startsWith("55") && digits.length in 12..13 -> digits
-            digits.length in 10..11 -> "55$digits"
-            else -> throw IllegalArgumentException("Telefone inválido. Use DDD + número.")
+            digits.startsWith("55") && digits.length == 13 -> digits
+            digits.startsWith("55") && digits.length == 12 -> digits
+            digits.length == 11 -> "55$digits"
+            digits.length == 10 -> "55$digits"
+            else -> throw IllegalArgumentException("Telefone inválido. Forneça 10 ou 11 dígitos com DDD.")
         }
     }
 

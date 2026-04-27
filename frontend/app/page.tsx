@@ -13,6 +13,7 @@ type QuoteResponse = {
   clientName: string;
   clientWhatsapp: string;
   serviceType: string;
+  status: string;
   minimumPrice: number;
   recommendedPrice: number;
   premiumPrice: number;
@@ -175,10 +176,10 @@ export default function Home() {
             <span>Pix + WhatsApp</span>
           </div>
 
-          <label>Cliente<input name="clientName" defaultValue={initial.clientName} /></label>
-          <label>WhatsApp<input name="clientWhatsapp" defaultValue={initial.clientWhatsapp} /></label>
-          <label>Serviço
-            <select name="type" defaultValue={initial.type}>
+          <label htmlFor="clientName">Cliente<input id="clientName" name="clientName" defaultValue={initial.clientName} /></label>
+          <label htmlFor="clientWhatsapp">WhatsApp<input id="clientWhatsapp" name="clientWhatsapp" defaultValue={initial.clientWhatsapp} /></label>
+          <label htmlFor="type">Serviço
+            <select id="type" name="type" defaultValue={initial.type}>
               <option value="LACE_FRONT">Lace front</option>
               <option value="FULL_LACE">Full lace</option>
               <option value="WIG_CUSTOM">Wig customizada</option>
@@ -186,18 +187,18 @@ export default function Home() {
               <option value="SHOE_CUSTOMIZATION">Customização de sapato</option>
             </select>
           </label>
-          <label>Cor<input name="color" defaultValue={initial.color} /></label>
-          <label>Comprimento cm<input type="number" name="lengthCm" defaultValue={initial.lengthCm} /></label>
-          <label>Textura<input name="texture" defaultValue={initial.texture} /></label>
-          <label>Densidade<input name="density" defaultValue={initial.density} /></label>
-          <label>Touca<input name="capSize" defaultValue={initial.capSize} /></label>
-          <label>Prazo dias<input type="number" name="deadlineDays" defaultValue={initial.deadlineDays} /></label>
-          <label>Material<input type="number" name="materialCost" defaultValue={initial.materialCost} /></label>
-          <label>Mão de obra<input type="number" name="laborCost" defaultValue={initial.laborCost} /></label>
-          <label>Complexidade<input type="number" name="complexityCost" defaultValue={initial.complexityCost} /></label>
-          <label>Urgência<input type="number" name="urgencyCost" defaultValue={initial.urgencyCost} /></label>
-          <label>Margem %<input type="number" name="marginPercent" defaultValue={initial.marginPercent} /></label>
-          <label className="full">Notas<textarea name="notes" defaultValue={initial.notes} /></label>
+          <label htmlFor="color">Cor<input id="color" name="color" defaultValue={initial.color} /></label>
+          <label htmlFor="lengthCm">Comprimento cm<input id="lengthCm" type="number" name="lengthCm" defaultValue={initial.lengthCm} /></label>
+          <label htmlFor="texture">Textura<input id="texture" name="texture" defaultValue={initial.texture} /></label>
+          <label htmlFor="density">Densidade<input id="density" name="density" defaultValue={initial.density} /></label>
+          <label htmlFor="capSize">Touca<input id="capSize" name="capSize" defaultValue={initial.capSize} /></label>
+          <label htmlFor="deadlineDays">Prazo dias<input id="deadlineDays" type="number" name="deadlineDays" defaultValue={initial.deadlineDays} /></label>
+          <label htmlFor="materialCost">Material<input id="materialCost" type="number" name="materialCost" defaultValue={initial.materialCost} /></label>
+          <label htmlFor="laborCost">Mão de obra<input id="laborCost" type="number" name="laborCost" defaultValue={initial.laborCost} /></label>
+          <label htmlFor="complexityCost">Complexidade<input id="complexityCost" type="number" name="complexityCost" defaultValue={initial.complexityCost} /></label>
+          <label htmlFor="urgencyCost">Urgência<input id="urgencyCost" type="number" name="urgencyCost" defaultValue={initial.urgencyCost} /></label>
+          <label htmlFor="marginPercent">Margem %<input id="marginPercent" type="number" name="marginPercent" defaultValue={initial.marginPercent} /></label>
+          <label className="full" htmlFor="notes">Notas<textarea id="notes" name="notes" defaultValue={initial.notes} /></label>
           <button className="full button primary" disabled={loading}>
             {loading ? "Gerando..." : "Gerar orçamento completo"}
           </button>
@@ -243,6 +244,7 @@ export default function Home() {
             <div className="row" key={item.id}>
               <strong>{item.clientName}</strong>
               <span>{serviceLabel(item.serviceType)}</span>
+              <span className={`status ${item.status.toLowerCase()}`}>{statusLabel(item.status)}</span>
               <span>{money(item.recommendedPrice)}</span>
               <a href={item.whatsappLink} target="_blank">WhatsApp</a>
             </div>
@@ -269,6 +271,21 @@ function serviceLabel(value: string) {
     WIG_CUSTOM: "Wig custom",
     MAINTENANCE: "Manutenção",
     SHOE_CUSTOMIZATION: "Customização"
+  };
+  return labels[value] || value;
+}
+
+function statusLabel(value: string) {
+  const labels: Record<string, string> = {
+    LEAD: "Lead",
+    BRIEFING: "Briefing",
+    QUOTED: "Orçado",
+    WAITING_PIX: "Aguardando Pix",
+    PAID: "Pago",
+    PRODUCTION: "Produção",
+    READY: "Pronto",
+    DELIVERED: "Entregue",
+    LOST: "Perdido"
   };
   return labels[value] || value;
 }

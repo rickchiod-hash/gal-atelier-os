@@ -399,7 +399,7 @@ pre {
 
 .row {
   display: grid;
-  grid-template-columns: 1.15fr 1fr 0.8fr auto;
+  grid-template-columns: 1.15fr 0.9fr 0.8fr 0.7fr auto;
   gap: var(--space-2);
   align-items: center;
   padding: var(--space-2);
@@ -416,6 +416,24 @@ pre {
   color: var(--color-brand-strong);
   font-weight: 900;
 }
+
+.row .status {
+  font-size: var(--font-size-sm);
+  font-weight: 850;
+  padding: 0.25rem 0.6rem;
+  border-radius: 999px;
+  background: var(--color-border);
+}
+
+.row .status.lead { background: #e8e4ef; color: #5a4a6a; }
+.row .status.briefing { background: #e4e8ef; color: #4a5a6a; }
+.row .status.quoted { background: #e4ddef; color: #5a3a6a; }
+.row .status.waiting-pix { background: #efe4c8; color: #6a5a2a; }
+.row .status.paid { background: #c8e4d0; color: #2a5a3a; }
+.row .status.production { background: #c8d8e4; color: #2a4a5a; }
+.row .status.ready { background: #c8e4c8; color: #3a5a3a; }
+.row .status.delivered { background: #d0e4c8; color: #4a5a2a; }
+.row .status.lost { background: #e4c8c8; color: #5a3a3a; }
 
 .footer {
   display: flex;
