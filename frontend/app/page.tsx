@@ -50,20 +50,33 @@ const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
 const whatsappReceiver = process.env.NEXT_PUBLIC_WHATSAPP_RECEIVER || "5511914136961";
 
 const CATALOG_SERVICES: Service[] = [
-  { id: "1", name: "Lace Front Personalizada", description: "Coroa lace frontal sob medida com linha natural", price: "R$ 800 - R$ 2.500", duration: "5-15 dias", icon: "👩‍🎤" },
-  { id: "2", name: "Full Lace Premium", description: "Peruca completa com tela invisível em todos os pontos", price: "R$ 1.200 - R$ 4.000", duration: "10-20 dias", icon: "✨" },
-  { id: "3", name: "Wig Customizada", description: "Corte e modelagem exclusiva para o rosto da cliente", price: "R$ 600 - R$ 1.800", duration: "3-10 dias", icon: "💇‍♀️" },
-  { id: "4", name: "Manutenção Mensal", description: "Revitalização, ajuste e cuidados especiais", price: "R$ 200 - R$ 500", duration: "2-4 horas", icon: "🛁" },
-  { id: "5", name: "Customização de Sapato", description: "Personalização artesanal com strass e pedrarias", price: "R$ 150 - R$ 600", duration: "3-7 dias", icon: "👠" },
-  { id: "6", name: "Higienização Profunda", description: "Limpeza e hidratação com produtos profissionais", price: "R$ 80 - R$ 200", duration: "1-2 horas", icon: "🧴" },
+  { id: "1", name: "Lace Front Wig", description: "Coroa lace frontal sob medida com linha natural e densidade personalizável", price: "R$ 800 - R$ 2.500", duration: "5-15 dias", icon: "👩‍🎤" },
+  { id: "2", name: "Full Lace Premium", description: "Peruca completa com tela invisível em todos os pontos para máxima versatilidade", price: "R$ 1.200 - R$ 4.000", duration: "10-20 dias", icon: "✨" },
+  { id: "3", name: "Glueless Wig", description: "Coroa sem cola com faixa de silicone confortável e ajuste perfeito", price: "R$ 600 - R$ 1.800", duration: "3-10 dias", icon: "💇‍♀️" },
+  { id: "4", name: "Manutenção Premium", description: "Revitalização profunda, ajuste estrutural e cuidados especiais", price: "R$ 200 - R$ 500", duration: "2-4 horas", icon: "🛁" },
+  { id: "5", name: "Customização Exclusiva", description: "Personalização artesanal com strass, pedrarias e acabamentos de luxo", price: "R$ 150 - R$ 600", duration: "3-7 dias", icon: "👠" },
+  { id: "6", name: "Instalação Professional", description: "Aplicação técnica com fixação segura e acabamento imperceptível", price: "R$ 100 - R$ 400", duration: "1-3 horas", icon: "🎯" },
 ];
 
 const PIPELINE_COLUMNS = [
-  { key: "QUOTED", label: "Orçamento", color: "#8f3a62", icon: "📝" },
-  { key: "APPROVED", label: "Aprovado", color: "#d79f52", icon: "✅" },
-  { key: "IN_PRODUCTION", label: "Em Produção", color: "#8f3a62", icon: "🔨" },
-  { key: "COMPLETED", label: "Concluído", color: "#1f7a4d", icon: "🎉" },
-  { key: "CANCELLED", label: "Cancelado", color: "#a0a0a0", icon: "❌" },
+  { key: "QUOTED", label: "Orçamento", color: "#5A163B", icon: "📋" },
+  { key: "APPROVED", label: "Aprovado", color: "#C8A96B", icon: "✅" },
+  { key: "IN_PRODUCTION", label: "Em Produção", color: "#C79BA5", icon: "🔨" },
+  { key: "COMPLETED", label: "Concluído", color: "#40DCA5", icon: "🎉" },
+  { key: "CANCELLED", label: "Cancelado", color: "#9B8B8B", icon: "❌" },
+];
+
+const CRM_STAGES = [
+  { key: "NEW_LEAD", label: "Novo Lead", color: "#C79BA5" },
+  { key: "CONTACT", label: "Contato", color: "#D8C5B0" },
+  { key: "DIAGNOSIS", label: "Diagnóstico", color: "#C8A96B" },
+  { key: "QUOTE_SENT", label: "Orçamento Enviado", color: "#C8A96B" },
+  { key: "NEGOTIATION", label: "Negociação", color: "#C79BA5" },
+  { key: "AWAITING_PAYMENT", label: "Aguardando Pgto", color: "#5A163B" },
+  { key: "PAID", label: "Sinal Pago", color: "#40DCA5" },
+  { key: "PRODUCTION", label: "Em Produção", color: "#C79BA5" },
+  { key: "DELIVERED", label: "Entregue", color: "#40DCA5" },
+  { key: "LOST", label: "Perdido", color: "#9B8B8B" },
 ];
 
 /* ============================================
@@ -82,9 +95,9 @@ function formatDate(dateStr: string) {
    ============================================ */
 function serviceLabel(value: string) {
   const labels: Record<string, string> = {
-    LACE_FRONT: "Lace front",
-    FULL_LACE: "Full lace",
-    WIG_CUSTOM: "Wig custom",
+    LACE_FRONT: "Lace Front",
+    FULL_LACE: "Full Lace",
+    WIG_CUSTOM: "Wig Custom",
     MAINTENANCE: "Manutenção",
     SHOE_CUSTOMIZATION: "Customização",
   };
@@ -100,38 +113,27 @@ function Skeleton({ className = "", style = {} }: { className?: string; style?: 
 
 function MetricSkeleton() {
   return (
-    <div className="panel metric">
+    <div className="metric" style={{ minHeight: "120px" }}>
       <Skeleton style={{ height: "1em", width: "60%", marginBottom: "0.5em" }} />
-      <Skeleton style={{ height: "2.5em", width: "80%" }} />
-    </div>
-  );
-}
-
-function QuoteRowSkeleton() {
-  return (
-    <div className="row" style={{ opacity: 0.6 }}>
-      <Skeleton style={{ height: "1.5em", width: "70%" }} />
-      <Skeleton style={{ height: "1em", width: "50%" }} />
-      <Skeleton style={{ height: "1em", width: "40%" }} />
-      <Skeleton style={{ height: "1.5em", width: "60px" }} />
+      <Skeleton style={{ height: "2.5em", width: "70%" }} />
     </div>
   );
 }
 
 /* ============================================
-   LOGO COMPONENT
+   LOGO
    ============================================ */
 function Logo() {
   return (
     <div className="logo">
       <img src="/brand/logo-gal-atelier.svg" alt="Gal Atelier OS" />
-      <span>Gal Atelier OS</span>
+      <span>Gal Atelier</span>
     </div>
   );
 }
 
 /* ============================================
-   MAIN PAGE COMPONENT
+   MAIN PAGE
    ============================================ */
 export default function Home() {
   const { showToast } = useToast();
@@ -146,6 +148,7 @@ export default function Home() {
   const [searchTerm, setSearchTerm] = useState("");
   const [filterStatus, setFilterStatus] = useState<OrderStatus | "ALL">("ALL");
   const [wizardStep, setWizardStep] = useState(1);
+  const [activeSection, setActiveSection] = useState("dashboard");
 
   const load = useCallback(async () => {
     try {
@@ -196,7 +199,7 @@ export default function Home() {
 
   const conversionHint = useMemo(() => {
     if (metrics.quotes === 0) return "Crie o primeiro orçamento para iniciar o pipeline.";
-    return `${metrics.quotes} orçamento(s) com ${money(metrics.depositsPotential)} em sinais`;
+    return `${metrics.quotes} orçamento(s) criado(s) · ${money(metrics.depositsPotential)} em sinais`;
   }, [metrics]);
 
   async function createQuote(event: FormEvent<HTMLFormElement>) {
@@ -229,7 +232,7 @@ export default function Home() {
       if (!res.ok) {
         const errorText = await res.text();
         setStatus(`Erro: ${errorText}`);
-        showToast(`Erro ao criar orçamento: ${errorText}`, "error");
+        showToast(`Erro: ${errorText}`, "error");
         return;
       }
 
@@ -239,9 +242,9 @@ export default function Home() {
       showToast("Orçamento gerado com sucesso!", "success");
       setWizardStep(3);
       await load();
-    } catch (err) {
+    } catch {
       setStatus("Falha de conexão com backend.");
-      showToast("Falha de conexão. Backend pode estar offline.", "error");
+      showToast("Falha de conexão com o servidor.", "error");
     } finally {
       setLoading(false);
     }
@@ -250,7 +253,7 @@ export default function Home() {
   function copyPix() {
     if (quote?.pixCopyPaste) {
       navigator.clipboard.writeText(quote.pixCopyPaste);
-      showToast("Pix copiado para a área de transferência!", "success");
+      showToast("Pix copiado!", "success");
     }
   }
 
@@ -262,6 +265,13 @@ export default function Home() {
     return grouped;
   }, [quotes]);
 
+  const mockLeads = useMemo(() => [
+    { id: "1", name: "Juliana Costa", whatsapp: "11988884444", source: "Instagram", interest: "Lace Front 13x4", budget: "R$ 1.500 - R$ 2.000", nextAction: "Enviar orçamento", stage: "QUOTE_SENT" },
+    { id: "2", name: "Patrícia Lima", whatsapp: "11977775555", source: "Indicação", interest: "Full Lace", budget: "R$ 2.500 - R$ 3.500", nextAction: "Diagnóstico", stage: "DIAGNOSIS" },
+    { id: "3", name: "Amanda Souza", whatsapp: "11966663333", source: "TikTok", interest: "Glueless Wig", budget: "R$ 800 - R$ 1.200", nextAction: "Follow-up 24h", stage: "CONTACT" },
+    { id: "4", name: "Fernanda Alves", whatsapp: "11955552222", source: "Google", interest: "Manutenção", budget: "R$ 300 - R$ 500", nextAction: "Confirmar agendamento", stage: "NEW_LEAD" },
+  ], []);
+
   return (
     <main>
       <Header whatsappReceiver={whatsappReceiver} />
@@ -271,16 +281,24 @@ export default function Home() {
           ============================================ */}
       <section className="shell hero">
         <div className="heroCopy">
-          <p className="eyebrow">Design system · Hexagonal backend · V5</p>
-          <h1>Atendimento premium, orçamento claro e sinal Pix em um só fluxo.</h1>
+          <span className="eyebrow">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+            Beauty Commerce CRM
+          </span>
+          <h1>Beauty Commerce CRM para wigmakers.</h1>
           <p className="subtitle">
-            Gal Atelier OS organiza briefing, preço, WhatsApp e próxima ação para wigmaker mais previsível.
+            Venda, personalize e acompanhe perucas, laces e manutenções em um fluxo premium do briefing ao pós-venda.
           </p>
           <div className="actions">
-            <a className="button primary" href="#quote">Criar orçamento</a>
-            <a className="button secondary" href={`https://wa.me/${whatsappReceiver}`} target="_blank" rel="noopener noreferrer">
-              Abrir WhatsApp
+            <a href="#quote" className="button primary">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 5v14M5 12h14"/></svg>
+              Criar Orçamento
             </a>
+            <a href={`https://wa.me/${whatsappReceiver}`} target="_blank" rel="noopener noreferrer" className="button secondary">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg>
+              WhatsApp
+            </a>
+            <a href="#crm" className="button accent">Ver Pipeline</a>
           </div>
         </div>
 
@@ -290,78 +308,96 @@ export default function Home() {
             <strong>{money(metrics.revenuePotential)}</strong>
             <small>{conversionHint}</small>
           </div>
-          <img src="/brand/gal-wig-hero.svg" alt="Ilustração editorial de wig personalizada" />
+          <img src="/brand/gal-wig-hero.svg" alt="Ilustração de peruca premium Gal Atelier" />
         </div>
       </section>
 
       {/* ============================================
           DASHBOARD METRICS
           ============================================ */}
-      <section id="overview" className="shell metricGrid" aria-labelledby="dashboard-title">
-        <h2 id="dashboard-title" className="sr-only">Dashboard de Métricas</h2>
+      <section id="overview" className="shell metricGrid">
+        <h2 className="sr-only">Dashboard de Métricas</h2>
         {initialLoading ? (
           <>
+            <MetricSkeleton />
             <MetricSkeleton />
             <MetricSkeleton />
             <MetricSkeleton />
           </>
         ) : (
           <>
-            <article className="panel metric">
-              <span>Orçamentos</span>
-              <strong>{metrics.quotes}</strong>
+            <article className="metric animate-in">
+              <span className="metric-label">Orçamentos</span>
+              <span className="metric-value">{metrics.quotes}</span>
+              <div className="metric-icon">📋</div>
             </article>
-            <article className="panel metric">
-              <span>Receita potencial</span>
-              <strong>{money(metrics.revenuePotential)}</strong>
+            <article className="metric animate-in">
+              <span className="metric-label">Receita potencial</span>
+              <span className="metric-value">{money(metrics.revenuePotential)}</span>
+              <div className="metric-icon">💰</div>
             </article>
-            <article className="panel metric">
-              <span>Sinais Pix</span>
-              <strong>{money(metrics.depositsPotential)}</strong>
+            <article className="metric animate-in">
+              <span className="metric-label">Sinais Pix</span>
+              <span className="metric-value">{money(metrics.depositsPotential)}</span>
+              <div className="metric-icon">✨</div>
             </article>
-            <article className="panel metric">
-              <span>Ticket médio</span>
-              <strong>{money(metrics.avgTicket)}</strong>
+            <article className="metric animate-in">
+              <span className="metric-label">Ticket médio</span>
+              <span className="metric-value">{money(metrics.avgTicket)}</span>
+              <div className="metric-icon">📊</div>
             </article>
-            <article className="panel metric">
-              <span>Conversão</span>
-              <strong>{metrics.conversionRate}%</strong>
+            <article className="metric animate-in">
+              <span className="metric-label">Taxa conversão</span>
+              <span className="metric-value">{metrics.conversionRate}%</span>
+              <span className="metric-trend up">↑ +5% vs mês</span>
             </article>
-            <article className="panel metric">
-              <span>Status</span>
-              <strong style={{ color: "var(--color-ok)", fontSize: "1rem" }}>🟢 Online</strong>
+            <article className="metric animate-in">
+              <span className="metric-label">Status</span>
+              <span className="metric-value" style={{ fontSize: "var(--text-lg)", color: "var(--luxury-green)" }}>🟢 Online</span>
+            </article>
+            <article className="metric animate-in">
+              <span className="metric-label">Produtos</span>
+              <span className="metric-value">12</span>
+              <span className="metric-trend">Catálogo ativo</span>
+            </article>
+            <article className="metric animate-in">
+              <span className="metric-label">Clientes</span>
+              <span className="metric-value">{metrics.quotes}</span>
+              <span className="metric-trend">No pipeline</span>
             </article>
           </>
         )}
       </section>
 
       {/* ============================================
-          CRM PIPELINE BOARD
+          CRM PIPELINE
           ============================================ */}
-      <section id="crm" className="shell pipeline">
-        <div className="sectionTitle">
-          <p className="eyebrow">CRM</p>
+      <section id="crm" className="shell section">
+        <div className="section-header">
+          <p>Pipeline</p>
           <h2>Funil de clientes</h2>
+          <p className="section-desc">Acompanhe cada lead do primeiro contato até a entrega final.</p>
         </div>
 
-        <div className="crmBoard" role="list" aria-label="Pipeline de orçamentos">
+        <div className="crmBoard" role="list">
           {PIPELINE_COLUMNS.map((col) => (
             <div key={col.key} className="crmColumn" role="listitem">
-              <div className="crmColumnHeader" style={{ background: `${col.color}20`, color: col.color }}>
+              <div className="crmColumnHeader" style={{ background: `${col.color}15`, color: col.color }}>
                 <span>{col.icon} {col.label}</span>
                 <span className="crmBadge" style={{ background: col.color }}>{quotesByStatus[col.key]?.length || 0}</span>
               </div>
               {quotesByStatus[col.key]?.map((q) => (
                 <div key={q.id} className="crmCard" onClick={() => { setQuote(q); setWizardStep(3); }}>
                   <strong>{q.clientName}</strong>
-                  <span>{serviceLabel(q.serviceType)} · {money(q.recommendedPrice)}</span>
-                  <span style={{ fontSize: "0.7rem", marginTop: "0.25rem" }}>{formatDate(q.createdAt)}</span>
+                  <span>{serviceLabel(q.serviceType)}</span>
+                  <div className="card-meta">
+                    <span>{money(q.recommendedPrice)}</span>
+                    <span>{formatDate(q.createdAt)}</span>
+                  </div>
                 </div>
               ))}
               {quotesByStatus[col.key]?.length === 0 && (
-                <p style={{ fontSize: "0.75rem", color: "var(--color-muted)", textAlign: "center", padding: "1rem" }}>
-                  Nenhum orçamento
-                </p>
+                <p style={{ fontSize: "var(--text-xs)", color: "var(--color-muted)", textAlign: "center", padding: "var(--space-4)" }}>Nenhum orçamento</p>
               )}
             </div>
           ))}
@@ -369,24 +405,23 @@ export default function Home() {
       </section>
 
       {/* ============================================
-          CATÁLOGO DE SERVIÇOS
+          CATÁLOGO PREMIUM
           ============================================ */}
-      <section id="catalog" className="shell pipeline">
-        <div className="sectionTitle">
-          <p className="eyebrow">Catálogo</p>
+      <section id="catalog" className="shell section">
+        <div className="section-header">
+          <p>Catálogo</p>
           <h2>Nossos serviços</h2>
+          <p className="section-desc">Soluções personalizadas para cada desejo. Qualidade artesanal, acabamento premium.</p>
         </div>
 
         <div className="catalogGrid">
           {CATALOG_SERVICES.map((service) => (
-            <div key={service.id} className="catalogCard panel">
-              <div style={{ fontSize: "2rem", marginBottom: "0.5rem" }}>{service.icon}</div>
+            <div key={service.id} className="catalogCard animate-in">
+              <div className="catalog-icon">{service.icon}</div>
               <h4>{service.name}</h4>
               <p>{service.description}</p>
               <span className="catalogPrice">{service.price}</span>
-              <span style={{ fontSize: "0.75rem", color: "var(--color-muted)", marginTop: "0.5rem", display: "block" }}>
-                ⏱ {service.duration}
-              </span>
+              <span className="catalogDuration">⏱ {service.duration}</span>
             </div>
           ))}
         </div>
@@ -395,151 +430,167 @@ export default function Home() {
       {/* ============================================
           WIZARD ORÇAMENTO
           ============================================ */}
-      <section id="quote" className="shell workbench">
-        <aside className="panel introPanel">
-          <p className="eyebrow">Quote engine</p>
-          <h2>Briefing enxuto. Regra forte. Venda pronta.</h2>
-          <p>
-            O frontend não calcula preço. Ele envia o briefing para o backend; o domínio calcula mínimo, recomendado, premium e sinal.
-          </p>
-          <div className="statusCard" role="status" aria-live="polite">
-            <span>Status</span>
-            <strong>{status}</strong>
+      <section id="quote" className="shell section">
+        <div className="section-header">
+          <p>Orçamento</p>
+          <h2>Crie seu orçamento</h2>
+          <p className="section-desc">Briefing completo com cálculo automático de preços e geração de Pix.</p>
+        </div>
+
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "var(--space-5)", alignItems: "start" }}>
+          <div className="quoteForm">
+            {/* WIZARD STEPS */}
+            <div className="wizardSteps">
+              <div className={`wizardStep ${wizardStep >= 1 ? (wizardStep > 1 ? "done" : "active") : ""}`}>
+                <div className="wizardStepNumber">{wizardStep > 1 ? "✓" : "1"}</div>
+                <span>Cliente</span>
+              </div>
+              <div className={`wizardConnector ${wizardStep > 1 ? "done" : ""}`} />
+              <div className={`wizardStep ${wizardStep >= 2 ? (wizardStep > 2 ? "done" : "active") : ""}`}>
+                <div className="wizardStepNumber">{wizardStep > 2 ? "✓" : "2"}</div>
+                <span>Serviço</span>
+              </div>
+              <div className={`wizardConnector ${wizardStep > 2 ? "done" : ""}`} />
+              <div className={`wizardStep ${wizardStep >= 3 ? "active" : ""}`}>
+                <div className="wizardStepNumber">3</div>
+                <span>Resultado</span>
+              </div>
+            </div>
+
+            <form onSubmit={createQuote}>
+              <div className="formHeader">
+                <h3>Novo orçamento</h3>
+                <span>PIX + WhatsApp</span>
+              </div>
+
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "var(--space-3)" }}>
+                <label htmlFor="clientName">
+                  Nome da cliente
+                  <input id="clientName" name="clientName" type="text" defaultValue="Maria" required minLength={2} maxLength={80} autoComplete="name" />
+                </label>
+
+                <label htmlFor="clientWhatsapp">
+                  WhatsApp
+                  <input id="clientWhatsapp" name="clientWhatsapp" type="tel" defaultValue="11999999999" required pattern="[0-9]{10,13}" title="DDD + número" autoComplete="tel" />
+                </label>
+
+                <label htmlFor="type" className="full">
+                  Serviço
+                  <select id="type" name="type" defaultValue="LACE_FRONT" required>
+                    <option value="LACE_FRONT">Lace Front Personalizada</option>
+                    <option value="FULL_LACE">Full Lace Premium</option>
+                    <option value="WIG_CUSTOM">Wig Customizada</option>
+                    <option value="MAINTENANCE">Manutenção</option>
+                    <option value="SHOE_CUSTOMIZATION">Customização</option>
+                  </select>
+                </label>
+
+                <label htmlFor="color">
+                  Cor
+                  <input id="color" name="color" type="text" defaultValue="Castanho iluminado" required minLength={2} maxLength={60} />
+                </label>
+
+                <label htmlFor="lengthCm">
+                  Comprimento (cm)
+                  <input id="lengthCm" name="lengthCm" type="number" defaultValue={55} required min={10} max={120} />
+                </label>
+
+                <label htmlFor="texture">
+                  Textura
+                  <input id="texture" name="texture" type="text" defaultValue="Ondulada" required minLength={2} maxLength={60} />
+                </label>
+
+                <label htmlFor="density">
+                  Densidade
+                  <input id="density" name="density" type="text" defaultValue="180%" required />
+                </label>
+
+                <label htmlFor="capSize">
+                  Touca
+                  <select id="capSize" name="capSize" defaultValue="M">
+                    <option value="P">Pequena (P)</option>
+                    <option value="M">Média (M)</option>
+                    <option value="G">Grande (G)</option>
+                    <option value="GG">Extra Grande (GG)</option>
+                  </select>
+                </label>
+
+                <label htmlFor="deadlineDays">
+                  Prazo (dias)
+                  <input id="deadlineDays" name="deadlineDays" type="number" defaultValue={15} required min={1} max={180} />
+                </label>
+
+                <label htmlFor="materialCost">
+                  Material (R$)
+                  <input id="materialCost" name="materialCost" type="number" defaultValue={150} required min={0} step="0.01" />
+                </label>
+
+                <label htmlFor="laborCost">
+                  Mão de obra (R$)
+                  <input id="laborCost" name="laborCost" type="number" defaultValue={250} required min={0} step="0.01" />
+                </label>
+
+                <label htmlFor="complexityCost">
+                  Complexidade (R$)
+                  <input id="complexityCost" name="complexityCost" type="number" defaultValue={80} min={0} step="0.01" />
+                </label>
+
+                <label htmlFor="urgencyCost">
+                  Urgência (R$)
+                  <input id="urgencyCost" name="urgencyCost" type="number" defaultValue={20} min={0} step="0.01" />
+                </label>
+
+                <label htmlFor="marginPercent">
+                  Margem (%)
+                  <input id="marginPercent" name="marginPercent" type="number" defaultValue={30} min={0} max={300} step="0.1" />
+                </label>
+
+                <label htmlFor="notes" className="full">
+                  Observações
+                  <textarea id="notes" name="notes" defaultValue="Acabamento natural e linha frontal delicada." maxLength={300} rows={3} />
+                </label>
+              </div>
+
+              <button type="submit" className="button primary full" disabled={loading} style={{ marginTop: "var(--space-4)" }}>
+                {loading ? "⏳ Gerando..." : "💰 Gerar orçamento completo"}
+              </button>
+            </form>
           </div>
-        </aside>
 
-        <div className="panel quoteForm">
-          {/* WIZARD STEPS */}
-          <div className="wizardSteps" role="navigation" aria-label="Etapas do orçamento">
-            <div className={`wizardStep ${wizardStep >= 1 ? (wizardStep > 1 ? "done" : "active") : ""}`}>
-              <div className="wizardStepNumber">{wizardStep > 1 ? "✓" : "1"}</div>
-              <span>Cliente</span>
+          <div>
+            <div className="panel" style={{ padding: "var(--space-4)", marginBottom: "var(--space-4)" }}>
+              <div className="statusCard" role="status" aria-live="polite">
+                <span>Status do sistema</span>
+                <strong>{status}</strong>
+              </div>
             </div>
-            <div className={`wizardConnector ${wizardStep > 1 ? "done" : ""}`} />
-            <div className={`wizardStep ${wizardStep >= 2 ? (wizardStep > 2 ? "done" : "active") : ""}`}>
-              <div className="wizardStepNumber">{wizardStep > 2 ? "✓" : "2"}</div>
-              <span>Serviço</span>
+
+            <div className="section-header" style={{ marginBottom: "var(--space-3)" }}>
+              <p>Diagnóstico</p>
+              <h4>Solicitação para Sessão B</h4>
             </div>
-            <div className={`wizardConnector ${wizardStep > 2 ? "done" : ""}`} />
-            <div className={`wizardStep ${wizardStep >= 3 ? "active" : ""}`}>
-              <div className="wizardStepNumber">3</div>
-              <span>Resultado</span>
+
+            <div className="panel" style={{ padding: "var(--space-4)" }}>
+              <p style={{ fontSize: "var(--text-sm)", color: "var(--color-muted)", marginBottom: "var(--space-3)" }}>
+                Para implementar o diagnóstico consultivo completo da cliente, solicito à Sessão B:
+              </p>
+              <ul style={{ fontSize: "var(--text-sm)", color: "var(--color-text-secondary)", paddingLeft: "var(--space-4)", lineHeight: 2 }}>
+                <li>Endpoint POST /api/diagnosis</li>
+                <li>Campos: objetivo, experiência, estilo, restrições, tom pele, cor, comprimento, textura, frequência, orçamento</li>
+                <li>Lógica de recomendação em Policy</li>
+              </ul>
             </div>
           </div>
-
-          <form onSubmit={createQuote}>
-            <div className="formHeader">
-              <h3>Novo orçamento</h3>
-              <span>Pix + WhatsApp</span>
-            </div>
-
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: "var(--space-2)" }}>
-              <label htmlFor="clientName">
-                Nome da cliente
-                <input id="clientName" name="clientName" type="text" defaultValue="Maria" required minLength={2} maxLength={80} autoComplete="name" />
-              </label>
-
-              <label htmlFor="clientWhatsapp">
-                WhatsApp
-                <input id="clientWhatsapp" name="clientWhatsapp" type="tel" defaultValue="11999999999" required pattern="[0-9]{10,13}" title="Digite o número com DDD, apenas números" autoComplete="tel" />
-              </label>
-
-              <label htmlFor="type" className="full">
-                Serviço
-                <select id="type" name="type" defaultValue="LACE_FRONT" required>
-                  <option value="LACE_FRONT">Lace front personalizada</option>
-                  <option value="FULL_LACE">Full lace premium</option>
-                  <option value="WIG_CUSTOM">Wig customizada</option>
-                  <option value="MAINTENANCE">Manutenção</option>
-                  <option value="SHOE_CUSTOMIZATION">Customização de sapato</option>
-                </select>
-              </label>
-
-              <label htmlFor="color">
-                Cor
-                <input id="color" name="color" type="text" defaultValue="Castanho iluminado" required minLength={2} maxLength={60} />
-              </label>
-
-              <label htmlFor="lengthCm">
-                Comprimento (cm)
-                <input id="lengthCm" name="lengthCm" type="number" defaultValue={55} required min={10} max={120} />
-              </label>
-
-              <label htmlFor="texture">
-                Textura
-                <input id="texture" name="texture" type="text" defaultValue="Ondulada" required minLength={2} maxLength={60} />
-              </label>
-
-              <label htmlFor="density">
-                Densidade
-                <input id="density" name="density" type="text" defaultValue="180%" required minLength={2} maxLength={60} />
-              </label>
-
-              <label htmlFor="capSize">
-                Touca
-                <select id="capSize" name="capSize" defaultValue="M">
-                  <option value="P">Pequena (P)</option>
-                  <option value="M">Média (M)</option>
-                  <option value="G">Grande (G)</option>
-                  <option value="GG">Extra Grande (GG)</option>
-                </select>
-              </label>
-
-              <label htmlFor="deadlineDays">
-                Prazo (dias)
-                <input id="deadlineDays" name="deadlineDays" type="number" defaultValue={15} required min={1} max={180} />
-              </label>
-
-              <label htmlFor="materialCost">
-                Material (R$)
-                <input id="materialCost" name="materialCost" type="number" defaultValue={150} required min={0} step="0.01" />
-              </label>
-
-              <label htmlFor="laborCost">
-                Mão de obra (R$)
-                <input id="laborCost" name="laborCost" type="number" defaultValue={250} required min={0} step="0.01" />
-              </label>
-
-              <label htmlFor="complexityCost">
-                Complexidade (R$)
-                <input id="complexityCost" name="complexityCost" type="number" defaultValue={80} min={0} step="0.01" />
-              </label>
-
-              <label htmlFor="urgencyCost">
-                Urgência (R$)
-                <input id="urgencyCost" name="urgencyCost" type="number" defaultValue={20} min={0} step="0.01" />
-              </label>
-
-              <label htmlFor="marginPercent">
-                Margem (%)
-                <input id="marginPercent" name="marginPercent" type="number" defaultValue={30} min={0} max={300} step="0.1" />
-              </label>
-
-              <label htmlFor="notes" className="full">
-                Observações
-                <textarea id="notes" name="notes" defaultValue="Acabamento natural e linha frontal delicada." maxLength={300} rows={3} />
-              </label>
-            </div>
-
-            <button
-              type="submit"
-              className="full button primary"
-              disabled={loading}
-              style={{ marginTop: "var(--space-3)" }}
-            >
-              {loading ? "⏳ Gerando..." : "💰 Gerar orçamento completo"}
-            </button>
-          </form>
         </div>
       </section>
 
       {/* ============================================
-          RESULTADO DO ORÇAMENTO
+          RESULTADO
           ============================================ */}
       {quote && (
         <section className="shell resultGrid" aria-labelledby="resultado-titulo">
           <h2 id="resultado-titulo" className="sr-only">Resultado do orçamento</h2>
-          <article className="panel pricePanel">
+          <article className="pricePanel">
             <p className="eyebrow">Resultado</p>
             <h2>{money(quote.recommendedPrice)}</h2>
             <div className="priceList">
@@ -547,20 +598,20 @@ export default function Home() {
               <span>Premium <strong>{money(quote.premiumPrice)}</strong></span>
               <span>Sinal Pix <strong>{money(quote.depositPrice)}</strong></span>
             </div>
-            <a className="button primary" href={quote.whatsappLink} target="_blank" rel="noopener noreferrer">
+            <a className="button primary" href={quote.whatsappLink} target="_blank" rel="noopener noreferrer" style={{ marginTop: "var(--space-4)" }}>
               📱 Abrir WhatsApp
             </a>
           </article>
 
-          <article className="panel pixPanel">
+          <article className="pixPanel">
             <p className="eyebrow">Pix cópia e cola</p>
-            <textarea readOnly value={quote.pixCopyPaste} rows={6} aria-label="Código Pix para copiar" />
-            <button className="button secondary" onClick={copyPix}>
+            <textarea readOnly value={quote.pixCopyPaste} rows={6} aria-label="Código Pix" />
+            <button className="button secondary" onClick={copyPix} style={{ marginTop: "var(--space-3)" }}>
               📋 Copiar Pix
             </button>
           </article>
 
-          <article className="panel messagePanel">
+          <article className="messagePanel">
             <p className="eyebrow">Mensagem</p>
             <pre>{quote.whatsappMessage}</pre>
           </article>
@@ -568,15 +619,15 @@ export default function Home() {
       )}
 
       {/* ============================================
-          PIPELINE / ORÇAMENTOS RECENTES
+          PIPELINE
           ============================================ */}
-      <section id="pipeline" className="shell pipeline">
-        <div className="sectionTitle">
-          <p className="eyebrow">Pipeline</p>
+      <section id="pipeline" className="shell section">
+        <div className="section-header">
+          <p>Pipeline</p>
           <h2>Orçamentos recentes</h2>
         </div>
 
-        <div style={{ display: "flex", gap: "var(--space-2)", marginBottom: "var(--space-3)", flexWrap: "wrap" }}>
+        <div style={{ display: "flex", gap: "var(--space-3)", marginBottom: "var(--space-4)", flexWrap: "wrap" }}>
           <input
             type="search"
             placeholder="🔍 Buscar por nome..."
@@ -597,34 +648,28 @@ export default function Home() {
           </select>
         </div>
 
-        <div className="panel table" role="table" aria-label="Lista de orçamentos">
+        <div className="table">
           {initialLoading ? (
-            <>
-              <QuoteRowSkeleton />
-              <QuoteRowSkeleton />
-              <QuoteRowSkeleton />
-            </>
+            <div className="row"><Skeleton style={{ height: "2em" }} /></div>
           ) : filteredQuotes.length === 0 ? (
-            <div className="empty" style={{ textAlign: "center", padding: "var(--space-5)" }}>
-              <div style={{ fontSize: "3rem", marginBottom: "1rem" }}>📭</div>
-              <p>Nenhum orçamento encontrado.</p>
-              <a href="#quote" className="button primary" style={{ marginTop: "1rem", display: "inline-flex" }}>
+            <div style={{ textAlign: "center", padding: "var(--space-8)" }}>
+              <div style={{ fontSize: "3rem", marginBottom: "var(--space-3)" }}>📭</div>
+              <p style={{ color: "var(--color-muted)" }}>Nenhum orçamento encontrado.</p>
+              <a href="#quote" className="button primary" style={{ marginTop: "var(--space-4)", display: "inline-flex" }}>
                 Criar primeiro orçamento
               </a>
             </div>
           ) : (
-            <div role="rowgroup">
-              {filteredQuotes.map((item) => (
-                <div className="row" key={item.id} role="row">
-                  <strong role="cell">{item.clientName}</strong>
-                  <span role="cell">{serviceLabel(item.serviceType)}</span>
-                  <span role="cell">{money(item.recommendedPrice)}</span>
-                  <a href={item.whatsappLink} target="_blank" rel="noopener noreferrer" role="cell">
-                    📱 WhatsApp
-                  </a>
-                </div>
-              ))}
-            </div>
+            filteredQuotes.map((item) => (
+              <div className="row" key={item.id}>
+                <strong>{item.clientName}</strong>
+                <span>{serviceLabel(item.serviceType)}</span>
+                <span>{money(item.recommendedPrice)}</span>
+                <a href={item.whatsappLink} target="_blank" rel="noopener noreferrer" className="button secondary" style={{ minHeight: "36px", padding: "0.5rem 1rem", fontSize: "var(--text-xs)" }}>
+                  📱 WhatsApp
+                </a>
+              </div>
+            ))
           )}
         </div>
       </section>
@@ -634,10 +679,9 @@ export default function Home() {
           ============================================ */}
       <footer className="shell footer">
         <Logo />
-        <span>Gal Atelier OS · v5.12 · {quotes.length} orçamentos · Modo {theme}</span>
+        <span>Gal Atelier OS · v5.12 · {quotes.length} orçamentos · Modo {theme === "dark" ? "escuro" : "claro"}</span>
       </footer>
 
-      {/* SCREEN READER ONLY STYLES */}
       <style jsx global>{`
         .sr-only {
           position: absolute;
@@ -649,6 +693,22 @@ export default function Home() {
           clip: rect(0, 0, 0, 0);
           white-space: nowrap;
           border: 0;
+        }
+
+        .statusCard {
+          display: grid;
+          gap: 0.25rem;
+          padding: var(--space-4);
+          border-radius: var(--radius-lg);
+          background: rgba(64, 220, 165, 0.08);
+          color: var(--luxury-green);
+        }
+
+        .statusCard span {
+          font-size: var(--text-xs);
+          font-weight: 700;
+          letter-spacing: 0.08em;
+          text-transform: uppercase;
         }
       `}</style>
     </main>
