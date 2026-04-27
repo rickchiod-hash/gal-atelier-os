@@ -123,10 +123,15 @@ class QuoteApplicationService(
 
     private fun label(type: BriefingType): String =
         when (type) {
+            BriefingType.GLUE_LESS -> "glueless wig personalizada"
             BriefingType.LACE_FRONT -> "lace front personalizada"
             BriefingType.FULL_LACE -> "full lace personalizada"
+            BriefingType.CLOSURE -> "closure"
+            BriefingType.LACE_360 -> "360 lace"
+            BriefingType.U_PART -> "u-part wig"
             BriefingType.WIG_CUSTOM -> "wig customizada"
             BriefingType.MAINTENANCE -> "manutenção"
+            BriefingType.HIGIENIZACAO -> "higienização"
             BriefingType.SHOE_CUSTOMIZATION -> "customização de sapato"
         }
 }
