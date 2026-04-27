@@ -1,37 +1,25 @@
 # Melhorias V5 - Fase 1
 
-## Sessão Atual (opencode) - ✅ Concluído
+## Sessão A (Frontend) - ✅ Feito (outra sessão)
+
+## Sessão B (Backend/Produto/QA) - ✅ Concluído
 
 | # | Tarefa | Status | Commit |
 |---|---------|--------|--------|
-| 1 | Status no QuoteResponse | ✅ | 7f50792 |
-| 2 | Validação WhatsApp | ✅ | 7f50792 |
-| 3 | Endpoint /api/services | ✅ | d92dad4 |
-| 4 | Teste ServiceController | ✅ | d92dad4 |
-
-## Sessão B (outra IDE) - Pendente
-
-### Frontend Components para editar/criar
-- [ ] `components/Wizard.tsx` (wizard em etapas)
-- [ ] `components/CRMBoard.tsx` (cards por status)
-- [ ] `components/ServiceCatalog.tsx` (catálogo visual)
-- [ ] `components/DashboardKPIs.tsx` (KPIs visuais)
-- [ ] `page.tsx` (integração)
-
-### Não editar (conflito)
-- `QuoteController.kt` - ✅ feito
-- `ServiceCatalog.kt` - ✅ feito
-- `ServiceController.kt` - ✅ feito
-- `QuoteApplicationService.kt` - ✅ feito
-- `globals.css` - ⚠️ editar com cuidado
-
----
+| 1 | BriefingType expands to 10 types | ✅ | e915b3f |
+| 2 | ServiceCatalog expands to 10 | ✅ | e915b3f |
+| 3 | PRODUCT-PRD doc | ✅ | e915b3f |
+| 4 | API-CONTRACT doc | ✅ | e915b3f |
+| 5 | DATA-MODEL-ROADMAP doc | ✅ | e915b3f |
+| 6 | VALIDATION-RUNBOOK doc | ✅ | e915b3f |
+| 7 | Tests: 8 passing | ✅ | e915b3f |
 
 ## Histórico de Commits
 
 ```
+e915b3f feat(sessao-b): expand service catalog
+11ad3e7 fix: add UTF-8 encoding to Docker
+de26208 feat(page): complete V5 Phase 1
 d92dad4 feat(api): add /api/services endpoint
-76efef5 feat(layout): add ThemeProvider
-379eb67 feat(ui): add Toast, skeleton, dark mode, CRM board
-7f50792 fix(qa): add status to QuoteResponse
+...
 ```

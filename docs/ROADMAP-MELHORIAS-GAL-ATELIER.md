@@ -166,12 +166,57 @@ A sessão validadora deve:
 ```
 6897b82 docs: add PRODUCT-ROADMAP.md with phases
 d955692 feat(sessao-b): add dashboard, diagnostic, leads, pipeline
-0ef541c docs(integration): add session status
-64fe50b fix(integration): align pipeline and diagnostic
+0ef541c docs(integration): add session status and roadmap docs
+64fe50b fix(integration): align pipeline and diagnostic controllers
 aee7f05 feat(sessao-a): luxury functional design system V5
 e915b3f feat(sessao-b): expand service catalog to 10 technical types
+11ad3e7 fix: add UTF-8 encoding to Docker and enhance CSS
+e9c90bf fix: add @ path alias to tsconfig.json
+de26208 feat(page): complete V5 Phase 1 - dashboard KPIs
+149b9ef docs: update QA review and tasks for V5 Phase 1
+d92dad4 feat(api): add /api/services endpoint with service catalog
 ```
 
 ---
 
-**Última atualização**: 2026-04-27 16:20 UTC
+## Endpoints Implementados (12)
+
+| # | Endpoint | Método | Status |
+|---|----------|--------|--------|
+| 1 | /api/health | GET | ✅ |
+| 2 | /api/quotes | POST | ✅ |
+| 3 | /api/quotes | GET | ✅ |
+| 4 | /api/quotes/metrics | GET | ✅ |
+| 5 | /api/services | GET | ✅ |
+| 6 | /api/pipeline | GET | ✅ |
+| 7 | /api/dashboard | GET | ✅ |
+| 8 | /api/leads | GET/POST/PATCH | ✅ |
+| 9 | /api/diagnostics/recommendation | POST | ✅ |
+| 10 | /api/templates/whatsapp | GET | ✅ |
+| 11 | /api/customers | GET/POST | 🔲 PENDENTE |
+| 12 | /api/orders | GET/POST | 🔲 PENDENTE |
+
+---
+
+## Próximos Passos (Pendente Sessão C)
+
+1. **GET /api/customers** — CRUD completo de clientes
+2. **GET /api/orders** — Gestão de pedidos
+3. **GET /api/inventory** — Controle de estoque
+4. **GET /api/appointments** — Agenda de serviços
+
+---
+
+## Links Ativos
+
+- Frontend: http://localhost:3000
+- Backend: http://localhost:8080
+- Health: http://localhost:8080/api/health
+- Dashboard: http://localhost:8080/api/dashboard
+- Services: http://localhost:8080/api/services
+- Leads: http://localhost:8080/api/leads
+- Pipeline: http://localhost:8080/api/pipeline
+
+---
+
+**Última atualização**: 2026-04-27 13:30 UTC
