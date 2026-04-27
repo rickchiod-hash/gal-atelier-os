@@ -2,22 +2,23 @@
 
 ## Objetivo
 
-O sistema Gal Atelier OS será evoluído para um **Beauty Commerce CRM para Wigmakers**.
+O sistema Gal Atelier OS será evoluído para um **Beauty Commerce CRM para Wigmakers** com estética **Editorial Atelier** (V6).
 
-Não é apenas um CRM. É:
+Não é um dashboard SaaS genérico. É:
 
-- CRM operacional
-- Ecommerce de serviços
-- Catálogo técnico de wigs/perucas/laces
-- Pedidos personalizados
-- Agenda de instalação/manutenção
-- Gestão de estoque
-- Financeiro (Pix/sinal)
-- WhatsApp operacional
-- Pós-venda
-- Recompra
+- Loja de luxo + atelier artesanal
+- CRM operacional com cara de concierge, não Kanban
+- Ecommerce de serviços com tipografia autoritária (Playfair Display + Inter)
+- Catálogo técnico em lookbook layout (não grid de cards)
+- Pedidos personalizados com formulários de coluna única (border-bottom only)
+- Agenda de instalação/manutenção com micro-interações polite
+- Gestão de estoque sem card-mania
+- Financeiro (Pix/sinal) com accents sutis
+- WhatsApp operacional integrado sem gráficos fake
+- Pós-venda com foco em whitespace (mínimo 40% vazio)
+- Recompra com experiência editorial, não operacional
 
-O nicho exige confiança visual, atendimento consultivo e controle técnico do produto.
+O nicho exige confiança visual (paleta "Whisper Luxury"), tipografia com autoridade e atendimento consultivo com elegância de marca premium.
 
 ## Como a Sessão Validadora Deve Usar Este Arquivo
 
@@ -84,21 +85,35 @@ A sessão validadora deve:
 5. ❌ NÃO quebrar link WhatsApp
 6. ❌ NÃO criar integração real de pagamento
 7. ❌ NÃO criar banco real sem aprovação
-8. ✅ SEMPRE commitar após etapa funcional
-9. ✅ SEMPRE atualizar roadmap antes/depois de cada etapa
+8. ❌ NÃO criar componentes com cara de SaaS dashboard (métricas em cards coloridos, gráficos fake, botões pill-shaped)
+9. ❌ NÃO usar gradientes pesados (o luxo é sólido)
+10. ✅ SEMPRE manter espaçamento fluido com `clamp()` e máximo 60% de conteúdo visual
+11. ✅ SEMPRE commitar após etapa funcional
+12. ✅ SEMPRE atualizar roadmap antes/depois de cada etapa
 
 ---
 
-## Paleta Premium
+## Paleta "Whisper Luxury" (V6)
 
-- Preto profundo: #111111
-- Off-white: #F8F6F2
-- Nude areia: #D8C5B0
-- Champagne gold: #C8A96B
-- Marrom espresso: #4B3427
-- Rosé queimado: #C79BA5
-- Verde status: #40DCA5
-- Vinho profundo: #5A163B
+### Cores Base (80% da página)
+- Ivory: #FAF8F5 — Mais quente que off-white
+- Charcoal: #2C2C2C — Mais suave que preto
+- Blush: #E8DDD3 — Neutro quente, não "nude"
+
+### Accents (máximo 2% da página)
+- Bronze: #A67C52 — Ouro contido, não gritante
+- Deep Espresso: #3D2B1F — Marrom profundo para CTAs
+- Rose: #C1978E — Rosa murcho para hover states
+
+### Semântica
+```css
+--color-bg: var(--ivory);
+--color-surface: #FFFFFF;
+--color-text: var(--charcoal);
+--color-text-muted: #8A8078;
+--color-accent: var(--bronze);
+--color-brand: var(--deep-espresso);
+```
 
 ---
 
@@ -198,6 +213,7 @@ e915b3f feat(sessao-b): expand service catalog to 10 technical types
 - ✅ OrderController (GET/POST/PATCH + timeline)
 - ✅ InventoryController (GET/POST/PATCH + summary)
 - ✅ AppointmentsController (GET/POST/PATCH + summary)
+- ✅ CampaignController (GET/POST/PATCH)
 
 ---
 
@@ -211,6 +227,7 @@ e915b3f feat(sessao-b): expand service catalog to 10 technical types
 | V2-4 | PDF orçamento | Download de comprovativo | DONE | 87b2dea |
 | V2-5 | Histórico quotes | Lista com filtros por cliente/status | DONE | 87b2dea |
 | V2-6 | Fix H2 migration | Sintaxe PostgreSQL corrigida | DONE | 87b2dea |
+| V2-7 | Campaigns CRUD | Entities, Repository, Controller, Migration V2 | DONE | feat: add campaigns CRUD |
 
 ---
 
@@ -220,8 +237,9 @@ e915b3f feat(sessao-b): expand service catalog to 10 technical types
 - [x] Flyway migration V1 schema
 - [x] PostgreSQL 16 config
 - [x] Docker Compose atualizado
-- [x] Entity classes JPA (4)
-- [x] Repository interfaces (4)
+- [x] Entity classes JPA (5)
+- [x] Repository interfaces (5)
+- [x] Flyway migration V2 campaigns table
 
 ### Pendente
 - [ ] Repository em controllers
