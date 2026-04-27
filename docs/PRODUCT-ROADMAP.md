@@ -63,6 +63,17 @@ Sistema operacional para wigmaker/perucas com estética de **loja de luxo + atel
 | 11 | Acessibilidade WCAG | ✅ |
 | 12 | Anti-dashboard (removido skeletons, gráficos fake) | ✅ |
 
+### Backend Entities (Domain Model)
+| # | Entidade | Descrição | Status |
+|---|----------|-----------|--------|
+| 1 | Quote | Orçamento com Money value object | ✅ |
+| 2 | Client | Cliente com dados básicos | ✅ |
+| 3 | ServiceCatalog | 10 tipos de wigs/serviços | ✅ |
+| 4 | WigBriefing | Briefing para personalização | ✅ |
+| 5 | BriefingType | Tipos de briefing | ✅ |
+| 6 | Money | Value object para valores monetários | ✅ |
+| 7 | OrderStatus | Status de pedidos | ✅ |
+
 ### Testes
 - 8 testes passando ✅
 - JaCoCo coverage

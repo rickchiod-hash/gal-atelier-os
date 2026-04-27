@@ -1,8 +1,12 @@
 package com.galatelier.adapter.input.web
 
+import com.galatelier.adapter.output.persistence.entity.TemplateType
+import com.galatelier.adapter.output.persistence.entity.WhatsAppTemplateEntity
+import com.galatelier.adapter.output.persistence.repository.WhatsAppTemplateRepository
 import com.galatelier.application.port.output.WhatsAppMessagePort
 import org.slf4j.LoggerFactory
 import org.springframework.web.bind.annotation.*
+import java.time.LocalDateTime
 import java.util.UUID
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ConcurrentMap
@@ -10,83 +14,58 @@ import java.util.concurrent.ConcurrentMap
 @RestController
 @RequestMapping("/api/templates")
 class WhatsAppTemplateController(
+    private val templateRepository: WhatsAppTemplateRepository,
     private val whatsAppMessagePort: WhatsAppMessagePort
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
     private val sentMessages: ConcurrentMap<UUID, WhatsAppSentMessage> = ConcurrentHashMap()
 
     @GetMapping("/whatsapp")
-    fun whatsappTemplates(): List<WhatsAppTemplate> = listOf(
-        WhatsAppTemplate(
-            id = "primeiro-atendimento",
-            name = "Primeiro atendimento",
-            content = "Olá, {nome}! 😍\nObrigada pelo interesse.\nSou especialista em perucas e laces personalizadas.\nComo posso te ajudar hoje?"
-        ),
-        WhatsAppTemplate(
-            id = "diagnostico",
-            name = "Diagnóstico",
-            content = "Oi, {nome}! Para te indicar a melhor opção, preciso saber:\n• Já usou wig ou lace antes?\n• Qual o tom da sua pele?\n• Prefere liso ou cacheado?\n• quanto tempo vc quer usar por dia?\nMe conta! 😊"
-        ),
-        WhatsAppTemplate(
-            id = "orcamento",
-            name = "Orçamento",
-            content = "Oi, {nome}! Segue o orçamento:\n\n{servico}\nValor: R$ {valor}\nPrazo: {prazo}dias\n\nO sinal de R$ {sinal} confirma a reserva.\nPosso te enviar fotos dos materiais?"
-        ),
-        WhatsAppTemplate(
-            id = "follow-up-24h",
-            name = "Follow-up 24h",
-            content = "Oi, {nome}! Tudo bem?\nVi que recebeu o orçamento.\nTem alguma dúvida?\nEstou à disposição! 💕"
-        ),
-        WhatsAppTemplate(
-            id = "follow-up-72h",
-            name = "Follow-up 72h",
-            content = "Oi, {nome}! Passando para lembrar do orçamento.\nAs vagas para esse serviço são limitadas.\nMe conta se precisa de algo mais! 😘"
-        ),
-        WhatsAppTemplate(
-            id = "cobranca-sinal",
-            name = "Cobrança de sinal",
-            content = "Oi, {nome}! Tudo certo?\nO prazo para confirmar a reserva é hoje.\nO sinal de R$ {sinal} pode ser via Pix:\n{pix}\nMe avisa quando transferir! ✅"
-        ),
-        WhatsAppTemplate(
-            id = "confirmacao-pedido",
-            name = "Confirmação de pedido",
-            content = "Eba, {nome}! Pedido confirmado! 🎉\n\nServiço: {servico}\nPrazo: {prazo} dias\nVou te mandar fotos do progresso!\n\nQualquer dúvida é só chamar."
-        ),
-        WhatsAppTemplate(
-            id = "em-producao",
-            name = "Em produção",
-            content = "Oi, {nome}! Seu pedido está em produção! 🔨\nJá fiz a base e escolhi o cabelo.\nTe mando fotos em breve!\n\nPrazo: {prazo} dias"
-        ),
-        WhatsAppTemplate(
-            id = "pedido-pronto",
-            name = "Pedido pronto",
-            content = "Oi, {nome}! Seu wig/lace está PRONTO! ✨\n\nVem buscar ou prefere que eu envie?\nNão esquece de levar a faixa ou fixação que vc usa em casa!\n\nSee you! 💕"
-        ),
-        WhatsAppTemplate(
-            id = "pos-venda",
-            name = "Pós-venda",
-            content = "Oi, {nome}! Como ficou o wig/lace? 💕\n\nEspero que ame!\nQualquer dúvida sobre manutenção ou ajuste, me chama.\n\nE se precisar de outro serviço ou indication, será um prazer ajudar! 😍"
-        ),
-        WhatsAppTemplate(
-            id = "pedido-avaliacao",
-            name = "Pedido de avaliação",
-            content = "Oi, {nome}! amou o resultado? 📸\n\nSe puder, me manda uma foto e conta o que achou!\nSua opinião é muito importante!\n\nE se conhece alguém que也想, me indica! 😘"
-        ),
-        WhatsAppTemplate(
-            id = "recompra",
-            name = "Recompra",
-            content = "Oi, {nome}! Passando para lembrar:\nSeu wig já tem {meses} meses.\nÉ hora de fazer manutenção?\nPosso agendar um horário!\n\nOu se quiser uma nova opção, tenho modelos Lindos! 💕"
-        ),
-        WhatsAppTemplate(
-            id = "aniversario",
-            name = "Aniversário",
-            content = "Feliz aniversário, {nome}! 🎂🎉\n\nQue seu dia seja LINDO!\nEspero que vc ame cada momento.\n\nQuando tiver um tempinho, me conta como foi!\nTe mando um beijo! 😘"
+    fun whatsappTemplates(): List<WhatsAppTemplateResponse> =
+        templateRepository.findByActiveTrue().map { it.toResponse() }
+
+    @GetMapping("/whatsapp/{id}")
+    fun getTemplate(@PathVariable id: String): WhatsAppTemplateResponse? =
+        templateRepository.findById(UUID.fromString(id)).orElse(null)?.toResponse()
+
+    @GetMapping("/whatsapp/type/{type}")
+    fun getTemplatesByType(@PathVariable type: TemplateType): List<WhatsAppTemplateResponse> =
+        templateRepository.findByTemplateType(type).map { it.toResponse() }
+
+    @PostMapping("/whatsapp")
+    fun createTemplate(@RequestBody request: CreateWhatsAppTemplateRequest): WhatsAppTemplateResponse {
+        val template = WhatsAppTemplateEntity(
+            templateId = request.templateId,
+            name = request.name,
+            content = request.content,
+            templateType = request.templateType,
+            active = true
         )
-    )
+        return templateRepository.save(template).toResponse()
+    }
+
+    @PutMapping("/whatsapp/{id}")
+    fun updateTemplate(@PathVariable id: String, @RequestBody request: UpdateWhatsAppTemplateRequest): WhatsAppTemplateResponse? {
+        val existing = templateRepository.findById(UUID.fromString(id)).orElse(null) ?: return null
+        val updated = existing.copy(
+            name = request.name ?: existing.name,
+            content = request.content ?: existing.content,
+            templateType = request.templateType ?: existing.templateType,
+            active = request.active ?: existing.active,
+            updatedAt = LocalDateTime.now()
+        )
+        return templateRepository.save(updated).toResponse()
+    }
+
+    @DeleteMapping("/whatsapp/{id}")
+    fun deleteTemplate(@PathVariable id: String): Map<String, String> {
+        templateRepository.deleteById(UUID.fromString(id))
+        return mapOf("status" to "deleted")
+    }
 
     @PostMapping("/whatsapp/send")
     fun sendWhatsAppMessage(@RequestBody request: WhatsAppSendRequest): WhatsAppSendResponse {
-        val template = whatsappTemplates().find { it.id == request.templateId }
+        val template = templateRepository.findByTemplateId(request.templateId)
             ?: throw IllegalArgumentException("Template não encontrado: ${request.templateId}")
 
         var content = template.content
@@ -103,7 +82,7 @@ class WhatsAppTemplateController(
         )
         sentMessages[messageId] = message
 
-        logger.info("WhatsApp mock enviado para ${request.phone} com template ${request.templateId}")
+        logger.info("WhatsApp enviado para ${request.phone} com template ${request.templateId}")
 
         return WhatsAppSendResponse(
             messageId = messageId,
@@ -117,10 +96,40 @@ class WhatsAppTemplateController(
     fun getSentMessages(): List<WhatsAppSentMessage> = sentMessages.values.toList()
 }
 
-data class WhatsAppTemplate(
+fun WhatsAppTemplateEntity.toResponse() = WhatsAppTemplateResponse(
+    id = id.toString(),
+    templateId = templateId,
+    name = name,
+    content = content,
+    templateType = templateType,
+    active = active,
+    createdAt = createdAt.toString(),
+    updatedAt = updatedAt.toString()
+)
+
+data class WhatsAppTemplateResponse(
     val id: String,
+    val templateId: String,
     val name: String,
-    val content: String
+    val content: String,
+    val templateType: TemplateType,
+    val active: Boolean,
+    val createdAt: String,
+    val updatedAt: String
+)
+
+data class CreateWhatsAppTemplateRequest(
+    val templateId: String,
+    val name: String,
+    val content: String,
+    val templateType: TemplateType
+)
+
+data class UpdateWhatsAppTemplateRequest(
+    val name: String? = null,
+    val content: String? = null,
+    val templateType: TemplateType? = null,
+    val active: Boolean? = null
 )
 
 data class WhatsAppSentMessage(
