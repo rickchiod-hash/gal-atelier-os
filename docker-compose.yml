@@ -1,19 +1,47 @@
 name: gal-atelier-os
 
 services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: gal-atelier-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: galatelier
+      POSTGRES_PASSWORD: galatelier123
+      POSTGRES_DB: galatelier
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - gal-atelier-net
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U galatelier"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
   backend:
     build:
       context: ./backend
     container_name: gal-atelier-backend
     restart: unless-stopped
     environment:
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_NAME: galatelier
+      DB_USER: galatelier
+      DB_PASSWORD: galatelier123
       WHATSAPP_RECEIVER: "5511914136961"
       PIX_KEY: "coloque-a-chave-pix-real-no-env-local"
       PIX_MERCHANT_NAME: "GAL ATELIER"
       PIX_MERCHANT_CITY: "SAO PAULO"
-      SPRING_PROFILES_ACTIVE: "local"
+      SPRING_PROFILES_ACTIVE: "production"
     ports:
       - "8080:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
     healthcheck:
       test: ["CMD-SHELL", "curl -fsS http://localhost:8080/api/health || exit 1"]
       interval: 10s
@@ -27,12 +55,12 @@ services:
     build:
       context: ./frontend
       args:
-        NEXT_PUBLIC_API_URL: "http://localhost:8080"
+        NEXT_PUBLIC_API_URL: "http://backend:8080"
         NEXT_PUBLIC_WHATSAPP_RECEIVER: "5511914136961"
     container_name: gal-atelier-frontend
     restart: unless-stopped
     environment:
-      NEXT_PUBLIC_API_URL: "http://localhost:8080"
+      NEXT_PUBLIC_API_URL: "http://backend:8080"
       NEXT_PUBLIC_WHATSAPP_RECEIVER: "5511914136961"
       NEXT_TELEMETRY_DISABLED: "1"
     ports:
@@ -40,14 +68,11 @@ services:
     depends_on:
       backend:
         condition: service_healthy
-    healthcheck:
-      test: ["CMD-SHELL", "wget -qO- http://localhost:3000 >/dev/null 2>&1 || exit 1"]
-      interval: 10s
-      timeout: 5s
-      retries: 18
-      start_period: 20s
     networks:
       - gal-atelier-net
+
+volumes:
+  postgres_data:
 
 networks:
   gal-atelier-net:

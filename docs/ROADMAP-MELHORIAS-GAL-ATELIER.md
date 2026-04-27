@@ -201,4 +201,20 @@ e915b3f feat(sessao-b): expand service catalog to 10 technical types
 
 ---
 
-**Última atualização**: 2026-04-27 14:15 UTC
+## FASE 2 — OPERAÇÃO REAL (EM PROGRESSO)
+
+### Banco de Dados ✅
+- [x] Flyway migration V1 schema
+- [x] PostgreSQL 16 config
+- [x] Docker Compose atualizado
+- [x] Entity classes JPA (4)
+- [x] Repository interfaces (4)
+
+### Pendente
+- [ ] Repository em controllers
+- [ ] Testes com banco H2
+- [ ] Autenticação JWT
+
+---
+
+**Última atualização**: 2026-04-27 14:35 UTC
