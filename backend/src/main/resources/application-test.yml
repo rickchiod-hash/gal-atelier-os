@@ -1,0 +1,46 @@
+server:
+  port: 8080
+  shutdown: graceful
+
+spring:
+  application:
+    name: gal-atelier-backend
+  profiles:
+    active: test
+  datasource:
+    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;MODE=PostgreSQL
+    username: sa
+    password: 
+    driver-class-name: org.h2.Driver
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
+  h2:
+    console:
+      enabled: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  endpoint:
+    health:
+      probes:
+        enabled: true
+
+logging:
+  level:
+    root: INFO
+    com.galatelier: INFO
+
+galatelier:
+  whatsappReceiver: "5511914136961"
+  pixKey: "test-pix-key"
+  pixMerchantName: "GAL ATELIER"
+  pixMerchantCity: "SAO PAULO"
+  aiProvider: "mock"
