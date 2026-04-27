@@ -177,6 +177,21 @@ e915b3f feat(sessao-b): expand service catalog to 10 technical types
 
 ---
 
+## Ajustes Finais V5 (2026-04-27)
+
+| ID | Etapa | Descrição | Status | Commit |
+|---|---|---|---|---|
+| AF1 | Banco de imagens | Catálogo com assets visuais | DONE | ea76322 |
+| AF2 | Hero premium | Imagem hero + métricas mini | DONE | ea76322 |
+| AF3 | CRM Pipeline | 10 estágios + 8 leads mock | DONE | ea76322 |
+| AF4 | Quem somos | Pilares (Naturalidade, Personalização, Processo Seguro, Pós-venda) | DONE | ea76322 |
+| AF5 | Empty states | Métricas com hints úteis | DONE | ea76322 |
+| AF6 | Como funciona | 8 etapas do processo | DONE | ea76322 |
+| AF7 | Catálogo premium | Filtros + cards com imagem | DONE | ea76322 |
+| AF8 | UX crítica | Removido texto técnico "Sessão B" | DONE | 2329634 |
+
+---
+
 ## Sessão Atual (Novos Controllers)
 
 - ✅ CustomerController (GET/POST/PATCH)
