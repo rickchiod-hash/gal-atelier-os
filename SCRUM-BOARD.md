@@ -42,7 +42,7 @@
 ### ÉPICO 3: TESTES E QUALIDADE (Sprint 1-3) - **MINHA SESSÃO**
 | ID | User Story | Points | Sprint | Status |
 |----|------------|--------|--------|--------|
-| US-16 | Como dev, quero Domain Tests completos | 5 | Sprint 1 | ✅ Done |
+| US-16 | Como dev, quero Domain Tests completos | 5 | Sprint 1 | ✅ Done (commit: 233dd50) |
 | US-17 | Como dev, quero Application Service Tests | 8 | Sprint 1 | 📋 To Do |
 | US-18 | Como dev, quero Controller Integration Tests | 8 | Sprint 2 | 📋 To Do |
 | US-19 | Como dev, quero Adapter Tests | 6 | Sprint 2 | 📋 To Do |
@@ -65,9 +65,9 @@
 | ID | User Story | Points | Sprint | Status |
 |----|------------|--------|--------|--------|
 | US-30 | Como dev, quero Swagger/OpenAPI docs | 3 | Sprint 2 | 📋 To Do |
-| US-31 | Como dev, quero README atualizado | 1 | Sprint 1 | 📋 To Do |
-| US-32 | Como dev, quero Architecture.md sync | 2 | Sprint 1 | 📋 To Do |
-| US-33 | Como dev, quero Design-System.md sync | 2 | Sprint 1 | 📋 To Do |
+| US-31 | Como dev, quero README atualizado | 1 | Sprint 1 | 🔄 In Progress (session files created) |
+| US-32 | Como dev, quero Architecture.md sync | 2 | Sprint 1 | 🔄 In Progress (session files created) |
+| US-33 | Como dev, quero Design-System.md sync | 2 | Sprint 1 | 🔄 In Progress (session files created) |
 | US-34 | Como dev, quero CONTRIBUTING.md | 1 | Sprint 3 | 📋 To Do |
 | US-35 | Como dev, quero fix .env.local commitado | 1 | Sprint 1 | ❌ To Do (CRITICAL) |
 
