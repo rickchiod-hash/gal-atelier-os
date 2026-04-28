@@ -1,8 +1,11 @@
 package com.galatelier.adapter.input.web
 
 import com.galatelier.adapter.output.persistence.entity.OrderEntity
+import com.galatelier.adapter.output.persistence.entity.OrderStatus
 import com.galatelier.adapter.output.persistence.repository.OrderRepository
 import org.springframework.web.bind.annotation.*
+import java.time.LocalDateTime
+import java.util.UUID
 
 @RestController
 @RequestMapping("/api/production-orders")
@@ -12,15 +15,15 @@ class ProductionOrderController(
     @GetMapping
     fun listInProduction(): List<OrderResponse> =
         orderRepository.findAll()
-            .filter { it.status.name == "IN_PRODUCTION" || it.status.name == "PRODUCTION" }
+            .filter { it.status == OrderStatus.PRODUCTION }
             .map { it.toResponse() }
 
     @PatchMapping("/{id}/advance")
     fun advanceStage(@PathVariable id: String): OrderResponse? {
         val order = orderRepository.findById(UUID.fromString(id)).orElse(null) ?: return null
         val newStatus = when (order.status) {
-            OrderEntity.OrderStatus.IN_PRODUCTION -> OrderEntity.OrderStatus.READY
-            OrderEntity.OrderStatus.LEAD -> OrderEntity.OrderStatus.IN_PRODUCTION
+            OrderStatus.PRODUCTION -> OrderStatus.READY
+            OrderStatus.LEAD -> OrderStatus.PRODUCTION
             else -> order.status
         }
         val updated = order.copy(status = newStatus, updatedAt = LocalDateTime.now())
