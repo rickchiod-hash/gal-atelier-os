@@ -55,7 +55,7 @@
 ### ÉPICO 4: CI/CD E INFRA (Sprint 2-3)
 | ID | User Story | Points | Sprint | Status |
 |----|------------|--------|--------|--------|
-| US-25 | Como dev, quero GitHub Actions expandido | 4 | Sprint 2 | 📋 To Do |
+| US-25 | Como dev, quero GitHub Actions expandido | 4 | Sprint 2 | ✅ Done (workflows have lint, test, security, quality) |
 | US-26 | Como dev, quero Makefile | 2 | Sprint 2 | ✅ Done |
 | US-27 | Como dev, quero Prettier + ktlint | 3 | Sprint 2 | ✅ Done |
 | US-28 | Como dev, quero Docker Compose melhorado | 2 | Sprint 3 | 📋 To Do |
@@ -68,7 +68,7 @@
 | US-31 | Como dev, quero README atualizado | 1 | Sprint 1 | ✅ Done (commit: ff7e3eb) |
 | US-32 | Como dev, quero Architecture.md sync | 2 | Sprint 1 | ✅ Done (commit: e464e3a) |
 | US-33 | Como dev, quero Design-System.md sync | 2 | Sprint 1 | ✅ Done (commit: da4bf4) |
-| US-34 | Como dev, quero CONTRIBUTING.md | 1 | Sprint 3 | 📋 To Do |
+| US-34 | Como dev, quero CONTRIBUTING.md | 1 | Sprint 3 | ✅ Done (commit: 26142e7) |
 | US-35 | Como dev, quero fix .env.local commitado | 1 | Sprint 1 | ✅ Done (gitignore correct, no tracked) |
 
 ### ÉPICO 6: SEGURANÇA E INTEGRAÇÕES (Sprint 3-4)
