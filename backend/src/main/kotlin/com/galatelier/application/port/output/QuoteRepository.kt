@@ -1,6 +1,7 @@
 package com.galatelier.application.port.output
 
 import com.galatelier.domain.model.Quote
+import java.util.UUID
 
 interface QuoteRepository {
     fun save(quote: Quote): Quote
