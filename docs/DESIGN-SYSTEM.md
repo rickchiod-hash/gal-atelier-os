@@ -20,26 +20,27 @@
 7. **Mobile-first** — Mas com elegância editorial, não empilhamento de caixas
 8. **Estados visíveis** — Mas com sutileza (pontos, não badges colantes)
 
-## Paleta "Whisper Luxury"
+## Paleta "Nubank Purple"
 
 ### Cores Base (80% da página)
-- `--ivory: #FAF8F5` — Mais quente que off-white
-- `--charcoal: #2C2C2C` — Mais suave que preto
-- `--blush: #E8DDD3` — Neutro quente, não "nude"
+- `--nubank-dark: #1A1A2E` — Roxo escuro profundo
+- `--nubank-light: #F4F4F8` — Lavanda clara
+- `--nubank-gray: #8A8A9A` — Cinza roxado
 
 ### Accents (máximo 2% da página)
-- `--bronze: #A67C52` — Ouro contido, não gritante
-- `--deep-espresso: #3D2B1F` — Marrom profundo para CTAs
-- `--rose: #C1978E` — Rosa murcho para hover states
+- `--nubank-magenta: #820AD1` — Magenta vibrante
+- `--color-highlight: #A855F7` — Roxo claro para hover
+- `--color-surface: #2D2D44` — Superfície roxa média
+- `--color-card: #363652` — Cards roxo escuro
 
 ### Semântica
 ```css
---color-bg: var(--ivory);
---color-surface: #FFFFFF;
---color-text: var(--charcoal);
---color-text-muted: #8A8078;
---color-accent: var(--bronze);
---color-brand: var(--deep-espresso);
+--color-bg: var(--nubank-dark);
+--color-surface: #2D2D44;
+--color-text: var(--nubank-white);
+--color-text-muted: var(--nubank-gray);
+--color-accent: var(--nubank-magenta);
+--color-brand: var(--nubank-magenta);
 ```
 
 ## Tipografia "Editorial Authority"

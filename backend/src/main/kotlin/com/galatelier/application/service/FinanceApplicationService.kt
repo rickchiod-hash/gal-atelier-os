@@ -1,6 +1,7 @@
 package com.galatelier.application.service
 
 import com.galatelier.application.port.input.FinanceSummary
+import org.springframework.stereotype.Service
 import com.galatelier.application.port.input.FinanceUseCase
 import com.galatelier.domain.model.Money
 import com.galatelier.domain.model.OrderStatus
@@ -12,6 +13,7 @@ import java.time.LocalDate
 import java.time.ZoneId
 import java.math.BigDecimal
 
+@Service
 class FinanceApplicationService(
     private val orderRepository: OrderRepositoryPort,
     private val appointmentRepository: AppointmentRepositoryPort,

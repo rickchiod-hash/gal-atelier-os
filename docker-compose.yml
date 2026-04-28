@@ -27,16 +27,14 @@ services:
     container_name: gal-atelier-backend
     restart: unless-stopped
     environment:
-      DB_HOST: postgres
-      DB_PORT: 5432
-      DB_NAME: galatelier
-      DB_USER: galatelier
-      DB_PASSWORD: galatelier123
+      DATABASE_URL: "jdbc:postgresql://postgres:5432/galatelier"
+      DATABASE_USERNAME: galatelier
+      DATABASE_PASSWORD: galatelier123
       WHATSAPP_RECEIVER: "5511914136961"
       PIX_KEY: "coloque-a-chave-pix-real-no-env-local"
       PIX_MERCHANT_NAME: "GAL ATELIER"
       PIX_MERCHANT_CITY: "SAO PAULO"
-      SPRING_PROFILES_ACTIVE: "production"
+      PROFILE: "prod"
     ports:
       - "8080:8080"
     depends_on:

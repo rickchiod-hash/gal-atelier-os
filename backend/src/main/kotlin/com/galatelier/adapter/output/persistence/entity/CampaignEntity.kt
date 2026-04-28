@@ -28,7 +28,6 @@ data class CampaignEntity(
     @Enumerated(EnumType.STRING)
     var status: CampaignStatus = CampaignStatus.DRAFT,
 
-    @Enumerated(EnumType.STRING)
     var targetAudience: String = "ALL",
 
     var sendCount: Int = 0,
