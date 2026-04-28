@@ -68,24 +68,24 @@ const CATALOG_SERVICES: Service[] = [
 ];
 
 const PIPELINE_COLUMNS = [
-  { key: "QUOTED", label: "Orçamento", color: "#5A163B", icon: "📋" },
-  { key: "APPROVED", label: "Aprovado", color: "#C8A96B", icon: "✅" },
-  { key: "IN_PRODUCTION", label: "Em Produção", color: "#C79BA5", icon: "🔨" },
-  { key: "COMPLETED", label: "Concluído", color: "#40DCA5", icon: "🎉" },
-  { key: "CANCELLED", label: "Cancelado", color: "#9B8B8B", icon: "❌" },
+  { key: "QUOTED", label: "Orçamento", color: "#8A05BE", icon: "📋" },
+  { key: "APPROVED", label: "Aprovado", color: "#AB47BC", icon: "✅" },
+  { key: "IN_PRODUCTION", label: "Em Produção", color: "#CE93D8", icon: "🔨" },
+  { key: "COMPLETED", label: "Concluído", color: "#E040FB", icon: "🎉" },
+  { key: "CANCELLED", label: "Cancelado", color: "#9C27B0", icon: "❌" },
 ];
 
 const CRM_STAGES = [
-  { key: "NEW_LEAD", label: "Novo Lead", color: "#C79BA5" },
-  { key: "CONTACT", label: "Contato", color: "#D8C5B0" },
-  { key: "DIAGNOSIS", label: "Diagnóstico", color: "#C8A96B" },
-  { key: "QUOTE_SENT", label: "Orçamento", color: "#C8A96B" },
-  { key: "NEGOTIATION", label: "Negociação", color: "#C79BA5" },
-  { key: "AWAITING_PAYMENT", label: "Aguardando Pix", color: "#5A163B" },
-  { key: "PAID", label: "Sinal Pago", color: "#40DCA5" },
-  { key: "PRODUCTION", label: "Em Produção", color: "#C79BA5" },
-  { key: "DELIVERED", label: "Entregue", color: "#40DCA5" },
-  { key: "LOST", label: "Perdido", color: "#9B8B8B" },
+  { key: "NEW_LEAD", label: "Novo Lead", color: "#AB47BC" },
+  { key: "CONTACT", label: "Contato", color: "#CE93D8" },
+  { key: "DIAGNOSIS", label: "Diagnóstico", color: "#8A05BE" },
+  { key: "QUOTE_SENT", label: "Orçamento", color: "#AB47BC" },
+  { key: "NEGOTIATION", label: "Negociação", color: "#CE93D8" },
+  { key: "AWAITING_PAYMENT", label: "Aguardando Pix", color: "#4A1942" },
+  { key: "PAID", label: "Sinal Pago", color: "#E040FB" },
+  { key: "PRODUCTION", label: "Em Produção", color: "#CE93D8" },
+  { key: "DELIVERED", label: "Entregue", color: "#E040FB" },
+  { key: "LOST", label: "Perdido", color: "#6A1B9A" },
 ];
 
 const MOCK_AUTOMATIONS: Automation[] = [
@@ -112,7 +112,7 @@ const mockLeadsInitial = [
    AGENDA MOCK DATA
    ============================================ */
 const today = new Date();
-const dayOfWeek = today.getDay(); // 0 = Sunday, 1 = Monday
+const dayOfWeek = today.getDay();
 const mondayOffset = dayOfWeek === 0 ? -6 : 1 - dayOfWeek;
 const monday = new Date(today);
 monday.setDate(today.getDate() + mondayOffset);
@@ -167,22 +167,6 @@ function serviceLabel(value: string) {
 }
 
 /* ============================================
-   SKELETON COMPONENT
-   ============================================ */
-function Skeleton({ className = "", style = {} }: { className?: string; style?: React.CSSProperties }) {
-  return <div className={`skeleton ${className}`} style={style} aria-hidden="true" />;
-}
-
-function MetricSkeleton() {
-  return (
-    <div className="metric" style={{ minHeight: "120px" }}>
-      <Skeleton style={{ height: "1em", width: "60%", marginBottom: "0.5em" }} />
-      <Skeleton style={{ height: "2.5em", width: "70%" }} />
-    </div>
-  );
-}
-
-/* ============================================
    LOGO
    ============================================ */
 function Logo() {
@@ -213,9 +197,8 @@ export default function Home() {
   const [activeSection, setActiveSection] = useState("dashboard");
   const [catalogFilter, setCatalogFilter] = useState<"all" | CatalogItem["category"]>("all");
   const [quoteStatus, setQuoteStatus] = useState<Record<string, string>>({});
-const [leads, setLeads] = useState(mockLeadsInitial);
-const [draggedLead, setDraggedLead] = useState<string | null>(null);
-const [automations, setAutomations] = useState<Automation[]>(MOCK_AUTOMATIONS);
+  const [leads, setLeads] = useState(mockLeadsInitial);
+  const [automations, setAutomations] = useState<Automation[]>(MOCK_AUTOMATIONS);
 
   const load = useCallback(async () => {
     try {
@@ -344,24 +327,6 @@ const [automations, setAutomations] = useState<Automation[]>(MOCK_AUTOMATIONS);
     }
   }
 
-  function handleDragStart(e: React.DragEvent, leadId: string) {
-    setDraggedLead(leadId);
-    e.dataTransfer.effectAllowed = "move";
-  }
-
-  function handleDragOver(e: React.DragEvent) {
-    e.preventDefault();
-    e.dataTransfer.dropEffect = "move";
-  }
-
-  function handleDrop(e: React.DragEvent, targetStage: string) {
-    e.preventDefault();
-    if (!draggedLead) return;
-    setLeads((prev) => prev.map((lead) => lead.id === draggedLead ? { ...lead, stage: targetStage } : lead));
-    showToast(`Cliente movido para ${targetStage}`, "success");
-    setDraggedLead(null);
-  }
-
   function toggleAutomation(id: string) {
     setAutomations((prev) =>
       prev.map((a) => a.id === id ? { ...a, active: !a.active } : a)
@@ -420,6 +385,20 @@ Transformamos cabelos em confiança
     });
     return grouped;
   }, [quotes]);
+
+  const activeLeads = useMemo(() => {
+    return leads.filter((l) => !["PAID", "DELIVERED", "LOST", "CANCELLED"].includes(l.stage));
+  }, [leads]);
+
+  const stageLabel = (key: string) => {
+    const stage = CRM_STAGES.find((s) => s.key === key);
+    return stage?.label || key;
+  };
+
+  const stageColor = (key: string) => {
+    const stage = CRM_STAGES.find((s) => s.key === key);
+    return stage?.color || "#9B8B8B";
+  };
 
   return (
     <main>
@@ -483,7 +462,7 @@ Transformamos cabelos em confiança
       </section>
 
       {/* ============================================
-          HERO SECTION — PREMIUM WIGMAKER
+          HERO SECTION — SPLIT EDITORIAL LAYOUT
           ============================================ */}
       <section className="hero-section">
         <div className="hero-bg-pattern"></div>
@@ -509,112 +488,42 @@ Transformamos cabelos em confiança
           </div>
           <div className="hero-visual">
             <img src="/gal-assets/catalog/hero-beauty-commerce-crm.png" alt="Beauty Commerce CRM para Wigmakers" className="hero-image" />
-            <div className="hero-metrics">
-              <div className="mini-metric">
-                <span className="mini-value">{money(metrics.revenuePotential)}</span>
-                <span className="mini-label">Receita potencial</span>
-              </div>
-              <div className="mini-metric">
-                <span className="mini-value">{metrics.quotes}</span>
-                <span className="mini-label">Orçamentos</span>
-              </div>
-              <div className="mini-metric">
-                <span className="mini-value">{money(metrics.depositsPotential)}</span>
-                <span className="mini-label">Sinais Pix</span>
-              </div>
-            </div>
+          </div>
+        </div>
+        
+        {/* Insights Bar Below Hero - Not Overlaid */}
+        <div className="insights-bar">
+          <div className="insight">
+            <span className="insight-label">Orçamentos esta semana</span>
+            <strong className="insight-value">{initialLoading ? "..." : metrics.quotes}</strong>
+            <small className="insight-change positive">↑ 20%</small>
+          </div>
+          <div className="insight">
+            <span className="insight-label">Receita potencial</span>
+            <strong className="insight-value">{initialLoading ? "..." : money(metrics.revenuePotential)}</strong>
+            <small className="insight-change neutral">—</small>
+          </div>
+          <div className="insight">
+            <span className="insight-label">Sinais Pix</span>
+            <strong className="insight-value">{initialLoading ? "..." : money(metrics.depositsPotential)}</strong>
+            <small className="insight-change neutral">—</small>
+          </div>
+          <div className="insight">
+            <span className="insight-label">Ticket médio</span>
+            <strong className="insight-value">{initialLoading ? "..." : money(metrics.avgTicket)}</strong>
+            <small className="insight-change positive">↑ 12%</small>
           </div>
         </div>
       </section>
 
       {/* ============================================
-          DASHBOARD TEMPO REAL
+          DASHBOARD TEMPO REAL — HORIZONTAL INSIGHTS BAR
           ============================================ */}
       <section id="overview" className="dashboard-section">
         <div className="dashboard-container">
           <div className="dashboard-header">
             <h2>Dashboard Operacional</h2>
             <span className="dashboard-updated">Atualizado em {new Date().toLocaleTimeString("pt-BR")}</span>
-          </div>
-
-          <div className="metrics-row">
-            {initialLoading ? (
-              <>
-                <MetricSkeleton />
-                <MetricSkeleton />
-                <MetricSkeleton />
-                <MetricSkeleton />
-              </>
-            ) : (
-              <>
-                <article className="metric-card">
-                  <span className="metric-label">Orçamentos</span>
-                  <span className="metric-value">{metrics.quotes}</span>
-                  {metrics.quotes === 0 && <span className="metric-hint">Crie o primeiro orçamento</span>}
-                </article>
-                <article className="metric-card">
-                  <span className="metric-label">Receita potencial</span>
-                  <span className="metric-value">{money(metrics.revenuePotential)}</span>
-                  {metrics.revenuePotential === 0 && <span className="metric-hint">Inicie seu pipeline</span>}
-                </article>
-                <article className="metric-card">
-                  <span className="metric-label">Sinais Pix</span>
-                  <span className="metric-value">{money(metrics.depositsPotential)}</span>
-                  {metrics.depositsPotential === 0 && <span className="metric-hint">Configure Pix para receber</span>}
-                </article>
-                <article className="metric-card">
-                  <span className="metric-label">Ticket médio</span>
-                  <span className="metric-value">{money(metrics.avgTicket)}</span>
-                  {metrics.avgTicket === 0 && <span className="metric-hint">Baseado em orçamentos</span>}
-                </article>
-              </>
-            )}
-          </div>
-
-          <div className="chart-section">
-            <div className="chart-card">
-              <h4>Tendência de Orçamento</h4>
-              <div className="simple-chart">
-                <svg viewBox="0 0 400 120" className="chart-svg">
-                  <defs>
-                    <linearGradient id="chartGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-                      <stop offset="0%" style={{ stopColor: "#C8A96B", stopOpacity: 0.3 }} />
-                      <stop offset="100%" style={{ stopColor: "#C8A96B", stopOpacity: 0 }} />
-                    </linearGradient>
-                  </defs>
-                  <path d="M0,100 L40,85 L80,70 L120,75 L160,55 L200,45 L240,35 L280,25 L320,15 L360,10 L400,5" fill="none" stroke="#C8A96B" strokeWidth="2" />
-                  <path d="M0,100 L40,85 L80,70 L120,75 L160,55 L200,45 L240,35 L280,25 L320,15 L360,10 L400,5 L400,120 L0,120 Z" fill="url(#chartGradient)" />
-                </svg>
-                <div className="chart-labels">
-                  <span>Jan</span><span>Fev</span><span>Mar</span><span>Abr</span><span>Mai</span><span>Jun</span>
-                </div>
-              </div>
-            </div>
-            <div className="chart-card">
-              <h4>Fontes de Lead</h4>
-              <div className="source-bars">
-                <div className="source-bar">
-                  <span>Instagram</span>
-                  <div className="bar"><div className="bar-fill" style={{ width: "45%" }}></div></div>
-                  <span className="bar-percent">45%</span>
-                </div>
-                <div className="source-bar">
-                  <span>WhatsApp</span>
-                  <div className="bar"><div className="bar-fill" style={{ width: "25%" }}></div></div>
-                  <span className="bar-percent">25%</span>
-                </div>
-                <div className="source-bar">
-                  <span>Google</span>
-                  <div className="bar"><div className="bar-fill" style={{ width: "20%" }}></div></div>
-                  <span className="bar-percent">20%</span>
-                </div>
-                <div className="source-bar">
-                  <span>Indicação</span>
-                  <div className="bar"><div className="bar-fill" style={{ width: "10%" }}></div></div>
-                  <span className="bar-percent">10%</span>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
       </section>
@@ -631,7 +540,6 @@ Transformamos cabelos em confiança
 
         <div className="agenda-grid-wrapper">
           <div className="agenda-grid">
-            {/* Cabeçalho dos dias */}
             {agendaDays.map((day) => (
               <div
                 key={day.label}
@@ -643,9 +551,8 @@ Transformamos cabelos em confiança
               </div>
             ))}
 
-            {/* Slots de horário */}
             {agendaTimeSlots.map((time) => (
-              <>
+              <div key={`wrapper-${time}`} style={{ display: "contents" }}>
                 <div key={`time-${time}`} className="agenda-time-slot">
                   <span>{time}</span>
                 </div>
@@ -671,73 +578,59 @@ Transformamos cabelos em confiança
                     </div>
                   );
                 })}
-              </>
+              </div>
             ))}
           </div>
         </div>
       </section>
 
       {/* ============================================
-           CRM PIPELINE COM MOCK DIDÁTICO
+           CRM PIPELINE — CONCIERGE LIST VIEW
            ============================================ */}
       <section id="crm" className="crm-section">
         <div className="crm-header">
           <span className="crm-eyebrow">Pipeline</span>
-          <h2>Funil de clientes</h2>
+          <h2>Clientes ativos</h2>
           <p className="crm-desc">Acompanhe cada cliente do primeiro contato até a entrega final.</p>
         </div>
 
-        <div className="crm-board">
-          {CRM_STAGES.map((stage) => {
-            const stageLeads = leads.filter((lead) => lead.stage === stage.key);
-            return (
-              <div
-                key={stage.key}
-                className="crm-stage"
-                onDragOver={handleDragOver}
-                onDrop={(e) => handleDrop(e, stage.key)}
-              >
-                <div className="stage-header" style={{ borderLeftColor: stage.color }}>
-                  <span className="stage-name">{stage.label}</span>
-                  <span className="stage-count">{stageLeads.length}</span>
+        <div className="concierge-list">
+          {activeLeads.length === 0 ? (
+            <div className="concierge-empty">
+              <p>Nenhum cliente ativo no momento.</p>
+            </div>
+          ) : (
+            activeLeads.map((lead) => (
+              <div key={lead.id} className="concierge-item">
+                <div className="client-avatar">
+                  {lead.name.split(" ").map((n) => n[0]).join("").slice(0, 2)}
                 </div>
-                <div className="stage-leads">
-                  {stageLeads.map((lead) => (
-                    <div
-                      key={lead.id}
-                      className={`lead-card ${draggedLead === lead.id ? "dragging" : ""}`}
-                      draggable
-                      onDragStart={(e) => handleDragStart(e, lead.id)}
-                    >
-                      <div className="lead-avatar">
-                        {lead.name.split(" ").map((n) => n[0]).join("").slice(0, 2)}
-                      </div>
-                      <div className="lead-info">
-                        <strong>{lead.name}</strong>
-                        <span>{lead.interest}</span>
-                        <span className="lead-meta">{lead.source} · {lead.budget}</span>
-                      </div>
-                      <div className="lead-actions">
-                        <span className="lead-next">{lead.nextAction}</span>
-                        <a href={`https://wa.me/${lead.whatsapp}`} target="_blank" rel="noopener noreferrer" className="lead-whatsapp">
-                          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.296-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-                        </a>
-                      </div>
-                    </div>
-                  ))}
-                  {stageLeads.length === 0 && (
-                    <div className="stage-empty">Arraste um lead aqui</div>
-                  )}
+                <div className="client-info">
+                  <strong>{lead.name}</strong>
+                  <span>{lead.interest} · {lead.budget}</span>
+                </div>
+                <div className="client-meta">
+                  <span className="client-source">{lead.source}</span>
+                </div>
+                <div className="client-status">
+                  <span className="status-dot" style={{ backgroundColor: stageColor(lead.stage) }}></span>
+                  {stageLabel(lead.stage)}
+                </div>
+                <div className="client-actions">
+                  <span className="action-label">{lead.nextAction}</span>
+                  <a href={`https://wa.me/${lead.whatsapp}`} target="_blank" rel="noopener noreferrer" className="action-whatsapp">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.296-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                  </a>
                 </div>
               </div>
-            );
-          })}
+            ))
+          )}
         </div>
       </section>
 
       {/* ============================================
-          CATÁLOGO PREMIUM COM IMAGENS
-          ============================================ */}
+           CATÁLOGO — LOOKBOOK LAYOUT
+           ============================================ */}
       <section id="catalog" className="catalog-section">
         <div className="catalog-header">
           <span className="catalog-eyebrow">Catálogo</span>
@@ -757,240 +650,183 @@ Transformamos cabelos em confiança
           ))}
         </div>
 
-        <div className="catalog-grid">
-          {filteredCatalog.map((item) => (
-            <article key={item.id} className="catalog-product">
-              <div className="product-image-wrap">
-                <img src={item.image} alt={item.name} className="product-image" loading="lazy" />
-                <div className="product-overlay">
-                  <a href="#quote" className="overlay-btn">Orçar</a>
+        <div className="lookbook">
+          {filteredCatalog.map((item, idx) => (
+            idx === 0 ? (
+              <article key={item.id} className="lookbook-feature">
+                <div className="feature-image-wrap">
+                  <img src={item.image} alt={item.name} className="feature-image" loading="lazy" />
                 </div>
-              </div>
-              <div className="product-info">
-                <span className="product-category">{item.subtitle}</span>
-                <h3 className="product-name">{item.name}</h3>
-                <p className="product-desc">{item.description}</p>
-                <div className="product-meta">
-                  <span className="product-price">{item.priceRange}</span>
-                  <span className="product-duration">{item.duration}</span>
+                <div className="feature-info">
+                  <span className="feature-category">{item.subtitle}</span>
+                  <h3 className="feature-name">{item.name}</h3>
+                  <p className="feature-desc">{item.description}</p>
+                  <div className="feature-meta">
+                    <span className="feature-price">{item.priceRange}</span>
+                    <span className="feature-duration">{item.duration}</span>
+                  </div>
+                  <a href="#quote" className="feature-cta">Solicitar Orçamento</a>
                 </div>
-                <div className="product-tags">
-                  {item.technicalTags.slice(0, 3).map((tag) => (
-                    <span key={tag} className="product-tag">{tag}</span>
-                  ))}
+              </article>
+            ) : (
+              <article key={item.id} className="lookbook-item">
+                <div className="item-image-wrap">
+                  <img src={item.image} alt={item.name} className="item-image" loading="lazy" />
+                  <div className="item-overlay">
+                    <a href="#quote" className="overlay-btn">Orçar</a>
+                  </div>
                 </div>
-              </div>
-            </article>
+                <div className="item-info">
+                  <span className="item-category">{item.subtitle}</span>
+                  <h3 className="item-name">{item.name}</h3>
+                  <div className="item-meta">
+                    <span className="item-price">{item.priceRange}</span>
+                    <span className="item-duration">{item.duration}</span>
+                  </div>
+                </div>
+              </article>
+            )
           ))}
         </div>
       </section>
 
       {/* ============================================
-          WIZARD ORÇAMENTO
-          ============================================ */}
-      <section id="quote" className="shell section">
+           WIZARD ORÇAMENTO — SINGLE COLUMN CONCIERGE
+           ============================================ */}
+      <section id="quote" className="quote-section">
         <div className="section-header">
           <p>Orçamento</p>
           <h2>Crie seu orçamento</h2>
           <p className="section-desc">Briefing completo com cálculo automático de preços e geração de Pix.</p>
         </div>
 
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "var(--space-5)", alignItems: "start" }}>
-          <div className="quoteForm">
-            {/* WIZARD STEPS */}
-            <div className="wizardSteps">
-              <div className={`wizardStep ${wizardStep >= 1 ? (wizardStep > 1 ? "done" : "active") : ""}`}>
-                <div className="wizardStepNumber">{wizardStep > 1 ? "✓" : "1"}</div>
-                <span>Cliente</span>
-              </div>
-              <div className={`wizardConnector ${wizardStep > 1 ? "done" : ""}`} />
-              <div className={`wizardStep ${wizardStep >= 2 ? (wizardStep > 2 ? "done" : "active") : ""}`}>
-                <div className="wizardStepNumber">{wizardStep > 2 ? "✓" : "2"}</div>
-                <span>Serviço</span>
-              </div>
-              <div className={`wizardConnector ${wizardStep > 2 ? "done" : ""}`} />
-              <div className={`wizardStep ${wizardStep >= 3 ? "active" : ""}`}>
-                <div className="wizardStepNumber">3</div>
-                <span>Resultado</span>
-              </div>
-            </div>
-
-            <form onSubmit={createQuote}>
-              <div className="formHeader">
-                <h3>Novo orçamento</h3>
-                <span>PIX + WhatsApp</span>
-              </div>
-
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "var(--space-3)" }}>
-                <label htmlFor="clientName">
-                  Nome da cliente
-                  <input id="clientName" name="clientName" type="text" defaultValue="Maria" required minLength={2} maxLength={80} autoComplete="name" />
-                </label>
-
-                <label htmlFor="clientWhatsapp">
-                  WhatsApp
-                  <input id="clientWhatsapp" name="clientWhatsapp" type="tel" defaultValue="11999999999" required pattern="[0-9]{10,13}" title="DDD + número" autoComplete="tel" />
-                </label>
-
-                <label htmlFor="type" className="full">
-                  Serviço
-                  <select id="type" name="type" defaultValue="LACE_FRONT" required>
-                    <option value="LACE_FRONT">Lace Front Personalizada</option>
-                    <option value="FULL_LACE">Full Lace Premium</option>
-                    <option value="WIG_CUSTOM">Wig Customizada</option>
-                    <option value="MAINTENANCE">Manutenção</option>
-                    <option value="SHOE_CUSTOMIZATION">Customização</option>
-                  </select>
-                </label>
-
-                <label htmlFor="color">
-                  Cor
-                  <input id="color" name="color" type="text" defaultValue="Castanho iluminado" required minLength={2} maxLength={60} />
-                </label>
-
-                <label htmlFor="lengthCm">
-                  Comprimento (cm)
-                  <input id="lengthCm" name="lengthCm" type="number" defaultValue={55} required min={10} max={120} />
-                </label>
-
-                <label htmlFor="texture">
-                  Textura
-                  <input id="texture" name="texture" type="text" defaultValue="Ondulada" required minLength={2} maxLength={60} />
-                </label>
-
-                <label htmlFor="density">
-                  Densidade
-                  <input id="density" name="density" type="text" defaultValue="180%" required />
-                </label>
-
-                <label htmlFor="capSize">
-                  Touca
-                  <select id="capSize" name="capSize" defaultValue="M">
-                    <option value="P">Pequena (P)</option>
-                    <option value="M">Média (M)</option>
-                    <option value="G">Grande (G)</option>
-                    <option value="GG">Extra Grande (GG)</option>
-                  </select>
-                </label>
-
-                <label htmlFor="deadlineDays">
-                  Prazo (dias)
-                  <input id="deadlineDays" name="deadlineDays" type="number" defaultValue={15} required min={1} max={180} />
-                </label>
-
-                <label htmlFor="materialCost">
-                  Material (R$)
-                  <input id="materialCost" name="materialCost" type="number" defaultValue={150} required min={0} step="0.01" />
-                </label>
-
-                <label htmlFor="laborCost">
-                  Mão de obra (R$)
-                  <input id="laborCost" name="laborCost" type="number" defaultValue={250} required min={0} step="0.01" />
-                </label>
-
-                <label htmlFor="complexityCost">
-                  Complexidade (R$)
-                  <input id="complexityCost" name="complexityCost" type="number" defaultValue={80} min={0} step="0.01" />
-                </label>
-
-                <label htmlFor="urgencyCost">
-                  Urgência (R$)
-                  <input id="urgencyCost" name="urgencyCost" type="number" defaultValue={20} min={0} step="0.01" />
-                </label>
-
-                <label htmlFor="marginPercent">
-                  Margem (%)
-                  <input id="marginPercent" name="marginPercent" type="number" defaultValue={30} min={0} max={300} step="0.1" />
-                </label>
-
-                <label htmlFor="notes" className="full">
-                  Observações
-                  <textarea id="notes" name="notes" defaultValue="Acabamento natural e linha frontal delicada." maxLength={300} rows={3} />
-                </label>
-              </div>
-
-              <button type="submit" className="button primary full" disabled={loading} style={{ marginTop: "var(--space-4)" }}>
-                {loading ? "⏳ Gerando..." : "💰 Gerar orçamento completo"}
-              </button>
-            </form>
+        {/* Progress Line Indicator */}
+        <div className="progress-indicator">
+          <div className={`progress-step ${wizardStep >= 1 ? (wizardStep > 1 ? "done" : "active") : ""}`}>
+            <span>Cliente</span>
           </div>
+          <div className={`progress-line ${wizardStep > 1 ? "done" : ""}`} />
+          <div className={`progress-step ${wizardStep >= 2 ? (wizardStep > 2 ? "done" : "active") : ""}`}>
+            <span>Serviço</span>
+          </div>
+          <div className={`progress-line ${wizardStep > 2 ? "done" : ""}`} />
+          <div className={`progress-step ${wizardStep >= 3 ? "active" : ""}`}>
+            <span>Resultado</span>
+          </div>
+        </div>
 
-          <div>
-            <div className="panel" style={{ padding: "var(--space-4)", marginBottom: "var(--space-4)" }}>
-              <div className="statusCard" role="status" aria-live="polite">
-                <span>Status do sistema</span>
-                <strong>{status}</strong>
-              </div>
+        <div className="quote-form">
+          <form onSubmit={createQuote}>
+            <div className="formHeader">
+              <h3>Novo orçamento</h3>
+              <span>PIX + WhatsApp</span>
             </div>
 
-            <div className="process-flow">
-              <h4 className="process-title">Como funciona</h4>
-              <div className="process-steps">
-                <div className="process-step">
-                  <span className="step-number">1</span>
-                  <div className="step-content">
-                    <strong>WhatsApp</strong>
-                    <p>Conversa inicial pela cliente</p>
-                  </div>
-                </div>
-                <div className="process-step">
-                  <span className="step-number">2</span>
-                  <div className="step-content">
-                    <strong>Diagnóstico</strong>
-                    <p>Entendemos objetivo e perfil</p>
-                  </div>
-                </div>
-                <div className="process-step">
-                  <span className="step-number">3</span>
-                  <div className="step-content">
-                    <strong>Orçamento</strong>
-                    <p>Criamos orçamento detalhado</p>
-                  </div>
-                </div>
-                <div className="process-step">
-                  <span className="step-number">4</span>
-                  <div className="step-content">
-                    <strong>Sinal Pix</strong>
-                    <p>Cliente confirma com sinal</p>
-                  </div>
-                </div>
-                <div className="process-step">
-                  <span className="step-number">5</span>
-                  <div className="step-content">
-                    <strong>Produção</strong>
-                    <p>Confecção sob medida</p>
-                  </div>
-                </div>
-                <div className="process-step">
-                  <span className="step-number">6</span>
-                  <div className="step-content">
-                    <strong>Prova</strong>
-                    <p>Ajuste final</p>
-                  </div>
-                </div>
-                <div className="process-step">
-                  <span className="step-number">7</span>
-                  <div className="step-content">
-                    <strong>Entrega</strong>
-                    <p>Cliente recebe a peruca</p>
-                  </div>
-                </div>
-                <div className="process-step">
-                  <span className="step-number">8</span>
-                  <div className="step-content">
-                    <strong>Pós-venda</strong>
-                    <p>Suporte e manutenção</p>
-                  </div>
-                </div>
-              </div>
+            <div className="form-grid">
+              <label htmlFor="clientName">
+                Nome da cliente
+                <input id="clientName" name="clientName" type="text" defaultValue="Maria" required minLength={2} maxLength={80} autoComplete="name" />
+              </label>
+
+              <label htmlFor="clientWhatsapp">
+                WhatsApp
+                <input id="clientWhatsapp" name="clientWhatsapp" type="tel" defaultValue="11999999999" required pattern="[0-9]{10,13}" title="DDD + número" autoComplete="tel" />
+              </label>
+
+              <label htmlFor="type" className="full">
+                Serviço
+                <select id="type" name="type" defaultValue="LACE_FRONT" required>
+                  <option value="LACE_FRONT">Lace Front Personalizada</option>
+                  <option value="FULL_LACE">Full Lace Premium</option>
+                  <option value="WIG_CUSTOM">Wig Customizada</option>
+                  <option value="MAINTENANCE">Manutenção</option>
+                  <option value="SHOE_CUSTOMIZATION">Customização</option>
+                </select>
+              </label>
+
+              <label htmlFor="color">
+                Cor
+                <input id="color" name="color" type="text" defaultValue="Castanho iluminado" required minLength={2} maxLength={60} />
+              </label>
+
+              <label htmlFor="lengthCm">
+                Comprimento (cm)
+                <input id="lengthCm" name="lengthCm" type="number" defaultValue={55} required min={10} max={120} />
+              </label>
+
+              <label htmlFor="texture">
+                Textura
+                <input id="texture" name="texture" type="text" defaultValue="Ondulada" required minLength={2} maxLength={60} />
+              </label>
+
+              <label htmlFor="density">
+                Densidade
+                <input id="density" name="density" type="text" defaultValue="180%" required />
+              </label>
+
+              <label htmlFor="capSize">
+                Touca
+                <select id="capSize" name="capSize" defaultValue="M">
+                  <option value="P">Pequena (P)</option>
+                  <option value="M">Média (M)</option>
+                  <option value="G">Grande (G)</option>
+                  <option value="GG">Extra Grande (GG)</option>
+                </select>
+              </label>
+
+              <label htmlFor="deadlineDays">
+                Prazo (dias)
+                <input id="deadlineDays" name="deadlineDays" type="number" defaultValue={15} required min={1} max={180} />
+              </label>
+
+              <label htmlFor="materialCost">
+                Material (R$)
+                <input id="materialCost" name="materialCost" type="number" defaultValue={150} required min={0} step="0.01" />
+              </label>
+
+              <label htmlFor="laborCost">
+                Mão de obra (R$)
+                <input id="laborCost" name="laborCost" type="number" defaultValue={250} required min={0} step="0.01" />
+              </label>
+
+              <label htmlFor="complexityCost">
+                Complexidade (R$)
+                <input id="complexityCost" name="complexityCost" type="number" defaultValue={80} min={0} step="0.01" />
+              </label>
+
+              <label htmlFor="urgencyCost">
+                Urgência (R$)
+                <input id="urgencyCost" name="urgencyCost" type="number" defaultValue={20} min={0} step="0.01" />
+              </label>
+
+              <label htmlFor="marginPercent">
+                Margem (%)
+                <input id="marginPercent" name="marginPercent" type="number" defaultValue={30} min={0} max={300} step="0.1" />
+              </label>
+
+              <label htmlFor="notes" className="full">
+                Observações
+                <textarea id="notes" name="notes" defaultValue="Acabamento natural e linha frontal delicada." maxLength={300} rows={3} />
+              </label>
+            </div>
+
+            <button type="submit" className="button primary full" disabled={loading}>
+              {loading ? "Carregando experiência..." : "Gerar orçamento completo"}
+            </button>
+          </form>
+
+          <div className="status-panel">
+            <div className="statusCard" role="status" aria-live="polite">
+              <span>Status do sistema</span>
+              <strong>{status}</strong>
             </div>
           </div>
         </div>
       </section>
 
       {/* ============================================
-          RESULTADO
-          ============================================ */}
+           RESULTADO
+           ============================================ */}
       {quote && (
         <section className="shell resultGrid" aria-labelledby="resultado-titulo">
           <h2 id="resultado-titulo" className="sr-only">Resultado do orçamento</h2>
@@ -1070,7 +906,7 @@ Transformamos cabelos em confiança
 
           <div className="history-list">
             {initialLoading ? (
-              <Skeleton style={{ height: "4em" }} />
+              <div className="loading-text">Carregando experiência...</div>
             ) : filteredQuotes.length === 0 ? (
               <div className="history-empty">
                 <p>Nenhum orçamento encontrado.</p>
@@ -1338,6 +1174,733 @@ Transformamos cabelos em confiança
           font-weight: 700;
           letter-spacing: 0.08em;
           text-transform: uppercase;
+        }
+
+        .loading-text {
+          padding: var(--space-4);
+          color: var(--text-secondary);
+          font-style: italic;
+        }
+
+        /* ============================================
+           HERO SECTION — V6 SPLIT EDITORIAL
+           ============================================ */
+        .hero-section {
+          position: relative;
+          padding: var(--space-8) var(--space-4);
+          background: var(--bg-primary);
+          overflow: hidden;
+        }
+
+        .hero-bg-pattern {
+          position: absolute;
+          inset: 0;
+          background: 
+            radial-gradient(ellipse at 20% 80%, rgba(200, 169, 107, 0.06) 0%, transparent 50%),
+            radial-gradient(ellipse at 80% 20%, rgba(90, 22, 59, 0.04) 0%, transparent 40%);
+          pointer-events: none;
+        }
+
+        .hero-container {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: var(--space-6);
+          max-width: 1400px;
+          margin: 0 auto;
+          align-items: center;
+        }
+
+        .hero-content {
+          max-width: 600px;
+        }
+
+        .eyebrow-tag {
+          display: inline-flex;
+          align-items: center;
+          gap: var(--space-2);
+          font-size: var(--text-xs);
+          font-weight: 700;
+          letter-spacing: 0.1em;
+          text-transform: uppercase;
+          color: var(--accent-gold);
+          margin-bottom: var(--space-3);
+        }
+
+        .hero-title {
+          font-size: clamp(2.5rem, 4vw, 3.5rem);
+          font-weight: 700;
+          line-height: 1.15;
+          letter-spacing: -0.03em;
+          color: var(--text-primary);
+          margin-bottom: var(--space-4);
+        }
+
+        .hero-subtitle {
+          font-size: var(--text-lg);
+          color: var(--text-secondary);
+          line-height: 1.7;
+          margin-bottom: var(--space-5);
+        }
+
+        .hero-actions {
+          display: flex;
+          gap: var(--space-3);
+          flex-wrap: wrap;
+        }
+
+        .hero-visual {
+          position: relative;
+        }
+
+        .hero-image {
+          width: 100%;
+          height: auto;
+          border-radius: var(--radius-lg);
+          box-shadow: var(--shadow-lg);
+        }
+
+        /* Insights Bar Below Hero */
+        .insights-bar {
+          display: flex;
+          justify-content: center;
+          gap: var(--space-6);
+          padding: var(--space-5) var(--space-4);
+          max-width: 1400px;
+          margin: var(--space-6) auto 0;
+          border-top: 1px solid var(--border-color);
+        }
+
+        .insight {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: var(--space-1);
+        }
+
+        .insight-label {
+          font-size: var(--text-xs);
+          font-weight: 600;
+          letter-spacing: 0.08em;
+          text-transform: uppercase;
+          color: var(--text-secondary);
+        }
+
+        .insight-value {
+          font-size: var(--text-2xl);
+          font-weight: 700;
+          color: var(--text-primary);
+          font-family: var(--font-display);
+        }
+
+        .insight-change {
+          font-size: var(--text-xs);
+          font-weight: 600;
+        }
+
+        .insight-change.positive {
+          color: var(--luxury-green);
+        }
+
+        .insight-change.negative {
+          color: var(--luxury-red);
+        }
+
+        .insight-change.neutral {
+          color: var(--text-secondary);
+        }
+
+        @media (max-width: 768px) {
+          .hero-container {
+            grid-template-columns: 1fr;
+          }
+
+          .hero-content {
+            max-width: 100%;
+          }
+
+          .insights-bar {
+            flex-wrap: wrap;
+            gap: var(--space-4);
+          }
+
+          .insight {
+            min-width: 40%;
+          }
+        }
+
+        /* ============================================
+           DASHBOARD V6 — MINIMAL
+           ============================================ */
+        .dashboard-section {
+          padding: var(--space-6) var(--space-4);
+          background: var(--bg-primary);
+        }
+
+        .dashboard-container {
+          max-width: 1400px;
+          margin: 0 auto;
+        }
+
+        .dashboard-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: baseline;
+          margin-bottom: var(--space-4);
+        }
+
+        .dashboard-header h2 {
+          font-size: var(--text-2xl);
+          font-weight: 700;
+          color: var(--text-primary);
+        }
+
+        .dashboard-updated {
+          font-size: var(--text-sm);
+          color: var(--text-secondary);
+        }
+
+        /* ============================================
+           CRM SECTION — V6 CONCIERGE LIST
+           ============================================ */
+        .crm-section {
+          padding: var(--space-6) var(--space-4);
+          background: var(--bg-primary);
+        }
+
+        .crm-header {
+          text-align: center;
+          margin-bottom: var(--space-5);
+        }
+
+        .crm-eyebrow {
+          font-size: var(--text-xs);
+          font-weight: 700;
+          letter-spacing: 0.12em;
+          text-transform: uppercase;
+          color: var(--accent-gold);
+        }
+
+        .crm-header h2 {
+          font-size: var(--text-3xl);
+          font-weight: 700;
+          color: var(--text-primary);
+          margin: var(--space-2) 0;
+        }
+
+        .crm-desc {
+          color: var(--text-secondary);
+          max-width: 500px;
+          margin: 0 auto;
+        }
+
+        .concierge-list {
+          max-width: 1200px;
+          margin: 0 auto;
+        }
+
+        .concierge-item {
+          display: grid;
+          grid-template-columns: auto 1fr auto auto auto;
+          gap: var(--space-4);
+          align-items: center;
+          padding: var(--space-4);
+          border-bottom: 1px solid var(--border-color);
+          transition: background-color 0.3s ease;
+        }
+
+        .concierge-item:hover {
+          background: rgba(200, 169, 107, 0.03);
+        }
+
+        .client-avatar {
+          width: 44px;
+          height: 44px;
+          border-radius: 50%;
+          background: var(--accent-gold);
+          color: var(--primary-dark);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-weight: 700;
+          font-size: var(--text-sm);
+        }
+
+        .client-info {
+          display: flex;
+          flex-direction: column;
+          gap: 2px;
+        }
+
+        .client-info strong {
+          color: var(--text-primary);
+          font-weight: 600;
+        }
+
+        .client-info span {
+          font-size: var(--text-sm);
+          color: var(--text-secondary);
+        }
+
+        .client-meta {
+          font-size: var(--text-xs);
+          color: var(--text-secondary);
+        }
+
+        .client-status {
+          display: flex;
+          align-items: center;
+          gap: var(--space-2);
+          font-size: var(--text-sm);
+          color: var(--text-secondary);
+        }
+
+        .status-dot {
+          width: 8px;
+          height: 8px;
+          border-radius: 50%;
+        }
+
+        .client-actions {
+          display: flex;
+          align-items: center;
+          gap: var(--space-3);
+          opacity: 0;
+          transition: opacity 0.3s ease;
+        }
+
+        .concierge-item:hover .client-actions {
+          opacity: 1;
+        }
+
+        .action-label {
+          font-size: var(--text-xs);
+          color: var(--text-secondary);
+        }
+
+        .action-whatsapp {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 32px;
+          height: 32px;
+          border-radius: 50%;
+          background: var(--luxury-green);
+          color: white;
+          transition: transform 0.2s ease;
+        }
+
+        .action-whatsapp:hover {
+          transform: scale(1.1);
+        }
+
+        .concierge-empty {
+          text-align: center;
+          padding: var(--space-6);
+          color: var(--text-secondary);
+        }
+
+        @media (max-width: 768px) {
+          .concierge-item {
+            grid-template-columns: auto 1fr;
+            gap: var(--space-3);
+          }
+
+          .client-meta,
+          .client-status {
+            grid-column: 2;
+          }
+
+          .client-actions {
+            opacity: 1;
+            grid-column: 2;
+            justify-self: start;
+          }
+        }
+
+        /* ============================================
+           CATALOG SECTION — V6 LOOKBOOK
+           ============================================ */
+        .catalog-section {
+          padding: var(--space-6) var(--space-4);
+          background: var(--bg-primary);
+        }
+
+        .catalog-header {
+          text-align: center;
+          margin-bottom: var(--space-5);
+        }
+
+        .catalog-eyebrow {
+          font-size: var(--text-xs);
+          font-weight: 700;
+          letter-spacing: 0.12em;
+          text-transform: uppercase;
+          color: var(--accent-gold);
+        }
+
+        .catalog-header h2 {
+          font-size: var(--text-3xl);
+          font-weight: 700;
+          color: var(--text-primary);
+          margin: var(--space-2) 0;
+        }
+
+        .catalog-desc {
+          color: var(--text-secondary);
+          max-width: 500px;
+          margin: 0 auto;
+        }
+
+        .catalog-filters {
+          display: flex;
+          justify-content: center;
+          gap: var(--space-2);
+          margin-bottom: var(--space-5);
+          flex-wrap: wrap;
+        }
+
+        .filter-btn {
+          padding: var(--space-2) var(--space-4);
+          background: transparent;
+          border: 1px solid var(--border-color);
+          border-radius: 2px;
+          font-size: var(--text-sm);
+          color: var(--text-secondary);
+          cursor: pointer;
+          transition: all 0.3s ease;
+        }
+
+        .filter-btn:hover,
+        .filter-btn.active {
+          background: var(--primary-dark);
+          color: white;
+          border-color: var(--primary-dark);
+        }
+
+        .lookbook {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: var(--space-5);
+          max-width: 1400px;
+          margin: 0 auto;
+        }
+
+        .lookbook-feature {
+          grid-column: 1 / -1;
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: var(--space-5);
+          padding: var(--space-5);
+          background: var(--bg-card);
+          border-radius: var(--radius-xl);
+        }
+
+        .feature-image-wrap {
+          aspect-ratio: 4/3;
+          overflow: hidden;
+          border-radius: var(--radius-lg);
+        }
+
+        .feature-image {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
+
+        .feature-info {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          gap: var(--space-3);
+        }
+
+        .feature-category {
+          font-size: var(--text-xs);
+          font-weight: 700;
+          letter-spacing: 0.1em;
+          text-transform: uppercase;
+          color: var(--accent-gold);
+        }
+
+        .feature-name {
+          font-size: var(--text-2xl);
+          font-weight: 700;
+          color: var(--text-primary);
+        }
+
+        .feature-desc {
+          color: var(--text-secondary);
+          line-height: 1.7;
+        }
+
+        .feature-meta {
+          display: flex;
+          gap: var(--space-4);
+          font-size: var(--text-sm);
+          color: var(--text-secondary);
+        }
+
+        .feature-price {
+          color: var(--accent-gold);
+          font-weight: 700;
+        }
+
+        .feature-cta {
+          display: inline-block;
+          padding: var(--space-3) var(--space-5);
+          background: var(--primary-dark);
+          color: white;
+          text-decoration: none;
+          border-radius: 2px;
+          font-weight: 600;
+          letter-spacing: 0.05em;
+          text-align: center;
+          margin-top: var(--space-2);
+          transition: transform 0.3s ease;
+        }
+
+        .feature-cta:hover {
+          transform: translateY(-2px);
+        }
+
+        .lookbook-item {
+          background: var(--bg-card);
+          border-radius: var(--radius-xl);
+          overflow: hidden;
+        }
+
+        .item-image-wrap {
+          position: relative;
+          aspect-ratio: 3/4;
+          overflow: hidden;
+        }
+
+        .item-image {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          transition: transform 0.4s ease;
+        }
+
+        .lookbook-item:hover .item-image {
+          transform: scale(1.05);
+        }
+
+        .item-overlay {
+          position: absolute;
+          inset: 0;
+          background: rgba(44, 44, 44, 0.6);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          opacity: 0;
+          transition: opacity 0.3s ease;
+        }
+
+        .lookbook-item:hover .item-overlay {
+          opacity: 1;
+        }
+
+        .overlay-btn {
+          padding: var(--space-3) var(--space-5);
+          background: white;
+          color: var(--primary-dark);
+          text-decoration: none;
+          border-radius: 2px;
+          font-weight: 600;
+        }
+
+        .item-info {
+          padding: var(--space-4);
+        }
+
+        .item-category {
+          font-size: var(--text-xs);
+          font-weight: 600;
+          letter-spacing: 0.08em;
+          text-transform: uppercase;
+          color: var(--text-secondary);
+        }
+
+        .item-name {
+          font-size: var(--text-lg);
+          font-weight: 600;
+          color: var(--text-primary);
+          margin: var(--space-1) 0;
+        }
+
+        .item-meta {
+          display: flex;
+          justify-content: space-between;
+          font-size: var(--text-sm);
+        }
+
+        .item-price {
+          color: var(--accent-gold);
+          font-weight: 700;
+        }
+
+        .item-duration {
+          color: var(--text-secondary);
+        }
+
+        @media (max-width: 768px) {
+          .lookbook {
+            grid-template-columns: 1fr;
+          }
+
+          .lookbook-feature {
+            grid-template-columns: 1fr;
+          }
+        }
+
+        /* ============================================
+           QUOTE WIZARD — V6 SINGLE COLUMN
+           ============================================ */
+        .quote-section {
+          padding: var(--space-6) var(--space-4);
+          background: var(--bg-primary);
+          max-width: 800px;
+          margin: 0 auto;
+        }
+
+        .section-header {
+          text-align: center;
+          margin-bottom: var(--space-5);
+        }
+
+        .section-header p {
+          font-size: var(--text-xs);
+          font-weight: 700;
+          letter-spacing: 0.1em;
+          text-transform: uppercase;
+          color: var(--accent-gold);
+        }
+
+        .section-header h2 {
+          font-size: var(--text-3xl);
+          font-weight: 700;
+          color: var(--text-primary);
+          margin: var(--space-2) 0;
+        }
+
+        .section-desc {
+          color: var(--text-secondary);
+          max-width: 500px;
+          margin: 0 auto;
+        }
+
+        /* Progress Line Indicator */
+        .progress-indicator {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: var(--space-2);
+          margin-bottom: var(--space-5);
+        }
+
+        .progress-step {
+          padding: var(--space-2) var(--space-3);
+          font-size: var(--text-sm);
+          color: var(--text-secondary);
+          border-bottom: 2px solid transparent;
+          transition: color 0.3s ease, border-color 0.3s ease;
+        }
+
+        .progress-step.active {
+          color: var(--text-primary);
+          border-color: var(--accent-gold);
+        }
+
+        .progress-step.done {
+          color: var(--luxury-green);
+        }
+
+        .progress-line {
+          width: 40px;
+          height: 1px;
+          background: var(--border-color);
+        }
+
+        .progress-line.done {
+          background: var(--luxury-green);
+        }
+
+        /* Quote Form - No Box */
+        .quote-form {
+          display: flex;
+          flex-direction: column;
+          gap: var(--space-5);
+        }
+
+        .formHeader {
+          display: flex;
+          justify-content: space-between;
+          align-items: baseline;
+          margin-bottom: var(--space-4);
+        }
+
+        .formHeader h3 {
+          font-size: var(--text-xl);
+          font-weight: 700;
+          color: var(--text-primary);
+        }
+
+        .formHeader span {
+          font-size: var(--text-sm);
+          color: var(--text-secondary);
+        }
+
+        .form-grid {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: var(--space-4);
+        }
+
+        .form-grid label {
+          display: flex;
+          flex-direction: column;
+          gap: var(--space-2);
+          font-size: var(--text-sm);
+          color: var(--text-secondary);
+        }
+
+        .form-grid label.full {
+          grid-column: 1 / -1;
+        }
+
+        .form-grid input,
+        .form-grid select,
+        .form-grid textarea {
+          padding: var(--space-3) 0;
+          border: none;
+          border-bottom: 1px solid var(--border-color);
+          background: transparent;
+          font-size: var(--text-base);
+          color: var(--text-primary);
+          transition: border-color 0.3s ease;
+        }
+
+        .form-grid input:focus,
+        .form-grid select:focus,
+        .form-grid textarea:focus {
+          outline: none;
+          border-bottom-color: var(--accent-gold);
+        }
+
+        .form-grid textarea {
+          resize: vertical;
+          min-height: 80px;
+        }
+
+        .status-panel {
+          padding-top: var(--space-4);
+        }
+
+        @media (max-width: 768px) {
+          .form-grid {
+            grid-template-columns: 1fr;
+          }
         }
 
         /* ============================================
@@ -1644,7 +2207,7 @@ Transformamos cabelos em confiança
           font-weight: 700;
           text-transform: uppercase;
           letter-spacing: 0.05em;
-          border-radius: var(--radius-full);
+          border-radius: 2px;
           margin-bottom: var(--space-3);
         }
 
