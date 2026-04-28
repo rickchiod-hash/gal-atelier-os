@@ -4,6 +4,7 @@ import com.galatelier.domain.model.BriefingType
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.test.context.ActiveProfiles
 import org.springframework.boot.test.web.client.TestRestTemplate
 import org.springframework.http.HttpEntity
 import org.springframework.http.HttpHeaders
@@ -15,6 +16,7 @@ import kotlin.test.assertTrue
 import java.math.BigDecimal
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@ActiveProfiles("test")
 class QuoteControllerIntegrationTest(
     @Autowired private val rest: TestRestTemplate
 ) {
