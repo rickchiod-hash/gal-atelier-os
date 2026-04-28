@@ -53,6 +53,7 @@ export function QuoteSection({
   showToast,
   load,
   money,
+  generatePDF,
 }: QuoteSectionProps) {
   const [catalogFilter, setCatalogFilter] = useState<"all" | string>("all");
 

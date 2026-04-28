@@ -100,8 +100,8 @@ export function CatalogoLookbookSection({
                 src={featuredItem.image} 
                 alt={featuredItem.name} 
                 onError={(e) => {
-                  e.target.src = "/gal-assets/catalog/placeholder.png";
-                }}
+                   (e.target as HTMLImageElement).src = "/gal-assets/catalog/placeholder.png";
+                 }}
               />
             </div>
           </div>
@@ -114,9 +114,9 @@ export function CatalogoLookbookSection({
                   <img 
                     src={item.image} 
                     alt={item.name} 
-                    onError={(e) => {
-                      e.target.src = "/gal-assets/catalog/placeholder.png";
-                    }}
+                     onError={(e) => {
+                       (e.target as HTMLImageElement).src = "/gal-assets/catalog/placeholder.png";
+                     }}
                   />
                 </div>
                 <div className="lookbook-card-content">

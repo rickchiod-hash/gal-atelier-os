@@ -1,6 +1,20 @@
 "use client";
 
-import { QuoteResponse } from "@/app/page";
+interface QuoteResponse {
+  id: string;
+  clientName: string;
+  clientWhatsapp: string;
+  serviceType: string;
+  minimumPrice: number;
+  recommendedPrice: number;
+  premiumPrice: number;
+  depositPrice: number;
+  whatsappMessage: string;
+  whatsappLink: string;
+  pixCopyPaste: string;
+  createdAt: string;
+  status: string;
+}
 
 interface PedidosProducaoSectionProps {
   quotes: QuoteResponse[];
