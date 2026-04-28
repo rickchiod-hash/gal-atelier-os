@@ -5,23 +5,27 @@ import com.galatelier.adapter.output.persistence.entity.CustomerResponse
 import com.galatelier.adapter.output.persistence.entity.CustomerTier
 import com.galatelier.adapter.output.persistence.repository.CustomerRepository
 import com.galatelier.application.port.input.CreateCustomerRequest
-import com.galatelier.application.port.input.CustomerUseCase
 import com.galatelier.application.port.input.UpdateCustomerRequest
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
+import org.mockito.Mockito.*
+import org.mockito.kotlin.any
+import org.mockito.kotlin.whenever
 import java.math.BigDecimal
+import java.time.LocalDateTime
 import java.util.*
 
 class CustomerApplicationServiceTest {
 
+    private val repository = mock(CustomerRepository::class.java)
+    private val service = CustomerApplicationService(repository)
+
     @Test
     fun `list returns customers sorted by totalSpent descending`() {
-        val repo = FakeCustomerRepository()
-        val service = CustomerApplicationService(repo)
-
-        repo.save(CustomerEntity(name = "Ana", whatsapp = "11999999999", totalSpent = BigDecimal(100.0)))
-        repo.save(CustomerEntity(name = "Bruno", whatsapp = "11988888888", totalSpent = BigDecimal(500.0)))
-        repo.save(CustomerEntity(name = "Carla", whatsapp = "11977777777", totalSpent = BigDecimal(300.0)))
+        val ana = CustomerEntity(name = "Ana", whatsapp = "11999999999", totalSpent = BigDecimal(100.0))
+        val bruno = CustomerEntity(name = "Bruno", whatsapp = "11988888888", totalSpent = BigDecimal(500.0))
+        val carla = CustomerEntity(name = "Carla", whatsapp = "11977777777", totalSpent = BigDecimal(300.0))
+        whenever(repository.findAll()).thenReturn(listOf(ana, carla, bruno))
 
         val result = service.list()
 
@@ -33,8 +37,7 @@ class CustomerApplicationServiceTest {
 
     @Test
     fun `get returns null for non-existent customer`() {
-        val repo = FakeCustomerRepository()
-        val service = CustomerApplicationService(repo)
+        whenever(repository.findById(any<UUID>())).thenReturn(Optional.empty())
 
         val result = service.get("00000000-0000-0000-0000-000000000000")
 
@@ -43,10 +46,8 @@ class CustomerApplicationServiceTest {
 
     @Test
     fun `get returns customer for valid id`() {
-        val repo = FakeCustomerRepository()
-        val service = CustomerApplicationService(repo)
-
-        val customer = repo.save(CustomerEntity(name = "Maria", whatsapp = "11999999999"))
+        val customer = CustomerEntity(name = "Maria", whatsapp = "11999999999", id = UUID.randomUUID())
+        whenever(repository.findById(customer.id!!)).thenReturn(Optional.of(customer))
 
         val result = service.get(customer.id.toString())
 
@@ -58,14 +59,15 @@ class CustomerApplicationServiceTest {
 
     @Test
     fun `create saves and returns customer response`() {
-        val repo = FakeCustomerRepository()
-        val service = CustomerApplicationService(repo)
-
         val request = CreateCustomerRequest(
             name = "João",
             whatsapp = "11912345678",
             email = "joao@email.com"
         )
+        whenever(repository.save(any<CustomerEntity>())).thenAnswer { invocation ->
+            val entity = invocation.getArgument<CustomerEntity>(0)
+            entity.copy(id = UUID.randomUUID())
+        }
 
         val result = service.create(request)
 
@@ -80,10 +82,11 @@ class CustomerApplicationServiceTest {
 
     @Test
     fun `update modifies only provided fields`() {
-        val repo = FakeCustomerRepository()
-        val service = CustomerApplicationService(repo)
-
-        val customer = repo.save(CustomerEntity(name = "Ana", whatsapp = "11999999999"))
+        val customer = CustomerEntity(name = "Ana", whatsapp = "11999999999", id = UUID.randomUUID())
+        whenever(repository.findById(customer.id!!)).thenReturn(Optional.of(customer))
+        whenever(repository.save(any<CustomerEntity>())).thenAnswer { invocation ->
+            invocation.getArgument(0)
+        }
 
         val result = service.update(
             id = customer.id.toString(),
@@ -101,8 +104,7 @@ class CustomerApplicationServiceTest {
 
     @Test
     fun `update returns null for non-existent customer`() {
-        val repo = FakeCustomerRepository()
-        val service = CustomerApplicationService(repo)
+        whenever(repository.findById(any<UUID>())).thenReturn(Optional.empty())
 
         val result = service.update(
             id = "00000000-0000-0000-0000-000000000000",
@@ -111,40 +113,4 @@ class CustomerApplicationServiceTest {
 
         assertNull(result)
     }
-}
-
-// Fake implementation for testing (does not depend on Spring)
-private class FakeCustomerRepository : CustomerRepository {
-    private val customers = mutableListOf<CustomerEntity>()
-
-    override fun save(entity: CustomerEntity): CustomerEntity {
-        if (entity.id == null) {
-            val newId = UUID.randomUUID()
-            val newCustomer = entity.copy(id = newId)
-            customers.add(newCustomer)
-            return newCustomer
-        }
-        customers.removeIf { it.id == entity.id }
-        customers.add(entity)
-        return entity
-    }
-
-    override fun findById(id: UUID): Optional<CustomerEntity> =
-        Optional.ofNullable(customers.find { it.id == id })
-
-    override fun findAll(): List<CustomerEntity> = customers.toList()
-
-    override fun deleteById(id: UUID) { customers.removeIf { it.id == id } }
-    override fun delete(entity: CustomerEntity) { customers.remove(entity) }
-    override fun deleteAll(entities: MutableIterable<CustomerEntity>) {}
-    override fun deleteAll() { customers.clear() }
-    override fun existsById(id: UUID): Boolean = customers.any { it.id == id }
-    override fun <S : CustomerEntity?> saveAll(entities: MutableIterable<S>): MutableIterable<S> = entities
-    override fun findAllById(ids: MutableIterable<UUID>): MutableIterable<CustomerEntity> = mutableListOf()
-    override fun count(): Long = customers.size.toLong()
-    override fun <S : CustomerEntity?> findAll(example: org.springframework.data.domain.Example<S>): MutableIterable<S> = mutableListOf()
-    override fun <S : CustomerEntity?> findOne(example: org.springframework.data.domain.Example<S>): Optional<S> = Optional.empty()
-    override fun findAll(sort: org.springframework.data.domain.Sort): MutableIterable<CustomerEntity> = customers
-    override fun findAll(pageable: org.springframework.data.domain.Pageable): org.springframework.data.domain.Page<CustomerEntity> = 
-        org.springframework.data.domain.PageImpl(customers)
 }
