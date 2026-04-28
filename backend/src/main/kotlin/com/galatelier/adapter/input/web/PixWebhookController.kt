@@ -1,5 +1,6 @@
 package com.galatelier.adapter.input.web
 
+import com.galatelier.application.port.output.QuoteRepository
 import com.galatelier.domain.model.OrderStatus
 import com.galatelier.domain.model.Quote
 import org.slf4j.LoggerFactory
@@ -10,7 +11,9 @@ import java.util.concurrent.ConcurrentHashMap
 
 @RestController
 @RequestMapping("/api/pix")
-class PixWebhookController {
+class PixWebhookController(
+    private val quoteRepository: QuoteRepository
+) {
 
     private val logger = LoggerFactory.getLogger(javaClass)
     private val confirmedPayments = ConcurrentHashMap<UUID, PixConfirmation>()
@@ -50,6 +53,17 @@ class PixWebhookController {
                 confirmedAt = Instant.now()
             )
             confirmedPayments[request.quoteId] = confirmation
+
+            // Atualiza status do orçamento para PAID
+            val quote = quoteRepository.findById(request.quoteId)
+            if (quote != null) {
+                val updatedQuote = quote.copy(status = OrderStatus.PAID)
+                quoteRepository.update(updatedQuote)
+                logger.info("Status do quoteId=${request.quoteId} atualizado para PAID")
+            } else {
+                logger.warn("Quote não encontrado para quoteId=${request.quoteId}")
+            }
+
             logger.info("Pix confirmado para quoteId=${request.quoteId}")
             PixWebhookResponse(success = true, message = "Pagamento confirmado", quoteId = request.quoteId)
         } else {
@@ -79,6 +93,17 @@ class PixWebhookController {
             confirmedAt = Instant.now()
         )
         confirmedPayments[quoteId] = confirmation
+
+        // Atualiza status do orçamento para PAID
+        val quote = quoteRepository.findById(quoteId)
+        if (quote != null) {
+            val updatedQuote = quote.copy(status = OrderStatus.PAID)
+            quoteRepository.update(updatedQuote)
+            logger.info("Status do quoteId=$quoteId atualizado para PAID (simulação)")
+        } else {
+            logger.warn("Quote não encontrado para quoteId=$quoteId (simulação)")
+        }
+
         return PixStatusResponse(
             quoteId = quoteId,
             status = "PAID",

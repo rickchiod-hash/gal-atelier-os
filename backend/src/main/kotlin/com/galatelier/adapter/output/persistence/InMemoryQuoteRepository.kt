@@ -16,4 +16,11 @@ class InMemoryQuoteRepository : QuoteRepository {
     }
 
     override fun findAll(): List<Quote> = storage.values.toList()
+
+    override fun findById(id: UUID): Quote? = storage[id]
+
+    override fun update(quote: Quote): Quote {
+        storage[quote.id] = quote
+        return quote
+    }
 }
