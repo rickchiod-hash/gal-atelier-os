@@ -14,8 +14,8 @@
 | HERMES-003 | Status inconsistentes (docs vs git) | Docs marcam tasks como Done mas git não reflete | Hermes | ✅ RESOLVIDO | - |
 | HERMES-004 | 🔴 CRÍTICO: Build quebrado (OrderResponse) | `OrderResponse.kt` não existe, build Kotlin falha | Atena | 🔴 Open | 🔴 Critical |
 | HERMES-005 | US-01 incompleto (T-03 pendente) | CustomerController não refatorado para UseCase | Atena | 📋 Open | High |
-| HERMES-006 | 🔴 Build quebrado (Header.module.css) | `Header.module.css` agora existe, mas build falha por outro motivo | Vênus | 🔴 Open | 🔴 Critical |
-| HERMES-008 | 🔴 CRÍTICO: next.config.ts não suportado | Renomear para next.config.js ou .mjs | Vênus | 🔴 Open | 🔴 Critical |
+| HERMES-006 | 🔴 Build quebrado (Header.module.css) | `Header.module.css` criado, build parcialmente fixo | Vênus | ✅ Resolved | 🔴 Critical |
+| HERMES-008 | 🔴 CRÍTICO: next.config.ts não suportado | Renomeado para next.config.js, resolvido | Vênus | ✅ Resolved | 🔴 Critical |
 
 ---
 
