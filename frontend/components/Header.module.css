@@ -1,0 +1,135 @@
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  min-height: 80px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-inline: var(--space-4);
+  background: rgba(250, 248, 245, 0.85);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.logo {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--text-lg);
+  letter-spacing: 0.02em;
+}
+
+.logo span {
+  color: var(--deep-espresso);
+}
+
+.navLinks {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.navLinks a {
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-xs);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--color-text-muted);
+  transition: all var(--duration-normal) var(--ease-polite);
+}
+
+.navLinks a:hover {
+  color: var(--color-text);
+}
+
+.navLinks a.active {
+  color: var(--deep-espresso);
+  background: rgba(166, 124, 82, 0.08);
+}
+
+.themeToggle {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: var(--text-lg);
+  padding: var(--space-1);
+}
+
+.mobileMenuBtn {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--color-text);
+}
+
+.drawer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1000;
+}
+
+.drawerOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.drawerContent {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 80%;
+  max-width: 300px;
+  height: 100%;
+  background: var(--color-surface);
+  padding: var(--space-4);
+  display: flex;
+  flex-direction: column;
+}
+
+.drawerClose {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: var(--space-4);
+}
+
+.drawerClose button {
+  background: none;
+  border: none;
+  font-size: var(--text-xl);
+  cursor: pointer;
+  color: var(--color-text);
+}
+
+.drawerContent nav {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.drawerContent nav a {
+  padding: var(--space-2) 0;
+  font-size: var(--text-lg);
+  color: var(--color-text);
+  border-bottom: 1px solid var(--color-border);
+}
+
+@media (max-width: 768px) {
+  .navLinks {
+    display: none;
+  }
+
+  .mobileMenuBtn {
+    display: block;
+  }
+}

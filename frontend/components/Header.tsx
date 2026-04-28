@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useTheme } from "./ThemeProvider";
+import styles from "./Header.module.css";
 
 interface HeaderProps {
   whatsappReceiver: string;
@@ -13,13 +14,13 @@ export function Header({ whatsappReceiver }: HeaderProps) {
 
   return (
     <>
-      <header className="shell nav">
-        <a href="/" className="logo" aria-label="Gal Atelier OS - Início">
+      <header className={`shell ${styles.nav}`}>
+        <a href="/" className={styles.logo} aria-label="Gal Atelier OS - Início">
           <img src="/brand/logo-gal-atelier.svg" alt="Logo Gal Atelier" />
           <span>Gal Atelier</span>
         </a>
 
-        <div style={{ display: "flex", gap: "1rem", alignItems: "center" }}>
+        <div className={styles.navLinks}>
           <a
             href="#quote"
             className="button primary"
@@ -53,14 +54,14 @@ export function Header({ whatsappReceiver }: HeaderProps) {
       </header>
 
       {drawerOpen && (
-        <div className="drawer">
-          <div className="drawerOverlay" onClick={() => setDrawerOpen(false)} aria-hidden="true" />
-          <div className="drawerContent" role="dialog" aria-label="Menu de navegação">
-            <div className="drawerClose">
-              <button onClick={() => setDrawerOpen(false)} aria-label="Fechar menu">
-                ✕
-              </button>
-            </div>
+        <div className={styles.drawer}>
+          <div className={styles.drawerOverlay} onClick={() => setDrawerOpen(false)} aria-hidden="true" />
+          <div className={styles.drawerContent} role="dialog" aria-label="Menu de navegação">
+<div className={styles.drawerClose}>
+                <button onClick={() => setDrawerOpen(false)} aria-label="Fechar menu">
+                  ✕
+                </button>
+              </div>
 
             <a href="/" className="logo" style={{ marginBottom: "1rem" }}>
               <img src="/brand/logo-gal-atelier.svg" alt="Logo Gal Atelier" style={{ width: "36px", height: "36px" }} />

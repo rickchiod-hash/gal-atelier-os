@@ -238,8 +238,8 @@ try {
   # ============================================================
   Step "FASE 2: Install - Dependencias"
 
-  Step "Install backend (Gradle)"
-  Invoke-CmdLogged -Name "backend-gradle-build" -WorkingDirectory (Join-Path $ProjectRoot "backend") -Command ".\gradlew.bat build -x test"
+  Step "Install backend (Maven)"
+  Invoke-CmdLogged -Name "backend-maven-build" -WorkingDirectory (Join-Path $ProjectRoot "backend") -Command "mvn clean install -DskipTests"
   $Report.phases.InstallBackend = @{ status = "done" }
 
   Step "Install frontend (npm)"
