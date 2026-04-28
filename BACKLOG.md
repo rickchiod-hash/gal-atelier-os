@@ -178,6 +178,7 @@
 
 | ID | Item | Status | Estimativa |
 |----|------|--------|------------|
+| P0-CI-001 | Corrigir falhas dos workflows GitHub Actions | ✅ DONE | 0.5h |
 | CI-01 | Fix run-all-v5.ps1 | ❌ PENDENTE (referencia gradlew) | 1h |
 | CI-02 | Makefile | ❌ PENDENTE | 2h |
 | CI-03 | GitHub Actions Expand | ❌ PENDENTE | 4h |
