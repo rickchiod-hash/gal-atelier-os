@@ -6,4 +6,6 @@ import org.springframework.stereotype.Repository
 import java.util.UUID
 
 @Repository
-interface CustomerRepository : JpaRepository<CustomerEntity, UUID>
+interface CustomerRepository : JpaRepository<CustomerEntity, UUID> {
+    fun findByWhatsapp(whatsapp: String): CustomerEntity?
+}
