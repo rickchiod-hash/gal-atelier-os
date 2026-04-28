@@ -44,7 +44,7 @@
 |----|------------|--------|--------|--------|
 | US-16 | Como dev, quero Domain Tests completos | 5 | Sprint 1 | ✅ Done (commit: 233dd50) |
 | US-17 | Como dev, quero Application Service Tests | 8 | Sprint 1 | 🔄 In Progress (CustomerApplicationServiceTest ✅, QuoteApplicationServiceTest ✅) |
-| US-18 | Como dev, quero Controller Integration Tests | 8 | Sprint 2 | 📋 To Do |
+| US-18 | Como dev, quero Controller Integration Tests | 8 | Sprint 1 | 🔄 In Progress (403 FORBIDDEN - fixing security) |
 | US-19 | Como dev, quero Adapter Tests | 6 | Sprint 2 | 📋 To Do |
 | US-20 | Como dev, quero TestContainers PostgreSQL | 3 | Sprint 2 | 📋 To Do |
 | US-21 | Como dev, quero JaCoCo 80% coverage | 1 | Sprint 3 | 📋 To Do |
@@ -56,8 +56,8 @@
 | ID | User Story | Points | Sprint | Status |
 |----|------------|--------|--------|--------|
 | US-25 | Como dev, quero GitHub Actions expandido | 4 | Sprint 2 | 📋 To Do |
-| US-26 | Como dev, quero Makefile | 2 | Sprint 2 | 📋 To Do |
-| US-27 | Como dev, quero Prettier + ktlint | 3 | Sprint 2 | 📋 To Do |
+| US-26 | Como dev, quero Makefile | 2 | Sprint 2 | ✅ Done |
+| US-27 | Como dev, quero Prettier + ktlint | 3 | Sprint 2 | ✅ Done |
 | US-28 | Como dev, quero Docker Compose melhorado | 2 | Sprint 3 | 📋 To Do |
 | US-29 | Como dev, quero Kubernetes manifests | 6 | Sprint 3 | 📋 To Do |
 
@@ -66,8 +66,8 @@
 |----|------------|--------|--------|--------|
 | US-30 | Como dev, quero Swagger/OpenAPI docs | 3 | Sprint 2 | 📋 To Do |
 | US-31 | Como dev, quero README atualizado | 1 | Sprint 1 | ✅ Done (commit: ff7e3eb) |
-| US-32 | Como dev, quero Architecture.md sync | 2 | Sprint 1 | 🔄 In Progress (synced with code) |
-| US-33 | Como dev, quero Design-System.md sync | 2 | Sprint 1 | 🔄 In Progress (resolved Nubank/Whisper conflict) |
+| US-32 | Como dev, quero Architecture.md sync | 2 | Sprint 1 | ✅ Done (commit: e464e3a) |
+| US-33 | Como dev, quero Design-System.md sync | 2 | Sprint 1 | ✅ Done (commit: da4bf4) |
 | US-34 | Como dev, quero CONTRIBUTING.md | 1 | Sprint 3 | 📋 To Do |
 | US-35 | Como dev, quero fix .env.local commitado | 1 | Sprint 1 | ✅ Done (gitignore correct, no tracked) |
 
@@ -110,18 +110,20 @@
 | T-14 | Criar MoneyTest.kt | US-16 | ✅ Done | 1h |
 | T-15 | Criar ClientTest.kt | US-16 | ✅ Done | 1h |
 | T-16 | Criar WigBriefingTest.kt | US-16 | ✅ Done | 1h |
-| T-17 | Criar ServiceCatalogTest.kt | US-16 | 📋 To Do | 1h |
-| T-18 | Criar QuoteTest.kt | US-16 | 📋 To Do | 1h |
-| T-19 | Criar OrderStatusTest.kt | US-16 | 📋 To Do | 0.5h |
-| T-20 | Criar BriefingTypeTest.kt | US-16 | 📋 To Do | 0.5h |
-| T-21 | Criar ReviewTest.kt | US-16 | 📋 To Do | 0.5h |
-| T-22 | Criar DiscountCouponTest.kt | US-16 | 📋 To Do | 0.5h |
-| T-23 | Criar SalesCommissionTest.kt | US-16 | 📋 To Do | 0.5h |
-| T-24 | Criar ProcessPhotoTest.kt | US-16 | 📋 To Do | 0.5h |
+| T-17 | Criar ServiceCatalogTest.kt | US-16 | ✅ Done | 1h |
+| T-18 | Criar QuoteTest.kt | US-16 | ✅ Done | 1h |
+| T-19 | Criar OrderStatusTest.kt | US-16 | ✅ Done | 0.5h |
+| T-20 | Criar BriefingTypeTest.kt | US-16 | ✅ Done | 0.5h |
+| T-21 | Criar ReviewTest.kt | US-16 | ✅ Done | 0.5h |
+| T-22 | Criar DiscountCouponTest.kt | US-16 | ✅ Done | 0.5h |
+| T-23 | Criar SalesCommissionTest.kt | US-16 | ✅ Done | 0.5h |
+| T-24 | Criar ProcessPhotoTest.kt | US-16 | ✅ Done | 0.5h |
 | T-25 | Atualizar README.md | US-31 | ✅ Done | 1h |
-| T-26 | Sync ARCHITECTURE.md | US-32 | 🔄 In Progress | 1h |
-| T-27 | Sync DESIGN-SYSTEM.md | US-33 | 🔄 In Progress | 1h |
+| T-26 | Sync ARCHITECTURE.md | US-32 | ✅ Done | 1h |
+| T-27 | Sync DESIGN-SYSTEM.md | US-33 | ✅ Done | 1h |
 | T-28 | Fix .env.local commitado | US-35 | ✅ Done | 0.5h |
+| T-29 | Criar HANDOFFS.md | HERMES-001-007 | ✅ Done | 1h |
+| T-30 | Fix spotbugs version | HERMES-007 | ✅ Done | 0.5h |
 
 ---
 
