@@ -213,7 +213,7 @@
                 </executions>
             </plugin>
 
-            <!-- SpotBugs for Bug Detection (disabled temporarily for tests)
+            <!-- SpotBugs for Bug Detection -->
             <plugin>
                 <groupId>com.github.spotbugs</groupId>
                 <artifactId>spotbugs-maven-plugin</artifactId>
@@ -231,7 +231,6 @@
                     </execution>
                 </executions>
             </plugin>
-            -->
 
             <!-- PMD for Code Quality -->
             <plugin>
@@ -330,6 +329,22 @@
                         <goals>
                             <goal>integration-test</goal>
                             <goal>verify</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- ktlint for Kotlin linting -->
+            <plugin>
+                <groupId>org.jlleitschuh.gradle</groupId>
+                <artifactId>ktlint-maven-plugin</artifactId>
+                <version>11.6.1</version>
+                <executions>
+                    <execution>
+                        <id>ktlint-check</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>check</goal>
                         </goals>
                     </execution>
                 </executions>
