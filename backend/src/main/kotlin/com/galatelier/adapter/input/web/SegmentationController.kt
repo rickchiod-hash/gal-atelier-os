@@ -1,6 +1,7 @@
 package com.galatelier.adapter.input.web
 
 import com.galatelier.application.service.CustomerSegmentationService
+import com.galatelier.application.service.CustomerSegmentResponse
 import org.springframework.web.bind.annotation.*
 
 @RestController

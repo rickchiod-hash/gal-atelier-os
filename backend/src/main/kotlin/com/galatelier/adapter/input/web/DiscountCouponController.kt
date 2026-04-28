@@ -2,6 +2,8 @@ package com.galatelier.adapter.input.web
 
 import com.galatelier.adapter.output.persistence.entity.DiscountCouponEntity
 import com.galatelier.adapter.output.persistence.repository.DiscountCouponRepository
+import java.time.Instant
+import java.util.UUID
 import org.springframework.web.bind.annotation.*
 
 @RestController

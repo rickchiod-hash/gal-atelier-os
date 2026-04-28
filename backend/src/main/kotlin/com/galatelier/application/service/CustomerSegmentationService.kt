@@ -3,6 +3,7 @@ package com.galatelier.application.service
 import com.galatelier.adapter.output.persistence.entity.CustomerEntity
 import com.galatelier.adapter.output.persistence.repository.CustomerRepository
 import org.springframework.stereotype.Service
+import java.math.BigDecimal
 
 @Service
 class CustomerSegmentationService(
@@ -10,16 +11,14 @@ class CustomerSegmentationService(
 ) {
     fun categorizeCustomer(customer: CustomerEntity): String {
         val ordersCount = customer.ordersCount ?: 0
-        val totalSpent = customer.totalSpent ?: 0.0
+        val totalSpent = customer.totalSpent ?: BigDecimal.ZERO
 
-        return when {
-            totalSpent >= 3000 -> "VIP_GOLD"
-            totalSpent >= 1500 -> "VIP_SILVER"
-            ordersCount >= 5 -> "RECURRING"
-            ordersCount >= 2 -> "ACTIVE"
-            ordersCount == 1 -> "NEW"
-            else -> "LEAD"
-        }
+        if (totalSpent >= BigDecimal("3000")) return "VIP_GOLD"
+        if (totalSpent >= BigDecimal("1500")) return "VIP_SILVER"
+        if (ordersCount >= 5) return "RECURRING"
+        if (ordersCount >= 2) return "ACTIVE"
+        if (ordersCount == 1) return "NEW"
+        return "LEAD"
     }
 
     fun getAllWithSegments(): List<CustomerSegmentResponse> =
@@ -28,7 +27,7 @@ class CustomerSegmentationService(
                 customerId = customer.id.toString(),
                 name = customer.name,
                 whatsapp = customer.whatsapp,
-                totalSpent = customer.totalSpent ?: 0.0,
+                totalSpent = customer.totalSpent?.toDouble() ?: 0.0,
                 ordersCount = customer.ordersCount ?: 0,
                 segment = categorizeCustomer(customer)
             )
