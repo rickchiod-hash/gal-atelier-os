@@ -10,6 +10,7 @@ import org.springframework.http.HttpEntity
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpMethod
 import org.springframework.http.HttpStatus
+import org.springframework.security.test.context.support.WithMockUser
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 import kotlin.test.assertTrue
@@ -29,6 +30,7 @@ class QuoteControllerIntegrationTest(
     }
 
     @Test
+    @WithMockUser
     fun `cria orcamento e atualiza metricas`() {
         val request = CreateQuoteRequest(
             clientName = "Maria",
@@ -64,6 +66,7 @@ class QuoteControllerIntegrationTest(
     }
 
     @Test
+    @WithMockUser
     fun `retorna erro para telefone invalido`() {
         val request = CreateQuoteRequest(
             clientName = "Maria",
