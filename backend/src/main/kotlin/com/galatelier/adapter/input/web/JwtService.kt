@@ -51,6 +51,19 @@ class JwtService {
         }
     }
 
+    fun getUserId(token: String): String? {
+        return try {
+            val claims = Jwts.parser()
+                .verifyWith(secretKey)
+                .build()
+                .parseSignedClaims(token)
+                .payload
+            claims.subject
+        } catch (e: Exception) {
+            null
+        }
+    }
+
     fun getAuthentication(token: String): UsernamePasswordAuthenticationToken? {
         return try {
             val claims: Claims = Jwts.parser()

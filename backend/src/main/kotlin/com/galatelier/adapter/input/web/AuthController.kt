@@ -3,8 +3,10 @@ package com.galatelier.adapter.input.web
 import com.galatelier.adapter.output.persistence.entity.UserEntity
 import com.galatelier.adapter.output.persistence.entity.UserRole
 import com.galatelier.adapter.output.persistence.repository.UserRepository
+import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestHeader
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import java.time.LocalDateTime
@@ -60,6 +62,17 @@ class AuthController(
             }
             userRepository.save(user)
         }
+        return jwtService.generateToken(user)
+    }
+
+    @GetMapping("/me")
+    fun me(@RequestHeader("Authorization") authHeader: String?): AuthResponse? {
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            return null
+        }
+        val token = authHeader.substring(7)
+        val userId = jwtService.getUserId(token) ?: return null
+        val user = userRepository.findById(UUID.fromString(userId)).orElse(null) ?: return null
         return jwtService.generateToken(user)
     }
 }

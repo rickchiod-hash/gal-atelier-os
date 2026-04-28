@@ -42,3 +42,29 @@ data class CustomerEntity(
 enum class CustomerTier {
     NEW, BRONZE, SILVER, GOLD, PLATINUM, VIP
 }
+
+data class CustomerResponse(
+    val id: String,
+    val name: String,
+    val whatsapp: String,
+    val email: String,
+    val totalSpent: Double,
+    val ordersCount: Int,
+    val favoriteService: String,
+    val lastOrderDate: String,
+    val tier: CustomerTier,
+    val createdAt: String
+)
+
+fun CustomerEntity.toResponse() = CustomerResponse(
+    id = id.toString(),
+    name = name,
+    whatsapp = whatsapp,
+    email = email ?: "",
+    totalSpent = totalSpent.toDouble(),
+    ordersCount = ordersCount,
+    favoriteService = favoriteService ?: "-",
+    lastOrderDate = lastOrderDate?.toString() ?: "-",
+    tier = tier,
+    createdAt = createdAt.toLocalDate().toString()
+)
