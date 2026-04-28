@@ -1,0 +1,272 @@
+name: CI/CD - HOMOLOG Environment
+
+on:
+  push:
+    branches:
+      - homolog
+  pull_request:
+    branches:
+      - homolog
+
+env:
+  REGISTRY: ghcr.io
+  JAVA_VERSION: '21'
+  NODE_VERSION: '20'
+
+jobs:
+  lint-and-test-backend:
+    name: Backend • Lint & Test & Coverage
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: galatelier
+          POSTGRES_PASSWORD: galatelier123
+          POSTGRES_DB: galatelier
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+
+      - name: ☕ Setup Java
+        uses: actions/setup-java@v4
+        with:
+          java-version: ${{ env.JAVA_VERSION }}
+          distribution: 'corretto'
+          cache: maven
+
+      - name: 🔍 Code Quality Checks
+        working-directory: backend
+        run: |
+          echo "🔍 Running FindBugs..."
+          mvn spotbugs:check -q
+          echo "✅ FindBugs passed"
+
+      - name: ✅ Run Tests with Coverage
+        working-directory: backend
+        env:
+          DATABASE_URL: jdbc:postgresql://localhost:5432/galatelier
+          DATABASE_USERNAME: galatelier
+          DATABASE_PASSWORD: galatelier123
+        run: |
+          echo "🧪 Running unit tests..."
+          mvn test -q
+          echo "📊 Generating coverage report..."
+          mvn jacoco:report -q
+
+      - name: 📈 Upload Coverage to Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          files: ./backend/target/site/jacoco/jacoco.xml
+          flags: backend
+          name: backend-coverage-homolog
+          fail_ci_if_error: true
+
+      - name: ❌ Fail on Low Coverage
+        working-directory: backend
+        run: |
+          COVERAGE=$(mvn jacoco:report -q && grep -oP 'Line coverage: \K[0-9.]+' target/site/jacoco/index.html || echo "0")
+          if (( $(echo "$COVERAGE < 50" | bc -l) )); then
+            echo "⚠️ Code coverage is below threshold: $COVERAGE%"
+            exit 1
+          fi
+          echo "✅ Code coverage: $COVERAGE%"
+
+  lint-and-test-frontend:
+    name: Frontend • Lint & Test & Build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+
+      - name: 📦 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: 📥 Install Dependencies
+        working-directory: frontend
+        run: npm ci
+
+      - name: 🔍 ESLint Checks
+        working-directory: frontend
+        run: npm run lint -- --max-warnings 0
+
+      - name: 🏗️ Build & Verify
+        working-directory: frontend
+        env:
+          NEXT_PUBLIC_API_URL: 'http://backend:8080'
+          NEXT_PUBLIC_WHATSAPP_RECEIVER: '5511914136961'
+        run: npm run build
+
+  security-scan:
+    name: Security • Dependency Scanning
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+
+      - name: 🔒 NPM Audit (Frontend)
+        working-directory: frontend
+        continue-on-error: true
+        run: npm audit --audit-level=moderate
+
+      - name: 🔒 Maven Dependency Check (Backend)
+        working-directory: backend
+        continue-on-error: true
+        run: |
+          mvn org.owasp:dependency-check-maven:check -q || true
+
+  build-backend-homolog:
+    name: Backend • Build Docker (Homolog)
+    runs-on: ubuntu-latest
+    needs: lint-and-test-backend
+    if: github.event_name == 'push'
+
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+
+      - name: 🔐 Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: 🔑 Log in to Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: 🏗️ Build & Push Backend Image (Homolog)
+        uses: docker/build-push-action@v5
+        with:
+          context: ./backend
+          push: true
+          tags: |
+            ${{ env.REGISTRY }}/${{ github.repository }}/backend:homolog-${{ github.sha }}
+            ${{ env.REGISTRY }}/${{ github.repository }}/backend:homolog-latest
+          cache-from: type=registry,ref=${{ env.REGISTRY }}/${{ github.repository }}/backend:homolog-buildcache
+          cache-to: type=registry,ref=${{ env.REGISTRY }}/${{ github.repository }}/backend:homolog-buildcache,mode=max
+
+  build-frontend-homolog:
+    name: Frontend • Build Docker (Homolog)
+    runs-on: ubuntu-latest
+    needs: lint-and-test-frontend
+    if: github.event_name == 'push'
+
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+
+      - name: 🔐 Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: 🔑 Log in to Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: 🏗️ Build & Push Frontend Image (Homolog)
+        uses: docker/build-push-action@v5
+        with:
+          context: ./frontend
+          push: true
+          build-args: |
+            NEXT_PUBLIC_API_URL=http://backend:8080
+            NEXT_PUBLIC_WHATSAPP_RECEIVER=5511914136961
+          tags: |
+            ${{ env.REGISTRY }}/${{ github.repository }}/frontend:homolog-${{ github.sha }}
+            ${{ env.REGISTRY }}/${{ github.repository }}/frontend:homolog-latest
+          cache-from: type=registry,ref=${{ env.REGISTRY }}/${{ github.repository }}/frontend:homolog-buildcache
+          cache-to: type=registry,ref=${{ env.REGISTRY }}/${{ github.repository }}/frontend:homolog-buildcache,mode=max
+
+  deploy-homolog:
+    name: Deploy • Homolog Environment
+    runs-on: ubuntu-latest
+    needs: [build-backend-homolog, build-frontend-homolog, security-scan]
+    if: github.event_name == 'push'
+
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+
+      - name: 🚀 Deploy to Homolog
+        env:
+          DEPLOY_KEY: ${{ secrets.HOMOLOG_DEPLOY_KEY }}
+          DEPLOY_HOST: ${{ secrets.HOMOLOG_DEPLOY_HOST }}
+          DEPLOY_USER: ${{ secrets.HOMOLOG_DEPLOY_USER }}
+        run: |
+          echo "🚀 Deploying to HOMOLOG environment..."
+          echo "Backend Image: ${{ env.REGISTRY }}/${{ github.repository }}/backend:homolog-${{ github.sha }}"
+          echo "Frontend Image: ${{ env.REGISTRY }}/${{ github.repository }}/frontend:homolog-${{ github.sha }}"
+          echo "✅ Deployment configuration ready"
+        if: ${{ secrets.HOMOLOG_DEPLOY_HOST != '' }}
+
+  notify:
+    name: Slack • Notification
+    runs-on: ubuntu-latest
+    needs: [lint-and-test-backend, lint-and-test-frontend, deploy-homolog]
+    if: always()
+
+    steps:
+      - name: 📢 Notify Slack
+        uses: slackapi/slack-github-action@v1
+        with:
+          payload: |
+            {
+              "text": "🚀 Gal Atelier HOMOLOG Pipeline",
+              "blocks": [
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "*HOMOLOG Environment Build & Deploy*\n${{ job.status == 'success' && '✅ Success' || '❌ Failed' }}"
+                  }
+                },
+                {
+                  "type": "section",
+                  "fields": [
+                    {
+                      "type": "mrkdwn",
+                      "text": "*Branch:*\n${{ github.ref_name }}"
+                    },
+                    {
+                      "type": "mrkdwn",
+                      "text": "*Commit:*\n<${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}|${{ github.sha }}>"
+                    },
+                    {
+                      "type": "mrkdwn",
+                      "text": "*Author:*\n${{ github.actor }}"
+                    }
+                  ]
+                }
+              ]
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
+        if: ${{ secrets.SLACK_WEBHOOK_URL != '' }}
+

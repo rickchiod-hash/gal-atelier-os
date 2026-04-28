@@ -1,0 +1,37 @@
+# Dependencies
+node_modules
+.pnp
+.pnp.js
+
+# Production
+build
+dist
+.next
+out
+
+# Test coverage
+coverage
+.nyc_output
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# IDEs
+.vscode
+.idea
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Build files
+.eslintcache
+*.tsbuildinfo
+
+# Misc
+.cache
+tmp
+temp
+
