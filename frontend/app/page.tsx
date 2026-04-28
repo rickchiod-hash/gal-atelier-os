@@ -465,7 +465,6 @@ Transformamos cabelos em confiança
           HERO SECTION — SPLIT EDITORIAL LAYOUT
           ============================================ */}
       <section className="hero-section">
-        <div className="hero-bg-pattern"></div>
         <div className="hero-container">
           <div className="hero-content">
             <span className="eyebrow-tag">
@@ -1190,15 +1189,6 @@ Transformamos cabelos em confiança
           padding: var(--space-8) var(--space-4);
           background: var(--bg-primary);
           overflow: hidden;
-        }
-
-        .hero-bg-pattern {
-          position: absolute;
-          inset: 0;
-          background: 
-            radial-gradient(ellipse at 20% 80%, rgba(200, 169, 107, 0.06) 0%, transparent 50%),
-            radial-gradient(ellipse at 80% 20%, rgba(90, 22, 59, 0.04) 0%, transparent 40%);
-          pointer-events: none;
         }
 
         .hero-container {
