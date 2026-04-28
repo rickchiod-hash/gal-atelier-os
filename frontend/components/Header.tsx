@@ -16,18 +16,18 @@ export function Header({ whatsappReceiver }: HeaderProps) {
       <header className="shell nav">
         <a href="/" className="logo" aria-label="Gal Atelier OS - Início">
           <img src="/brand/logo-gal-atelier.svg" alt="Logo Gal Atelier" />
-          <span>Gal Atelier OS</span>
+          <span>Gal Atelier</span>
         </a>
 
-        <nav className="navLinks" aria-label="Navegação principal">
-          <a href="#overview">Dashboard</a>
-          <a href="#quote">Orçamento</a>
-          <a href="#crm">CRM</a>
-          <a href="#catalog">Catálogo</a>
-          <a href="#pipeline">Pipeline</a>
-        </nav>
+        <div style={{ display: "flex", gap: "1rem", alignItems: "center" }}>
+          <a
+            href="#quote"
+            className="button primary"
+            style={{ minHeight: "40px", padding: "0.5rem 1.5rem", fontSize: "0.85rem" }}
+          >
+            Orçamento
+          </a>
 
-        <div style={{ display: "flex", gap: "0.5rem", alignItems: "center" }}>
           <button
             className="themeToggle"
             onClick={toggleTheme}
@@ -36,16 +36,6 @@ export function Header({ whatsappReceiver }: HeaderProps) {
           >
             {theme === "dark" ? "☀️" : "🌙"}
           </button>
-
-          <a
-            href={`https://wa.me/${whatsappReceiver}`}
-            className="button secondary"
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{ minHeight: "40px", padding: "0.5rem 1rem", fontSize: "0.85rem" }}
-          >
-            WhatsApp
-          </a>
 
           <button
             className="mobileMenuBtn"
@@ -74,15 +64,13 @@ export function Header({ whatsappReceiver }: HeaderProps) {
 
             <a href="/" className="logo" style={{ marginBottom: "1rem" }}>
               <img src="/brand/logo-gal-atelier.svg" alt="Logo Gal Atelier" style={{ width: "36px", height: "36px" }} />
-              <span style={{ fontWeight: 900 }}>Gal Atelier OS</span>
+              <span style={{ fontWeight: 900 }}>Gal Atelier</span>
             </a>
 
             <nav aria-label="Menu mobile">
-              <a href="#overview" onClick={() => setDrawerOpen(false)}>📊 Dashboard</a>
-              <a href="#quote" onClick={() => setDrawerOpen(false)}>📝 Novo Orçamento</a>
-              <a href="#crm" onClick={() => setDrawerOpen(false)}>👥 CRM</a>
+              <a href="#quote" onClick={() => setDrawerOpen(false)}>📝 Orçamento</a>
               <a href="#catalog" onClick={() => setDrawerOpen(false)}>📦 Catálogo</a>
-              <a href="#pipeline" onClick={() => setDrawerOpen(false)}>🔄 Pipeline</a>
+              <a href="#crm" onClick={() => setDrawerOpen(false)}>👥 CRM</a>
             </nav>
 
             <div style={{ marginTop: "auto", paddingTop: "2rem" }}>

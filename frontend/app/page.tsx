@@ -699,21 +699,6 @@ Transformamos cabelos em confiança
           <p className="section-desc">Briefing completo com cálculo automático de preços e geração de Pix.</p>
         </div>
 
-        {/* Progress Line Indicator */}
-        <div className="progress-indicator">
-          <div className={`progress-step ${wizardStep >= 1 ? (wizardStep > 1 ? "done" : "active") : ""}`}>
-            <span>Cliente</span>
-          </div>
-          <div className={`progress-line ${wizardStep > 1 ? "done" : ""}`} />
-          <div className={`progress-step ${wizardStep >= 2 ? (wizardStep > 2 ? "done" : "active") : ""}`}>
-            <span>Serviço</span>
-          </div>
-          <div className={`progress-line ${wizardStep > 2 ? "done" : ""}`} />
-          <div className={`progress-step ${wizardStep >= 3 ? "active" : ""}`}>
-            <span>Resultado</span>
-          </div>
-        </div>
-
         <div className="quote-form">
           <form onSubmit={createQuote}>
             <div className="formHeader">
@@ -1780,42 +1765,6 @@ Transformamos cabelos em confiança
           margin: 0 auto;
         }
 
-        /* Progress Line Indicator */
-        .progress-indicator {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          gap: var(--space-2);
-          margin-bottom: var(--space-5);
-        }
-
-        .progress-step {
-          padding: var(--space-2) var(--space-3);
-          font-size: var(--text-sm);
-          color: var(--text-secondary);
-          border-bottom: 2px solid transparent;
-          transition: color 0.3s ease, border-color 0.3s ease;
-        }
-
-        .progress-step.active {
-          color: var(--text-primary);
-          border-color: var(--accent-gold);
-        }
-
-        .progress-step.done {
-          color: var(--luxury-green);
-        }
-
-        .progress-line {
-          width: 40px;
-          height: 1px;
-          background: var(--border-color);
-        }
-
-        .progress-line.done {
-          background: var(--luxury-green);
-        }
-
         /* Quote Form - No Box */
         .quote-form {
           display: flex;
@@ -1843,8 +1792,9 @@ Transformamos cabelos em confiança
 
         .form-grid {
           display: grid;
-          grid-template-columns: 1fr 1fr;
+          grid-template-columns: 1fr;
           gap: var(--space-4);
+          max-width: 600px;
         }
 
         .form-grid label {
