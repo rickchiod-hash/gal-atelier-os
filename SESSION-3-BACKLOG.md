@@ -78,15 +78,15 @@
 
 ---
 
-### CARD 5: Design-System.md Sync (US-33) — 📋 TO DO
+### CARD 5: Design-System.md Sync (US-33) — 🔄 IN PROGRESS
 **Story Points**: 2  
-**Status**: 📋 To Do
+**Status**: 🔄 In Progress
 
 #### Tasks:
 | Task ID | Task | Status | Hours Spent | Hours Remaining |
 |----------|------|--------|-------------|-------------------|
-| T-58 | Resolver conflito Nubank vs Whisper Luxury | 📋 To Do | 0h | 2h |
-| T-59 | Commit: docs: sync DESIGN-SYSTEM.md | 📋 To Do | 0h | 0.5h |
+| T-58 | Resolver conflito Nubank vs Whisper Luxury | ✅ Done | 2h | 0h |
+| T-59 | Commit: docs: sync DESIGN-SYSTEM.md | 🔄 In Progress | 0h | 0.5h |
 
 ---
 

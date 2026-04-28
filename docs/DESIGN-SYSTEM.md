@@ -20,18 +20,19 @@
 7. **Mobile-first** — Mas com elegância editorial, não empilhamento de caixas
 8. **Estados visíveis** — Mas com sutileza (pontos, não badges colantes)
 
-## Paleta "Nubank Purple"
+## Paleta "Nubank Purple" (Atual)
 
 ### Cores Base (80% da página)
-- `--nubank-dark: #1A1A2E` — Roxo escuro profundo
-- `--nubank-light: #F4F4F8` — Lavanda clara
-- `--nubank-gray: #8A8A9A` — Cinza roxado
+- `--nubank-dark: #1A1A2E` — Roxo escuro profundo (--color-bg, --charcoal)
+- `--nubank-light: #F4F4F8` — Lavanda clara (--color-surface, --ivory)
+- `--nubank-gray: #8A8A9A` — Cinza roxado (--color-text-muted)
+- `--nubank-white: #FFFFFF` — Branco
 
 ### Accents (máximo 2% da página)
-- `--nubank-magenta: #820AD1` — Magenta vibrante
-- `--color-highlight: #A855F7` — Roxo claro para hover
+- `--nubank-magenta: #820AD1` — Magenta vibrante (--color-accent, --color-brand, --bronze)
+- `--color-highlight: #A855F7` — Roxo claro para hover (--rose)
 - `--color-surface: #2D2D44` — Superfície roxa média
-- `--color-card: #363652` — Cards roxo escuro
+- `--color-card: #363652` — Cards roxo escuro (--blush, --deep-espresso)
 
 ### Semântica
 ```css
@@ -123,13 +124,14 @@ border-radius: 4px; /* Afiado */
 - ❌ Botões pill-shaped (muito SaaS)
 - ❌ Arco-íris de cores nos status do CRM
 
-## Tokens (Mantidos)
+## Tokens (Oficiais)
 
-- Cores: `--color-*`, `--ivory`, `--charcoal`, `--blush`, `--bronze`, `--deep-espresso`, `--rose`
+- Cores: `--nubank-*`, `--color-*`
 - Espaços: `--space-*`
-- Tipografia: `--font-size-*` (mantém sistema fluido)
-- Raios: `--radius-*` (usar 2px-4px para elegância)
-- Sombras: `--shadow-*` (somente sussurro: 0 2px 8px max)
+- Tipografia: `--font-display`, `--font-body`, `--text-*`
+- Raios: `--radius-*` (2px-8px)
+- Sombras: `--shadow-*` (0 2px 8px máx)
+- Transições: `--ease-polite`, `--duration-normal`
 
 ## Regra
 
