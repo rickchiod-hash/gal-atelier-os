@@ -43,3 +43,16 @@ data class OrderEntity(
 enum class OrderStatus {
     LEAD, BRIEFING, QUOTED, WAITING_PIX, PAID, PRODUCTION, READY, DELIVERED, LOST
 }
+
+fun OrderEntity.toResponse(): com.galatelier.adapter.input.web.OrderResponse = com.galatelier.adapter.input.web.OrderResponse(
+    id = this.id,
+    customerId = this.customerId,
+    customerName = this.customerName,
+    serviceType = this.serviceType,
+    price = this.price,
+    status = this.status.name,
+    paymentStatus = this.paymentStatus,
+    depositPaid = this.depositPaid,
+    createdAt = this.createdAt,
+    updatedAt = this.updatedAt
+)

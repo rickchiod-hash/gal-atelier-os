@@ -3,12 +3,14 @@ package com.galatelier.application.service
 import com.galatelier.adapter.output.persistence.entity.CustomerEntity
 import com.galatelier.adapter.output.persistence.entity.CustomerResponse
 import com.galatelier.adapter.output.persistence.entity.CustomerTier
+import com.galatelier.adapter.output.persistence.repository.CustomerRepository
 import com.galatelier.application.port.input.CreateCustomerRequest
 import com.galatelier.application.port.input.CustomerUseCase
 import com.galatelier.application.port.input.UpdateCustomerRequest
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
-import org.springframework.data.domain.*
+import java.math.BigDecimal
+import java.util.*
 
 class CustomerApplicationServiceTest {
 
@@ -17,9 +19,9 @@ class CustomerApplicationServiceTest {
         val repo = FakeCustomerRepository()
         val service = CustomerApplicationService(repo)
 
-        repo.save(CustomerEntity(name = "Ana", whatsapp = "11999999999", totalSpent = 100.0))
-        repo.save(CustomerEntity(name = "Bruno", whatsapp = "11988888888", totalSpent = 500.0))
-        repo.save(CustomerEntity(name = "Carla", whatsapp = "11977777777", totalSpent = 300.0))
+        repo.save(CustomerEntity(name = "Ana", whatsapp = "11999999999", totalSpent = BigDecimal(100.0)))
+        repo.save(CustomerEntity(name = "Bruno", whatsapp = "11988888888", totalSpent = BigDecimal(500.0)))
+        repo.save(CustomerEntity(name = "Carla", whatsapp = "11977777777", totalSpent = BigDecimal(300.0)))
 
         val result = service.list()
 
@@ -112,12 +114,12 @@ class CustomerApplicationServiceTest {
 }
 
 // Fake implementation for testing (does not depend on Spring)
-private class FakeCustomerRepository : org.springframework.data.repository.CrudRepository<CustomerEntity, java.util.UUID> {
+private class FakeCustomerRepository : CustomerRepository {
     private val customers = mutableListOf<CustomerEntity>()
 
     override fun save(entity: CustomerEntity): CustomerEntity {
         if (entity.id == null) {
-            val newId = java.util.UUID.randomUUID()
+            val newId = UUID.randomUUID()
             val newCustomer = entity.copy(id = newId)
             customers.add(newCustomer)
             return newCustomer
@@ -127,21 +129,22 @@ private class FakeCustomerRepository : org.springframework.data.repository.CrudR
         return entity
     }
 
-    override fun findById(id: java.util.UUID): java.util.Optional<CustomerEntity> =
-        java.util.Optional.ofNullable(customers.find { it.id == id })
+    override fun findById(id: UUID): Optional<CustomerEntity> =
+        Optional.ofNullable(customers.find { it.id == id })
 
     override fun findAll(): List<CustomerEntity> = customers.toList()
 
-    override fun deleteById(id: java.util.UUID) { customers.removeIf { it.id == id } }
+    override fun deleteById(id: UUID) { customers.removeIf { it.id == id } }
     override fun delete(entity: CustomerEntity) { customers.remove(entity) }
     override fun deleteAll(entities: MutableIterable<CustomerEntity>) {}
     override fun deleteAll() { customers.clear() }
-    override fun existsById(id: java.util.UUID): Boolean = customers.any { it.id == id }
+    override fun existsById(id: UUID): Boolean = customers.any { it.id == id }
     override fun <S : CustomerEntity?> saveAll(entities: MutableIterable<S>): MutableIterable<S> = entities
-    override fun findAllById(ids: MutableIterable<java.util.UUID>): MutableIterable<CustomerEntity> = mutableListOf()
+    override fun findAllById(ids: MutableIterable<UUID>): MutableIterable<CustomerEntity> = mutableListOf()
     override fun count(): Long = customers.size.toLong()
     override fun <S : CustomerEntity?> findAll(example: org.springframework.data.domain.Example<S>): MutableIterable<S> = mutableListOf()
-    override fun <S : CustomerEntity?> findOne(example: org.springframework.data.domain.Example<S>): java.util.Optional<S> = java.util.Optional.empty()
-    override fun findAll(sort: Sort): MutableIterable<CustomerEntity> = customers
-    override fun findAll(pageable: Pageable): Page<CustomerEntity> = PageImpl(customers)
+    override fun <S : CustomerEntity?> findOne(example: org.springframework.data.domain.Example<S>): Optional<S> = Optional.empty()
+    override fun findAll(sort: org.springframework.data.domain.Sort): MutableIterable<CustomerEntity> = customers
+    override fun findAll(pageable: org.springframework.data.domain.Pageable): org.springframework.data.domain.Page<CustomerEntity> = 
+        org.springframework.data.domain.PageImpl(customers)
 }

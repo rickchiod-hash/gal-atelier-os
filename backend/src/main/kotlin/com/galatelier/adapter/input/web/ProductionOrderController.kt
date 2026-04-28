@@ -2,6 +2,7 @@ package com.galatelier.adapter.input.web
 
 import com.galatelier.adapter.output.persistence.entity.OrderEntity
 import com.galatelier.adapter.output.persistence.entity.OrderStatus
+import com.galatelier.adapter.output.persistence.entity.toResponse
 import com.galatelier.adapter.output.persistence.repository.OrderRepository
 import org.springframework.web.bind.annotation.*
 import java.time.LocalDateTime

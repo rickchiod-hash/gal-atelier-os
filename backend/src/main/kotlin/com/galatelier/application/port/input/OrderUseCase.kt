@@ -1,6 +1,6 @@
 package com.galatelier.application.port.input
 
-import com.galatelier.adapter.output.persistence.entity.OrderResponse
+import com.galatelier.adapter.input.web.OrderResponse
 
 interface OrderUseCase {
     fun list(): List<OrderResponse>

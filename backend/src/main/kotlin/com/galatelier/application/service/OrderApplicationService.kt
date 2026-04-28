@@ -1,5 +1,6 @@
 package com.galatelier.application.service
 
+import com.galatelier.adapter.input.web.OrderResponse
 import com.galatelier.adapter.output.persistence.entity.OrderEntity
 import com.galatelier.adapter.output.persistence.entity.OrderStatus as EntityOrderStatus
 import com.galatelier.adapter.output.persistence.repository.OrderRepository
@@ -18,16 +19,16 @@ class OrderApplicationService(
     override fun list(): List<OrderResponse> =
         orderRepository.findAll()
             .sortedByDescending { it.createdAt }
-            .map { it.toResponse() }
+            .map { it.toOrderResponse() }
 
     override fun get(id: String): OrderResponse? =
-        orderRepository.findById(UUID.fromString(id)).orElse(null)?.toResponse()
+        orderRepository.findById(UUID.fromString(id)).orElse(null)?.toOrderResponse()
 
     override fun listByCustomer(customerId: String): List<OrderResponse> =
         orderRepository.findAll()
             .filter { it.customerId.toString() == customerId }
             .sortedByDescending { it.createdAt }
-            .map { it.toResponse() }
+            .map { it.toOrderResponse() }
 
     override fun create(request: CreateOrderRequest): OrderResponse {
         val order = OrderEntity(
@@ -38,7 +39,7 @@ class OrderApplicationService(
             status = EntityOrderStatus.LEAD,
             paymentStatus = "PENDING"
         )
-        return orderRepository.save(order).toResponse()
+        return orderRepository.save(order).toOrderResponse()
     }
 
     override fun updateStatus(id: String, request: UpdateOrderStatusRequest): OrderResponse? {
@@ -49,6 +50,19 @@ class OrderApplicationService(
             depositPaid = request.depositPaid?.toBigDecimal() ?: existing.depositPaid,
             updatedAt = LocalDateTime.now()
         )
-        return orderRepository.save(updated).toResponse()
+        return orderRepository.save(updated).toOrderResponse()
     }
+
+    private fun OrderEntity.toOrderResponse(): OrderResponse = OrderResponse(
+        id = this.id,
+        customerId = this.customerId,
+        customerName = this.customerName,
+        serviceType = this.serviceType,
+        price = this.price,
+        status = this.status.name,
+        paymentStatus = this.paymentStatus,
+        depositPaid = this.depositPaid,
+        createdAt = this.createdAt,
+        updatedAt = this.updatedAt
+    )
 }

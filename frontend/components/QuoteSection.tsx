@@ -1,6 +1,8 @@
 "use client";
 
-import { FormEvent, useState } from "react";
+import { FormEvent, useState, Dispatch, SetStateAction } from "react";
+
+type OrderStatus = "QUOTED" | "APPROVED" | "IN_PRODUCTION" | "COMPLETED" | "CANCELLED";
 
 interface QuoteResponse {
   id: string;
@@ -15,8 +17,10 @@ interface QuoteResponse {
   whatsappLink: string;
   pixCopyPaste: string;
   createdAt: string;
-  status: string;
+  status: OrderStatus;
 }
+
+type ToastType = "success" | "error" | "info" | "warning";
 
 interface QuoteSectionProps {
   apiUrl: string;
@@ -25,13 +29,14 @@ interface QuoteSectionProps {
   status: string;
   setStatus: (status: string) => void;
   quote: QuoteResponse | null;
-  setQuote: (quote: QuoteResponse | null) => void;
+  setQuote: Dispatch<SetStateAction<QuoteResponse | null>>;
   wizardStep: number;
   setWizardStep: (step: number) => void;
   quoteStatus: Record<string, string>;
-  showToast: (message: string, type: string) => void;
+  showToast: (message: string, type?: ToastType) => void;
   load: () => Promise<void>;
   money: (value: number) => string;
+  generatePDF: (quote: QuoteResponse) => void;
 }
 
 export function QuoteSection({
