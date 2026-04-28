@@ -64,7 +64,7 @@
 ### ÉPICO 5: DOCUMENTAÇÃO (Sprint 1-3)
 | ID | User Story | Points | Sprint | Status |
 |----|------------|--------|--------|--------|
-| US-30 | Como dev, quero Swagger/OpenAPI docs | 3 | Sprint 2 | 📋 To Do |
+| US-30 | Como dev, quero Swagger/OpenAPI docs | 3 | Sprint 2 | ✅ Done (Springdoc added) |
 | US-31 | Como dev, quero README atualizado | 1 | Sprint 1 | ✅ Done (commit: ff7e3eb) |
 | US-32 | Como dev, quero Architecture.md sync | 2 | Sprint 1 | ✅ Done (commit: e464e3a) |
 | US-33 | Como dev, quero Design-System.md sync | 2 | Sprint 1 | ✅ Done (commit: da4bf4) |
