@@ -43,7 +43,7 @@
 | ID | User Story | Points | Sprint | Status |
 |----|------------|--------|--------|--------|
 | US-16 | Como dev, quero Domain Tests completos | 5 | Sprint 1 | ✅ Done (commit: 233dd50) |
-| US-17 | Como dev, quero Application Service Tests | 8 | Sprint 1 | 📋 To Do |
+| US-17 | Como dev, quero Application Service Tests | 8 | Sprint 1 | 🔄 In Progress (CustomerApplicationServiceTest ✅, QuoteApplicationServiceTest ✅) |
 | US-18 | Como dev, quero Controller Integration Tests | 8 | Sprint 2 | 📋 To Do |
 | US-19 | Como dev, quero Adapter Tests | 6 | Sprint 2 | 📋 To Do |
 | US-20 | Como dev, quero TestContainers PostgreSQL | 3 | Sprint 2 | 📋 To Do |

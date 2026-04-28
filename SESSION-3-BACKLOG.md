@@ -11,6 +11,11 @@
 ## SPRINT 1 COMMITMENT
 
 ### CARD 1: Domain Tests (US-16) — ✅ DONE
+### CARD 2: Fix .env.local Committed (US-35) — ✅ DONE
+### CARD 3: README Update (US-31) — ✅ DONE
+### CARD 4: Architecture.md Sync (US-32) — ✅ DONE
+### CARD 5: Design-System.md Sync (US-33) — ✅ DONE
+### CARD 6: Application Service Tests (US-17) — 🔄 IN PROGRESS
 **Story Points**: 5  
 **Status**: ✅ Done  
 **Priority**: 🔴 HIGH
