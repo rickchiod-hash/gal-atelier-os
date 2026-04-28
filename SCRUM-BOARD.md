@@ -65,11 +65,11 @@
 | ID | User Story | Points | Sprint | Status |
 |----|------------|--------|--------|--------|
 | US-30 | Como dev, quero Swagger/OpenAPI docs | 3 | Sprint 2 | 📋 To Do |
-| US-31 | Como dev, quero README atualizado | 1 | Sprint 1 | 🔄 In Progress (session files created) |
-| US-32 | Como dev, quero Architecture.md sync | 2 | Sprint 1 | 🔄 In Progress (session files created) |
+| US-31 | Como dev, quero README atualizado | 1 | Sprint 1 | ✅ Done (commit: ff7e3eb) |
+| US-32 | Como dev, quero Architecture.md sync | 2 | Sprint 1 | 🔄 In Progress (synced with code) |
 | US-33 | Como dev, quero Design-System.md sync | 2 | Sprint 1 | 🔄 In Progress (session files created) |
 | US-34 | Como dev, quero CONTRIBUTING.md | 1 | Sprint 3 | 📋 To Do |
-| US-35 | Como dev, quero fix .env.local commitado | 1 | Sprint 1 | ❌ To Do (CRITICAL) |
+| US-35 | Como dev, quero fix .env.local commitado | 1 | Sprint 1 | ✅ Done (gitignore correct, no tracked) |
 
 ### ÉPICO 6: SEGURANÇA E INTEGRAÇÕES (Sprint 3-4)
 | ID | User Story | Points | Sprint | Status |
@@ -118,10 +118,10 @@
 | T-22 | Criar DiscountCouponTest.kt | US-16 | 📋 To Do | 0.5h |
 | T-23 | Criar SalesCommissionTest.kt | US-16 | 📋 To Do | 0.5h |
 | T-24 | Criar ProcessPhotoTest.kt | US-16 | 📋 To Do | 0.5h |
-| T-25 | Atualizar README.md | US-31 | 📋 To Do | 1h |
-| T-26 | Sync ARCHITECTURE.md | US-32 | 📋 To Do | 2h |
+| T-25 | Atualizar README.md | US-31 | ✅ Done | 1h |
+| T-26 | Sync ARCHITECTURE.md | US-32 | 🔄 In Progress | 1h |
 | T-27 | Sync DESIGN-SYSTEM.md | US-33 | 📋 To Do | 2h |
-| T-28 | Fix .env.local commitado | US-35 | ❌ To Do (CRITICAL) | 0.5h |
+| T-28 | Fix .env.local commitado | US-35 | ✅ Done | 0.5h |
 
 ---
 

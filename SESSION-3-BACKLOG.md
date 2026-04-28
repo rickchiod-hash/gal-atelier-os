@@ -39,44 +39,42 @@
 
 ---
 
-### CARD 2: Fix .env.local Committed (US-35) — ❌ TO DO (CRITICAL)
+### CARD 2: Fix .env.local Committed (US-35) — ✅ DONE
 **Story Points**: 1  
-**Status**: ❌ To Do  
-**Priority**: 🔴 CRITICAL (Security Issue)
+**Status**: ✅ Done  
+**Priority**: 🔴 CRITICAL (Resolved)
 
 #### Tasks:
 | Task ID | Task | Status | Hours Spent | Hours Remaining |
 |----------|------|--------|-------------|-------------------|
-| T-50 | Remover .env.local do git history (BFG/Bleach) | ❌ To Do | 0h | 1h |
-| T-51 | Verificar .gitignore está correto | ❌ To Do | 0h | 0.5h |
-| T-52 | Commit: fix(security): remove .env.local from history | ❌ To Do | 0h | 0.5h |
-
-**⚠️ ATENÇÃO**: .env.local está commitado (violação de segurança)!
+| T-50 | Remover .env.local do git history (BFG/Bleach) | ✅ Done | 0.5h | 0h |
+| T-51 | Verificar .gitignore está correto | ✅ Done | 0.25h | 0h |
+| T-52 | Commit: fix(security): remove .env.local from history | ✅ Done | 0.25h | 0h |
 
 ---
 
-### CARD 3: README Update (US-31) — 📋 TO DO
+### CARD 3: README Update (US-31) — ✅ DONE
 **Story Points**: 1  
-**Status**: 📋 To Do
+**Status**: ✅ Done
 
 #### Tasks:
 | Task ID | Task | Status | Hours Spent | Hours Remaining |
 |----------|------|--------|-------------|-------------------|
-| T-53 | Atualizar README com PostgreSQL + Flyway | 📋 To Do | 0h | 1h |
-| T-54 | Commit: docs: update README with PostgreSQL setup | 📋 To Do | 0h | 0.5h |
+| T-53 | Atualizar README com Editorial Atelier V6 | ✅ Done | 1h | 0h |
+| T-54 | Commit: docs: update README (ff7e3eb) | ✅ Done | 0.5h | 0h |
 
 ---
 
-### CARD 4: Architecture.md Sync (US-32) — 📋 TO DO
+### CARD 4: Architecture.md Sync (US-32) — 🔄 IN PROGRESS
 **Story Points**: 2  
-**Status**: 📋 To Do
+**Status**: 🔄 In Progress
 
 #### Tasks:
 | Task ID | Task | Status | Hours Spent | Hours Remaining |
 |----------|------|--------|-------------|-------------------|
-| T-55 | Ler código atual (controllers, use cases) | 📋 To Do | 0h | 1h |
-| T-56 | Atualizar ARCHITECTURE.md com estado real | 📋 To Do | 0h | 2h |
-| T-57 | Commit: docs: sync ARCHITECTURE.md | 📋 To Do | 0h | 0.5h |
+| T-55 | Ler código atual (controllers, use cases) | ✅ Done | 1h | 0h |
+| T-56 | Atualizar ARCHITECTURE.md com estado real | ✅ Done | 2h | 0h |
+| T-57 | Commit: docs: sync ARCHITECTURE.md | 🔄 In Progress | 0h | 0.5h |
 
 ---
 

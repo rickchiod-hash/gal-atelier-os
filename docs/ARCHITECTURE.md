@@ -2,24 +2,40 @@
 
 ## Hexagonal
 
+Fluxo de dependência unidirecional, domínio isolado de frameworks externos.
+
 ```text
-adapter.input.web
+adapter.input.web (Controllers, Auth)
 ↓
-application.port.input
+application.port.input (Use Case Interfaces)
 ↓
-application.service
+application.service (Use Case Implementations, Policies)
 ↓
-domain
+domain.model (Entities, Value Objects)
 ↓
-application.port.output
+application.port.output (Repository/Integration Interfaces)
 ↓
-adapter.output
+adapter.output (Persistence, WhatsApp, Pix, Email)
 ```
 
-## Regra
+### Pacotes Reais (com.galatelier)
 
-- Domain não conhece Spring.
-- Controller só traduz HTTP.
-- Use case orquestra.
-- Policy calcula.
-- Adapters integram Pix/WhatsApp/Persistência.
+| Camada | Pacote | Exemplos |
+|--------|--------|----------|
+| Input Adapters | `adapter.input.web` | `CustomerController`, `AuthController`, `JwtService` |
+| Input Ports | `application.port.input` | `CustomerUseCase`, `CreateQuoteUseCase`, `ListQuotesUseCase` |
+| Application Services | `application.service` | `CustomerApplicationService`, `QuoteApplicationService`, `QuotePricingPolicy` |
+| Domain Model | `domain.model` | `Client`, `Quote`, `Money`, `WigBriefing`, `OrderStatus` |
+| Domain Policy | `domain.policy` | `QuotePricingPolicy` |
+| Output Ports | `application.port.output` | `CustomerRepositoryPort`, `PixPaymentPort`, `WhatsAppMessagePort` |
+| Output Adapters | `adapter.output` | `CustomerRepositoryAdapter`, `StaticPixPaymentAdapter`, `WhatsAppWebAdapter`, `MockEmailAdapter` |
+| Config | `config` | `SecurityConfig`, `BeanConfiguration` |
+
+## Regras
+
+- Domain (`domain.*`) não importa Spring ou qualquer framework externo.
+- Controllers (`adapter.input.web`) apenas traduzem HTTP: validam input, mapeiam para use case, retornam HTTP response.
+- Use cases (`application.service`) orquestram lógica de negócio, dependem apenas de input/output ports.
+- Policies (`domain.policy` / `application.service`) calculam regras financeiras complexas.
+- Adapters (`adapter.output`) implementam ports de saída: integram com banco de dados, APIs externas (Pix, WhatsApp), email.
+- Configuração (`config`) define beans Spring, segurança, propriedades.
