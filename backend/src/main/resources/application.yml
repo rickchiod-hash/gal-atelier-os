@@ -29,7 +29,7 @@ logging:
 
 galatelier:
   whatsappReceiver: ${WHATSAPP_RECEIVER:5511914136961}
-  pixKey: ${PIX_KEY:chave-pix-exemplo}
+  pixKey: ${PIX_KEY:11914136961}
   pixMerchantName: ${PIX_MERCHANT_NAME:GAL ATELIER}
   pixMerchantCity: ${PIX_MERCHANT_CITY:SAO PAULO}
   aiProvider: ${AI_PROVIDER:mock}

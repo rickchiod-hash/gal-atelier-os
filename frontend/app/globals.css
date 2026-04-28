@@ -10,42 +10,44 @@
 :root {
   /* ============================================
      GAL ATELIER — NUBANK EDITION
-     Purple/Violet Color Palette Inspired by Nubank
+     Cores: Roxo Escuro #1A1A2E + Magenta #820AD1
      ============================================ */
 
-  /* PRIMARY — Nubank Purple */
-  --nubank-purple: #8A05BE;
-  --nubank-purple-light: #AB47BC;
-  --nubank-purple-dark: #4A1942;
-  
-  /* BACKGROUND — Dark Purple */
-  --color-bg: #120510;
-  --color-surface: #1F0A1F;
-  --color-card: #2A152A;
-  
+  /* PRIMARY — Nubank Colors */
+  --nubank-dark: #1A1A2E;
+  --nubank-magenta: #820AD1;
+  --nubank-light: #F4F4F8;
+  --nubank-gray: #8A8A9A;
+  --nubank-white: #FFFFFF;
+
+  /* BACKGROUND */
+  --color-bg: var(--nubank-dark);
+  --color-surface: #2D2D44;
+  --color-card: #363652;
+
   /* TEXT */
-  --color-text: #FFFFFF;
-  --color-text-muted: #EADDf9;
-  --color-text-dark: #4A1942;
-  
-  /* ACCENTS — Magenta/Violet */
-  --color-accent: #AB47BC;
-  --color-brand: #8A05BE;
-  --color-highlight: #E040FB;
-  
+  --color-text: var(--nubank-white);
+  --color-text-muted: var(--nubank-gray);
+  --color-text-dark: var(--nubank-dark);
+
+  /* ACCENTS — Magenta */
+  --color-accent: var(--nubank-magenta);
+  --color-brand: var(--nubank-magenta);
+  --color-highlight: #A855F7;
+
   /* SEMANTIC */
-  --color-border: #3D2A3D;
+  --color-border: #4A4A6A;
   --color-success: #00C853;
   --color-warning: #FF9100;
   --color-error: #FF5252;
-  
-  /* LEGACY WHISPER (fallback) */
-  --ivory: #EADDf9;
-  --charcoal: #FFFFFF;
-  --blush: #3D2A3D;
-  --bronze: #AB47BC;
-  --deep-espresso: #4A1942;
-  --rose: #E040FB;
+
+  /* LEGACY (fallback) */
+  --ivory: #F4F4F8;
+  --charcoal: #1A1A2E;
+  --blush: #363652;
+  --bronze: #820AD1;
+  --deep-espresso: #1A1A2E;
+  --rose: #A855F7;
 
   /* Shadows — Purple glow */
   --shadow-xs: 0 2px 8px rgba(138, 5, 190, 0.15);
@@ -695,4 +697,268 @@ textarea {
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
+}
+
+/* ============================================
+   LOGIN / PORTAL PAGES
+   ============================================ */
+.login-page,
+.portal-page {
+  min-height: 100vh;
+  background: var(--color-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-4);
+}
+
+.login-container {
+  background: var(--color-surface);
+  border-radius: var(--radius-md);
+  padding: var(--space-6);
+  width: 100%;
+  max-width: 400px;
+  box-shadow: var(--shadow-md);
+}
+
+.login-header h1 {
+  font-family: var(--font-display);
+  font-size: var(--text-2xl);
+  color: var(--color-accent);
+  margin: 0 0 var(--space-2);
+}
+
+.login-header p {
+  color: var(--color-text-muted);
+  margin: 0 0 var(--space-5);
+}
+
+.login-form .form-group {
+  margin-bottom: var(--space-4);
+}
+
+.login-form label {
+  display: block;
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--color-text);
+  margin-bottom: var(--space-2);
+}
+
+.login-form input {
+  width: 100%;
+  padding: var(--space-3);
+  border: none;
+  border-bottom: 2px solid var(--blush);
+  background: transparent;
+  color: var(--color-text);
+  font-size: var(--text-base);
+  transition: border-color 0.3s;
+}
+
+.login-form input:focus {
+  outline: none;
+  border-color: var(--color-accent);
+}
+
+.error-message {
+  color: var(--nu-magenta);
+  font-size: var(--text-sm);
+  margin-bottom: var(--space-4);
+}
+
+.login-form .btn-primary {
+  width: 100%;
+  margin-top: var(--space-4);
+}
+
+.login-footer {
+  margin-top: var(--space-4);
+  text-align: center;
+}
+
+.btn-link {
+  background: none;
+  border: none;
+  color: var(--color-accent);
+  cursor: pointer;
+  font-size: var(--text-sm);
+}
+
+.btn-link:hover {
+  text-decoration: underline;
+}
+
+.login-back {
+  margin-top: var(--space-4);
+  text-align: center;
+}
+
+.login-back a {
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+}
+
+/* Portal */
+.portal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--space-4) var(--space-6);
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--blush);
+  width: 100%;
+}
+
+.portal-brand h1 {
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+  color: var(--color-accent);
+  margin: 0;
+}
+
+.portal-brand span {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.portal-user {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.portal-user span {
+  font-size: var(--text-sm);
+  color: var(--color-text);
+}
+
+.btn-logout {
+  background: none;
+  border: 1px solid var(--blush);
+  color: var(--color-text-muted);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-xs);
+  cursor: pointer;
+}
+
+.portal-main {
+  max-width: 800px;
+  width: 100%;
+  margin: 0 auto;
+  padding: var(--space-6);
+}
+
+.portal-welcome h2 {
+  font-family: var(--font-display);
+  font-size: var(--text-2xl);
+  color: var(--color-text);
+  margin: 0 0 var(--space-2);
+}
+
+.portal-welcome p {
+  color: var(--color-text-muted);
+  margin: 0 0 var(--space-6);
+}
+
+.portal-orders {
+  margin-top: var(--space-6);
+}
+
+.portal-orders h3 {
+  font-size: var(--text-lg);
+  color: var(--color-text);
+  margin: 0 0 var(--space-4);
+}
+
+.portal-empty {
+  text-align: center;
+  padding: var(--space-6);
+  background: var(--color-surface);
+  border-radius: var(--radius-md);
+}
+
+.portal-empty p {
+  color: var(--color-text-muted);
+  margin: 0 0 var(--space-4);
+}
+
+.orders-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.order-card {
+  background: var(--color-surface);
+  border-radius: var(--radius-md);
+  padding: var(--space-4);
+  border: 1px solid var(--blush);
+}
+
+.order-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: var(--space-3);
+}
+
+.order-service {
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.order-status {
+  font-size: var(--text-sm);
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-xs);
+  background: var(--nu-purple-light);
+  color: var(--nu-purple);
+}
+
+.order-body {
+  margin-bottom: var(--space-3);
+}
+
+.order-desc {
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+  margin: 0 0 var(--space-2);
+}
+
+.order-price {
+  font-size: var(--text-lg);
+  color: var(--color-accent);
+}
+
+.order-footer {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}
+
+.portal-actions {
+  display: flex;
+  gap: var(--space-4);
+  margin-top: var(--space-6);
+}
+
+.portal-actions .btn-primary,
+.portal-actions .btn-secondary {
+  flex: 1;
+  text-align: center;
+  padding: var(--space-3) var(--space-4);
+}
+
+.btn-secondary {
+  background: transparent;
+  border: 1px solid var(--color-accent);
+  color: var(--color-accent);
+  border-radius: var(--radius-sm);
+  text-decoration: none;
+  display: inline-block;
+  font-size: var(--text-sm);
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  transition: all 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
 }
