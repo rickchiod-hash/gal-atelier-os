@@ -63,6 +63,8 @@ private class FakeQuoteRepository : QuoteRepository {
         return quote
     }
     override fun findAll(): List<Quote> = quotes
+    override fun findById(id: UUID): Quote? = quotes.find { it.id == id }
+    override fun update(quote: Quote): Quote = quote
 }
 
 private class FakePixPaymentPort : PixPaymentPort {
