@@ -72,9 +72,10 @@
   --space-8: clamp(3rem, 2rem + 4vw, 5rem);
   --space-12: clamp(4rem, 2.5rem + 6vw, 7rem);
 
-  /* Typography — Modern Sans (Nubank style) */
-  --font-display: 'Inter', system-ui, sans-serif;
+  /* Typography — Editorial Authority (V6) */
+  --font-display: 'Playfair Display', Georgia, serif;
   --font-body: 'Inter', system-ui, sans-serif;
+  --font-caption: 'Inter', system-ui, sans-serif;
 
   --text-xs: clamp(0.7rem, 0.68rem + 0.1vw, 0.8rem);
   --text-sm: clamp(0.8rem, 0.78rem + 0.1vw, 0.9rem);

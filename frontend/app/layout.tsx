@@ -1,7 +1,14 @@
 import "./globals.css";
+import { Playfair_Display } from "next/font/google";
 import type { Metadata } from "next";
 import { ToastProvider } from "@/components/Toast";
 import { ThemeProvider } from "@/components/ThemeProvider";
+
+const playfair = Playfair_Display({
+  subsets: ["latin"],
+  variable: "--font-display",
+  weight: ["400", "700"],
+});
 
 export const metadata: Metadata = {
   title: "Gal Atelier OS",
@@ -10,7 +17,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="pt-BR" suppressHydrationWarning>
+    <html lang="pt-BR" suppressHydrationWarning className={`${playfair.variable}`}>
       <head>
         <script
           dangerouslySetInnerHTML={{
@@ -18,7 +25,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           }}
         />
       </head>
-      <body>
+      <body className="font-body">
         <ThemeProvider>
           <ToastProvider>
             {children}
