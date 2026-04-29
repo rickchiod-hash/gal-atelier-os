@@ -50,7 +50,7 @@ jobs:
     if: needs.detect-branch.outputs.target != ''
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Check existing PR
         id: check
@@ -108,7 +108,7 @@ jobs:
       steps.create-pr.outputs.pr_number != ''
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           sparse-checkout: |
             .github
