@@ -215,7 +215,7 @@ jobs:
             type=raw,value=prod-latest
 
       - name: 🏗️ Build & Push Backend (Production)
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v7
         with:
           context: ./backend
           push: true
@@ -264,7 +264,7 @@ jobs:
             type=raw,value=prod-latest
 
       - name: 🏗️ Build & Push Frontend (Production)
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v7
         with:
           context: ./frontend
           push: true
