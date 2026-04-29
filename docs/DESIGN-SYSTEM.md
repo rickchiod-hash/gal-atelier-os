@@ -20,28 +20,33 @@
 7. **Mobile-first** — Mas com elegância editorial, não empilhamento de caixas
 8. **Estados visíveis** — Mas com sutileza (pontos, não badges colantes)
 
-## Paleta "Nubank Purple" (Atual)
+## Paleta "Atelier Blue" (Atual)
 
 ### Cores Base (80% da página)
-- `--nubank-dark: #1A1A2E` — Roxo escuro profundo (--color-bg, --charcoal)
-- `--nubank-light: #F4F4F8` — Lavanda clara (--color-surface, --ivory)
-- `--nubank-gray: #8A8A9A` — Cinza roxado (--color-text-muted)
-- `--nubank-white: #FFFFFF` — Branco
+- `--color-bg: #07111F` — Navy Black (--charcoal)
+- `--color-bg-soft: #0B1F3A` — Midnight Navy
+- `--color-surface: #102A43` — Deep Navy (--blush)
+- `--color-surface-elevated: #132F4C` — Blue Surface
+- `--color-text: #F8FAFC` — Text Primary (--ivory)
+- `--color-text-secondary: #CBD5E1` — Text Secondary
+- `--color-text-muted: #94A3B8` — Text Muted
 
 ### Accents (máximo 2% da página)
-- `--nubank-magenta: #820AD1` — Magenta vibrante (--color-accent, --color-brand, --bronze)
-- `--color-highlight: #A855F7` — Roxo claro para hover (--rose)
-- `--color-surface: #2D2D44` — Superfície roxa média
-- `--color-card: #363652` — Cards roxo escuro (--blush, --deep-espresso)
+- `--color-primary: #2563EB` — Royal Blue (--color-brand)
+- `--color-primary-dark: #1D4ED8` — Atelier Blue (--deep-espresso)
+- `--color-primary-soft: #60A5FA` — Soft Blue (--rose)
+- `--color-accent: #38BDF8` — Cyan Glow (--bronze)
+- `--color-premium: #D8B46A` — Champagne Gold
+- `--color-border: rgba(56, 189, 248, 0.3)` — Cyan Glow transparent
 
 ### Semântica
 ```css
---color-bg: var(--nubank-dark);
---color-surface: #2D2D44;
---color-text: var(--nubank-white);
---color-text-muted: var(--nubank-gray);
---color-accent: var(--nubank-magenta);
---color-brand: var(--nubank-magenta);
+--color-bg: #07111F;
+--color-surface: #102A43;
+--color-text: #F8FAFC;
+--color-text-muted: #94A3B8;
+--color-accent: #38BDF8;
+--color-brand: #2563EB;
 ```
 
 ## Tipografia "Editorial Authority"
@@ -126,7 +131,7 @@ border-radius: 4px; /* Afiado */
 
 ## Tokens (Oficiais)
 
-- Cores: `--nubank-*`, `--color-*`
+- Cores: `--color-*`
 - Espaços: `--space-*`
 - Tipografia: `--font-display`, `--font-body`, `--text-*`
 - Raios: `--radius-*` (2px-8px)

@@ -48,7 +48,7 @@
 
 | Tool | Propósito | Status |
 |------|----------|--------|
-| **GitHub Actions** | CI/CD automation | ✅ 6 workflows |
+| **GitHub Actions** | CI/CD automation | ✅ 7 workflows (ci.yml, docker-build.yml, security.yml, pr-flow.yml, manual-promote.yml) |
 | **Docker** | Containerization | ✅ Backend + Frontend |
 | **JaCoCo** | Code coverage | ✅ 50-70% enforced |
 | **SpotBugs + PMD** | Bug detection | ✅ Enabled |
@@ -56,6 +56,7 @@
 | **Gitleaks** | Secret scanning | ✅ Enabled |
 | **OWASP Dep Check** | Dependency audit | ✅ Enabled |
 | **Trivy** | Container scan | ✅ Enabled |
+| **Dependabot** | Dependencies update | ✅ Enabled (weekly) |
 
 ---
 

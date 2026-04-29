@@ -39,3 +39,20 @@ adapter.output (Persistence, WhatsApp, Pix, Email)
 - Policies (`domain.policy` / `application.service`) calculam regras financeiras complexas.
 - Adapters (`adapter.output`) implementam ports de saída: integram com banco de dados, APIs externas (Pix, WhatsApp), email.
 - Configuração (`config`) define beans Spring, segurança, propriedades.
+
+## Documentação API
+
+- **Swagger UI**: `/swagger-ui.html` (disponível em dev/homolog)
+- **OpenAPI Schema**: `/api-docs` (formato JSON)
+- Configuração em `config/OpenApiConfig.kt`
+
+## Branch Strategy
+
+```
+feature/** → dev → homolog → master
+```
+
+- **feature/***: novas funcionalidades
+- **dev**: desenvolvimento (auto-merge enabled)
+- **homolog**: homologação (PR requerido)
+- **master**: produção (PR + revisão obrigatória)
