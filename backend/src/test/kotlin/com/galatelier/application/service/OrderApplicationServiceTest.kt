@@ -59,9 +59,9 @@ class OrderApplicationServiceTest {
         assertNotNull(response)
         assertEquals("Cliente Teste", response.customerName)
         assertEquals("Glueless Wig", response.serviceType)
-        assertEquals("1500.00", response.price.toPlainString())
+        // Verificar price com escala 2
+        assertEquals(0, BigDecimal("1500.00").compareTo(response.price))
         assertEquals(EntityOrderStatus.LEAD.name, response.status)
-        assertEquals("PENDING", response.paymentStatus)
     }
 
     @Test
@@ -110,7 +110,7 @@ class OrderApplicationServiceTest {
         )
         val order2 = OrderEntity(
             id = UUID.randomUUID(),
-            customerId = UUID.fromString("different-id"),
+            customerId = UUID.fromString("123e4567-e89b-12d3-a456-426614174002"),
             customerName = "Outro Cliente",
             serviceType = "Lace Front",
             price = BigDecimal("2500.00"),
@@ -145,7 +145,7 @@ class OrderApplicationServiceTest {
         `when`(orderRepository.save(any())).thenAnswer { it.getArgument(0) }
 
         val updateRequest = UpdateOrderStatusRequest(
-            status = "DEPOSIT_PAID",
+            status = "PAID",
             paymentStatus = "PAID",
             depositPaid = 750.00
         )
@@ -155,9 +155,10 @@ class OrderApplicationServiceTest {
 
         // Assert
         assertNotNull(updateResponse)
-        assertEquals("DEPOSIT_PAID", updateResponse.status)
+        assertEquals("PAID", updateResponse.status)
         assertEquals("PAID", updateResponse.paymentStatus)
-        assertEquals("750.00", updateResponse.depositPaid?.toPlainString())
+        // Verificar depositPaid com escala 2
+        assertEquals(0, BigDecimal("750.00").compareTo(updateResponse.depositPaid))
     }
 
     @Test

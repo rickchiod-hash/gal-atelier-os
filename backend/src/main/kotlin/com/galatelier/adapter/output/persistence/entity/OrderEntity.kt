@@ -30,7 +30,7 @@ data class OrderEntity(
     @Column(name = "payment_status")
     var paymentStatus: String = "PENDING",
 
-    @Column(columnDefinition = "jsonb")
+    @Column(columnDefinition = "text")
     var timeline: String = "[]",
 
     @Column(name = "created_at")

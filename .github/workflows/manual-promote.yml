@@ -1,0 +1,107 @@
+name: Manual Promote
+
+on:
+  workflow_dispatch:
+    inputs:
+      source_branch:
+        description: 'Source branch'
+        required: true
+        type: string
+      target_branch:
+        description: 'Target branch'
+        required: true
+        type: string
+      auto_merge:
+        description: 'Auto merge'
+        required: false
+        type: boolean
+        default: false
+      delete_source:
+        description: 'Delete source branch'
+        required: false
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  validate:
+    name: Validate
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check source
+        run: |
+          SOURCE=${{ github.inputs.source_branch }}
+          if ! git rev-parse "$SOURCE" >/dev/null 2>&1; then
+            echo "❌ Source branch '$SOURCE' not found"
+            exit 1
+          fi
+          echo "✅ Source branch exists"
+
+      - name: Check target
+        run: |
+          TARGET=${{ github.inputs.target_branch }}
+          if ! git rev-parse "$TARGET" >/dev/null 2>&1; then
+            echo "❌ Target branch '$TARGET' not found"
+            exit 1
+          fi
+          echo "✅ Target branch exists"
+
+  create-pr:
+    name: Create PR
+    needs: validate
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Check existing PR
+        id: check
+        run: |
+          SOURCE=${{ github.inputs.source_branch }}
+          TARGET=${{ github.inputs.target_branch }}
+
+          PR=$(gh pr list --base "$TARGET" --head "$SOURCE" --state all --json number -q '.[0].number' 2>/dev/null || echo "")
+
+          if [ -n "$PR" ]; then
+            echo "⚠️ PR #$PR already exists for $SOURCE → $TARGET"
+            echo "pr_number=$PR" >> $GITHUB_OUTPUT
+          else
+            TITLE="Promote: $SOURCE → $TARGET"
+            BODY="Manual promotion from $SOURCE to $TARGET."
+
+            PR_URL=$(gh pr create --base "$TARGET" --head "$SOURCE" --title "$TITLE" --body "$BODY" -q '.url')
+            echo "PR created: $PR_URL"
+            echo "pr_number=$(echo $PR_URL | grep -oP '\d+$')" >> $GITHUB_OUTPUT
+          fi
+
+  auto-merge:
+    name: Auto Merge
+    needs: create-pr
+    if: github.inputs.auto_merge == true
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Merge
+        run: |
+          PR=${{ needs.create-pr.outputs.pr_number }}
+          gh pr merge "$PR" --auto --squash || echo "⚠️ Auto-merge not enabled"
+
+  summary:
+    name: Summary
+    needs: [validate, create-pr]
+    if: always()
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Summary
+        run: |
+          echo "## Manual Promote Results" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Step | Status |" >> $GITHUB_STEP_SUMMARY
+          echo "|-------|--------|" >> $GITHUB_STEP_SUMMARY
+          echo "| Validate | ${{ needs.validate.result == 'success' && '✅' || '❌' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Create PR | ${{ needs.create-pr.result == 'success' && '✅' || '❌' }} |" >> $GITHUB_STEP_SUMMARY

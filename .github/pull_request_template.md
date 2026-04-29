@@ -1,18 +1,29 @@
-## O que foi feito
+## Objetivo
 
--
+<!-- Descreva o objetivo desta mudança -->
 
-## Como testar
+## Tipo de mudança
 
-```bash
-cd backend && mvn test
-cd frontend && npm run build
-```
+- [ ] Bug fix
+- [ ] Nova funcionalidade
+- [ ] Refatoração
+- [ ] Documentação
+- [ ] CI/CD
 
 ## Checklist
 
-- [ ] Sem secrets
-- [ ] Domain não importa Spring
-- [ ] Front não calcula preço
-- [ ] Logs/erros revisados
-- [ ] Mobile revisado
+- [ ] CI executou com sucesso
+- [ ] Backend passou (`mvn test`)
+- [ ] Frontend lint/build passou
+- [ ] Docker Compose válido (`docker compose config`)
+- [ ] Endpoints alterados documentados
+- [ ] Sem secrets no código
+- [ ] Sem dados sensíveis
+
+## Riscos
+
+<!-- Quais são os riscos desta mudança? Como mitigá-los? -->
+
+## Rollback
+
+<!-- Como fazer rollback se necessário? -->
