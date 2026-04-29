@@ -53,7 +53,7 @@ jobs:
             type=sha
 
       - name: 🏗️ Build & Push Image
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v7
         with:
           context: ./backend
           push: ${{ github.event_name == 'push' }}
@@ -101,7 +101,7 @@ jobs:
             type=sha
 
       - name: 🏗️ Build & Push Image
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v7
         with:
           context: ./frontend
           push: ${{ github.event_name == 'push' }}
