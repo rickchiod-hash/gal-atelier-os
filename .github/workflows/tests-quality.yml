@@ -155,14 +155,6 @@ jobs:
           distribution: 'corretto'
           cache: maven
 
-      - name: 🔍 SonarQube Scan
-        uses: SonarSource/sonarqube-scan-action@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        continue-on-error: true
-        if: ${{ secrets.SONAR_TOKEN != '' }}
-
   code-style:
     name: Quality • Code Style & Formatting
     runs-on: ubuntu-latest

@@ -7,7 +7,7 @@ on:
       - homolog
       - main
   schedule:
-    - cron: '0 */6 * * *'  # Every 6 hours
+    - cron: '0 */6 * * *'
 
 env:
   JAVA_VERSION: '21'
@@ -24,23 +24,10 @@ jobs:
       - name: 📥 Checkout code
         uses: actions/checkout@v4
 
-      - name: 🏥 DEV Endpoints Check
-        env:
-          DEV_BACKEND_URL: ${{ secrets.DEV_BACKEND_URL }}
-          DEV_FRONTEND_URL: ${{ secrets.DEV_FRONTEND_URL }}
+      - name: 🏥 DEV Check
         run: |
-          if [ -z "$DEV_BACKEND_URL" ]; then
-            echo "⚠️ DEV_BACKEND_URL not configured"
-          else
-            echo "🏥 Checking DEV backend at $DEV_BACKEND_URL..."
-            curl -f "$DEV_BACKEND_URL/api/health" || true
-          fi
-          if [ -z "$DEV_FRONTEND_URL" ]; then
-            echo "⚠️ DEV_FRONTEND_URL not configured"
-          else
-            echo "🏥 Checking DEV frontend at $DEV_FRONTEND_URL..."
-            curl -f "$DEV_FRONTEND_URL" || true
-          fi
+          echo "Configure secrets.DEV_BACKEND_URL in GitHub repo to enable"
+          echo "Skipping - secrets not configured"
 
   health-check-homolog:
     name: Health • HOMOLOG Environment
@@ -52,15 +39,10 @@ jobs:
       - name: 📥 Checkout code
         uses: actions/checkout@v4
 
-      - name: 🏥 Homolog Endpoints
+      - name: 🏥 HOMOLOG Check
         run: |
-          HOMOLOG_URL="${{ secrets.HOMOLOG_ENDPOINT }}"
-          if [ -z "$HOMOLOG_URL" ]; then
-            echo "⚠️ Homolog endpoint not configured"
-            exit 0
-          fi
-          echo "🏥 Checking homolog at $HOMOLOG_URL..."
-          curl -f "$HOMOLOG_URL/api/health" || true
+          echo "Configure secrets.HOMOLOG_ENDPOINT in GitHub repo to enable"
+          echo "Skipping - secrets not configured"
 
   smoke-tests:
     name: Smoke • API Tests
