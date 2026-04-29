@@ -5,7 +5,7 @@ import { CatalogItem } from "@/data/galAtelierCatalog";
 interface CatalogSectionProps {
   catalogFilter: "all" | CatalogItem["category"];
   setCatalogFilter: (filter: "all" | CatalogItem["category"]) => void;
-  categories: { id: "all" | CatalogItem["category"]; label: string }[];
+  categories: readonly { id: "all" | CatalogItem["category"]; label: string }[];
   filteredCatalog: CatalogItem[];
 }
 
