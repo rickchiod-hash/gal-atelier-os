@@ -5,9 +5,9 @@ import { CatalogItem } from "@/data/galAtelierCatalog";
 type CatalogFilter = "all" | CatalogItem["category"];
 
 interface CatalogSectionProps {
-  catalogFilter: string;
-  setCatalogFilter: (filter: string) => void;
-  categories: { id: string; label: string }[];
+  catalogFilter: CatalogFilter;
+  setCatalogFilter: (filter: CatalogFilter) => void;
+  categories: { id: CatalogFilter; label: string }[];
   filteredCatalog: CatalogItem[];
 }
 
