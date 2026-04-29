@@ -340,7 +340,7 @@ jobs:
 
     steps:
       - name: 📢 Slack Notification
-        uses: slackapi/slack-github-action@v2
+        uses: slackapi/slack-github-action@v3
         with:
           payload: |
             {
