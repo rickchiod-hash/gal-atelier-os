@@ -214,16 +214,11 @@ jobs:
         uses: actions/checkout@v4
 
       - name: 🚀 Deploy to Homolog
-        env:
-          DEPLOY_KEY: ${{ secrets.HOMOLOG_DEPLOY_KEY }}
-          DEPLOY_HOST: ${{ secrets.HOMOLOG_DEPLOY_HOST }}
-          DEPLOY_USER: ${{ secrets.HOMOLOG_DEPLOY_USER }}
         run: |
           echo "🚀 Deploying to HOMOLOG environment..."
           echo "Backend Image: ${{ env.REGISTRY }}/${{ github.repository }}/backend:homolog-${{ github.sha }}"
           echo "Frontend Image: ${{ env.REGISTRY }}/${{ github.repository }}/frontend:homolog-${{ github.sha }}"
-          echo "✅ Deployment configuration ready"
-        if: ${{ secrets.HOMOLOG_DEPLOY_HOST != '' }}
+          echo "⚠️ Configure secrets.HOMOLOG_DEPLOY_HOST to enable actual deployment"
 
   notify:
     name: Slack • Notification
@@ -268,5 +263,5 @@ jobs:
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
           SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
-        if: ${{ secrets.SLACK_WEBHOOK_URL != '' }}
+        continue-on-error: true
 

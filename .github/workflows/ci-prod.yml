@@ -386,7 +386,7 @@ jobs:
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
           SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
-        if: ${{ secrets.SLACK_WEBHOOK_URL != '' }}
+        continue-on-error: true
 
       - name: 📧 Email Notification
         uses: dawidd6/action-send-mail@v3
@@ -406,5 +406,5 @@ jobs:
             URL: https://gal-atelier.com
 
             Pipeline: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
-        if: ${{ secrets.MAIL_SERVER != '' }}
+        continue-on-error: true
 
