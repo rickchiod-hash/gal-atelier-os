@@ -389,7 +389,7 @@ jobs:
         continue-on-error: true
 
       - name: 📧 Email Notification
-        uses: dawidd6/action-send-mail@v3
+        uses: dawidd6/action-send-mail@v17
         with:
           server_address: ${{ secrets.MAIL_SERVER }}
           server_port: ${{ secrets.MAIL_PORT }}
