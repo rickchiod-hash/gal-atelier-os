@@ -2,12 +2,10 @@
 
 import { CatalogItem } from "@/data/galAtelierCatalog";
 
-type CatalogFilter = "all" | CatalogItem["category"];
-
 interface CatalogSectionProps {
-  catalogFilter: CatalogFilter;
-  setCatalogFilter: (filter: CatalogFilter) => void;
-  categories: { id: CatalogFilter; label: string }[];
+  catalogFilter: string;
+  setCatalogFilter: (filter: string) => void;
+  categories: { id: string; label: string }[];
   filteredCatalog: CatalogItem[];
 }
 
@@ -26,7 +24,7 @@ export function CatalogSection({ catalogFilter, setCatalogFilter, categories, fi
             <button
               key={cat.id}
               className={`catalogo-filter-btn ${catalogFilter === cat.id ? "active" : ""}`}
-              onClick={() => setCatalogFilter(cat.id as CatalogFilter)}
+              onClick={() => setCatalogFilter(cat.id)}
             >
               {cat.label}
             </button>
