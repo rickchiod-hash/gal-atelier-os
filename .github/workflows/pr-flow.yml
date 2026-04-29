@@ -70,6 +70,7 @@ jobs:
 
       - name: Create PR
         if: needs.detect-branch.outputs.target != '' && steps.check.outputs.pr_number == ''
+        id: create
         run: |
           SOURCE=${{ needs.detect-branch.outputs.source }}
           TARGET=${{ needs.detect-branch.outputs.target }}
@@ -89,10 +90,11 @@ jobs:
           # Create PR
           PR_URL=$(gh pr create --base "$TARGET" --head "$SOURCE" --title "$TITLE" --body "$BODY" -q '.url')
           echo "PR created: $PR_URL"
-          echo "pr_number=$(echo $PR_URL | grep -oP '\d+$')" >> $GITHUB_OUTPUT
+          PR_NUM=$(echo $PR_URL | grep -oP '\d+$')
+          echo "pr_number=$PR_NUM" >> $GITHUB_OUTPUT
 
       - name: Add Labels
-        if: needs.detect-branch.outputs.source == 'feature/**'
+        if: needs.detect-branch.outputs.is_feature == 'true'
         run: |
           PR=${{ steps.check.outputs.pr_number }}
           if [ -n "$PR" ]; then
@@ -104,8 +106,8 @@ jobs:
     needs: [detect-branch, create-pr]
     runs-on: ubuntu-latest
     if: |
-      needs.detect-branch.outputs.source == 'feature/**' &&
-      steps.create-pr.outputs.pr_number != ''
+      needs.detect-branch.outputs.is_feature == 'true' &&
+      needs.create-pr.outputs.pr_number != ''
     steps:
       - name: Checkout
         uses: actions/checkout@v6
@@ -137,7 +139,7 @@ jobs:
           echo "| Detect | ${{ needs.detect-branch.result == 'success' && '✅' || '❌' }} |" >> $GITHUB_STEP_SUMMARY
           echo "| Create PR | ${{ needs.create-pr.result == 'success' && '✅' || '❌' }} |" >> $GITHUB_STEP_SUMMARY
 
-          if [ "${{ needs.detect-branch.outputs.source }}" == "feature/**" ]; then
+          if [ "${{ needs.detect-branch.outputs.is_feature }}" == "true" ]; then
             echo "" >> $GITHUB_STEP_SUMMARY
             echo "🔄 Auto-merge enabled for feature → dev" >> $GITHUB_STEP_SUMMARY
           fi
