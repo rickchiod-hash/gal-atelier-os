@@ -180,7 +180,7 @@ jobs:
 
     steps:
       - name: 📢 Send Slack Notification
-        uses: slackapi/slack-github-action@v2
+        uses: slackapi/slack-github-action@v3
         with:
           payload: |
             {
