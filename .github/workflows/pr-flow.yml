@@ -4,10 +4,9 @@ on:
   push:
     branches:
       - feature/**
-      - dev
       - develop
-      - homol
-      - homolog
+      - release/**
+      - main
 
 permissions:
   contents: write
@@ -30,15 +29,15 @@ jobs:
           echo "is_feature=false" >> $GITHUB_OUTPUT
 
           if [[ "$BRANCH" == feature/* ]]; then
-            # feature/** → dev (target)
-            echo "target=dev" >> $GITHUB_OUTPUT
+            # feature/** → develop (target)
+            echo "target=develop" >> $GITHUB_OUTPUT
             echo "is_feature=true" >> $GITHUB_OUTPUT
-          elif [[ "$BRANCH" == "dev" ]] || [[ "$BRANCH" == "develop" ]]; then
-            # dev/develop → homol (target)
-            echo "target=homolog" >> $GITHUB_OUTPUT
-          elif [[ "$BRANCH" == "homol" ]] || [[ "$BRANCH" == "homolog" ]]; then
-            # homol/homolog → master (target)
-            echo "target=master" >> $GITHUB_OUTPUT
+          elif [[ "$BRANCH" == "develop" ]]; then
+            # develop → release (target)
+            echo "target=release" >> $GITHUB_OUTPUT
+          elif [[ "$BRANCH" == release/* ]]; then
+            # release/** → main (target)
+            echo "target=main" >> $GITHUB_OUTPUT
           else
             echo "target=" >> $GITHUB_OUTPUT
           fi
@@ -79,12 +78,15 @@ jobs:
           if [[ "$SOURCE" == feature/* ]]; then
             TITLE="Feature: ${SOURCE#feature/}"
             BODY="Automated PR from feature branch to $TARGET."
-          elif [[ "$SOURCE" == "dev" ]] || [[ "$SOURCE" == "develop" ]]; then
-            TITLE="Promote to Homolog"
-            BODY="Automated PR from $SOURCE to homolog."
+          elif [[ "$SOURCE" == "develop" ]]; then
+            TITLE="Promote to Release"
+            BODY="Automated PR from $SOURCE to release (homologacao)."
+          elif [[ "$SOURCE" == release/* ]]; then
+            TITLE="Promote to Main"
+            BODY="Automated PR from $SOURCE to main (producao)."
           else
-            TITLE="Promote to Master"
-            BODY="Automated PR from $SOURCE to master."
+            TITLE="Promote: $SOURCE → $TARGET"
+            BODY="Automated PR from $SOURCE to $TARGET."
           fi
 
           # Create PR
@@ -141,5 +143,5 @@ jobs:
 
           if [ "${{ needs.detect-branch.outputs.is_feature }}" == "true" ]; then
             echo "" >> $GITHUB_STEP_SUMMARY
-            echo "🔄 Auto-merge enabled for feature → dev" >> $GITHUB_STEP_SUMMARY
+            echo "🔄 Auto-merge enabled for feature → develop" >> $GITHUB_STEP_SUMMARY
           fi

@@ -1,13 +1,13 @@
-name: CI - DEV Environment
+name: CI - DEVELOP Environment
 
 on:
   push:
     branches:
-      - dev
+      - develop
       - feature/**
   pull_request:
     branches:
-      - dev
+      - develop
 
 env:
   REGISTRY: ghcr.io

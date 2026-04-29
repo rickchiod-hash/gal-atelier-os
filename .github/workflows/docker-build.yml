@@ -3,11 +3,9 @@ name: Docker Build
 on:
   push:
     branches:
-      - dev
+      - feature/**
       - develop
-      - homol
-      - homolog
-      - master
+      - release/**
       - main
     paths:
       - backend/**
@@ -17,11 +15,8 @@ on:
       - .github/workflows/docker-build.yml
   pull_request:
     branches:
-      - dev
       - develop
-      - homol
-      - homolog
-      - master
+      - release/**
       - main
     paths:
       - backend/**

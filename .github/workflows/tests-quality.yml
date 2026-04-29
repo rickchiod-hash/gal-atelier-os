@@ -3,13 +3,13 @@ name: Tests & Quality Gates
 on:
   push:
     branches:
-      - dev
-      - homolog
+      - develop
+      - release/**
       - main
   pull_request:
     branches:
-      - dev
-      - homolog
+      - develop
+      - release/**
       - main
 
 env:

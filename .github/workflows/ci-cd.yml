@@ -2,9 +2,9 @@ name: CI/CD
 
 on:
   pull_request:
-    branches: [dev, homolog, main]
+    branches: [develop, release, main]
   push:
-    branches: [dev, homolog, main]
+    branches: [develop, release, main]
   workflow_dispatch:
 
 env:
