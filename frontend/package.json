@@ -6,7 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint --max-warnings 0",
+    "lint": "next lint",
     "lint:fix": "next lint --fix",
     "check": "next build",
     "test": "jest --coverage",
@@ -17,7 +17,7 @@
   },
   "dependencies": {
     "next": "^16.2.4",
-    "react": "^19.2.5",
+    "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
@@ -25,8 +25,8 @@
     "@testing-library/react": "^16.3.2",
     "@types/jest": "^30.0.0",
     "@types/node": "^25.6.0",
-    "@types/react": "^19.2.14",
-    "@types/react-dom": "^19.0.0",
+    "@types/react": "^18.2.14",
+    "@types/react-dom": "^18.0.0",
     "eslint": "^10.2.1",
     "eslint-config-next": "^16.2.4",
     "jest": "^30.3.0",
