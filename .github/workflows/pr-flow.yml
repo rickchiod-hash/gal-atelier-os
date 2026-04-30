@@ -90,9 +90,8 @@ jobs:
           fi
 
           # Create PR
-          PR_URL=$(gh pr create --base "$TARGET" --head "$SOURCE" --title "$TITLE" --body "$BODY" -q '.url')
-          echo "PR created: $PR_URL"
-          PR_NUM=$(echo $PR_URL | grep -oP '\d+$')
+          gh pr create --base "$TARGET" --head "$SOURCE" --title "$TITLE" --body "$BODY"
+          PR_NUM=$(gh pr list --head "$SOURCE" --base "$TARGET" --json number -q '.[0].number')
           echo "pr_number=$PR_NUM" >> $GITHUB_OUTPUT
 
       - name: Add Labels
