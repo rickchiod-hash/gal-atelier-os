@@ -62,9 +62,25 @@ jobs:
           cache-from: type=registry,ref=${{ env.REGISTRY }}/${{ github.repository }}/backend:buildcache
           cache-to: type=registry,ref=${{ env.REGISTRY }}/${{ github.repository }}/backend:buildcache,mode=max
 
+      - name: ⏳ Wait for Image Availability
+        if: github.event_name == 'push'
+        run: |
+          echo "⏳ Waiting for backend image to be available in registry..."
+          TAGS="${{ steps.meta.outputs.tags }}"
+          for i in {1..10}; do
+            echo "⏳ Attempt $i/10: Checking image availability..."
+            # Extract first tag
+            TAG=$(echo "$TAGS" | head -1)
+            if docker manifest inspect "$TAG" > /dev/null 2>&1; then
+              echo "✅ Backend image available: $TAG"
+              break
+            fi
+            sleep 3
+          done
+
       - name: ✅ Image Summary
         run: |
-          echo "Backend Image Built"
+          echo "✅ Backend Image Built"
           echo "Tags: ${{ steps.meta.outputs.tags }}"
 
   docker-build-frontend:
@@ -113,9 +129,25 @@ jobs:
           cache-from: type=registry,ref=${{ env.REGISTRY }}/${{ github.repository }}/frontend:buildcache
           cache-to: type=registry,ref=${{ env.REGISTRY }}/${{ github.repository }}/frontend:buildcache,mode=max
 
+      - name: ⏳ Wait for Image Availability
+        if: github.event_name == 'push'
+        run: |
+          echo "⏳ Waiting for frontend image to be available in registry..."
+          TAGS="${{ steps.meta.outputs.tags }}"
+          for i in {1..10}; do
+            echo "⏳ Attempt $i/10: Checking image availability..."
+            # Extract first tag
+            TAG=$(echo "$TAGS" | head -1)
+            if docker manifest inspect "$TAG" > /dev/null 2>&1; then
+              echo "✅ Frontend image available: $TAG"
+              break
+            fi
+            sleep 3
+          done
+
       - name: ✅ Image Summary
         run: |
-          echo "Frontend Image Built"
+          echo "✅ Frontend Image Built"
           echo "Tags: ${{ steps.meta.outputs.tags }}"
 
   docker-compose-test:
@@ -131,13 +163,29 @@ jobs:
       - name: 🐳 Validate Docker Compose
         run: |
           echo "🔍 Validating docker-compose.yml..."
-          docker-compose config > /dev/null
-          echo "✅ Docker Compose is valid"
+          if docker-compose config > /dev/null 2>&1; then
+            echo "✅ Docker Compose is valid"
+          else
+            echo "❌ Docker Compose validation failed"
+            docker-compose config
+            exit 1
+          fi
 
       - name: 🧪 Test Docker Compose Build
         run: |
           echo "🏗️ Building with docker-compose..."
-          docker-compose build --no-cache postgres backend frontend
+          echo "Building postgres..."
+          docker-compose build --no-cache postgres
+          echo "✅ Postgres built"
+
+          echo "Building backend..."
+          docker-compose build --no-cache backend
+          echo "✅ Backend built"
+
+          echo "Building frontend..."
+          docker-compose build --no-cache frontend
+          echo "✅ Frontend built"
+
           echo "✅ Docker Compose build successful"
 
       - name: 📊 Docker Image Info
@@ -145,4 +193,6 @@ jobs:
           echo "## Docker Images Built" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           docker image ls --format "table {{.Repository}}\t{{.Tag}}\t{{.Size}}"
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "✅ All images built and validated"
 
