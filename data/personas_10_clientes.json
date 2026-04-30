@@ -1,0 +1,202 @@
+[
+  {
+    "id": "p01",
+    "nome": "Cliente Iniciante Perdida",
+    "resumo": "Nunca comprou lace/wig e precisa de guia visual simples.",
+    "dores": [
+      "Não entende termos técnicos.",
+      "Tem medo de comprar errado.",
+      "Não sabe medir cabeça/cap.",
+      "Não sabe cuidar da peça.",
+      "Tem vergonha de perguntar algo básico."
+    ],
+    "desejos": [
+      "Comprar sem passar vergonha.",
+      "Receber recomendação simples.",
+      "Ver exemplos visuais.",
+      "Saber preço total.",
+      "Entender cuidados mínimos."
+    ],
+    "recurso_chave": "Modo Comece Aqui + quiz de recomendação + glossário visual"
+  },
+  {
+    "id": "p02",
+    "nome": "Cliente Consumista Fashion",
+    "resumo": "Compra por estética, reels, tendência e transformação visual.",
+    "dores": [
+      "Pouca variedade visual.",
+      "Fotos parecem genéricas.",
+      "Não vê cores ousadas.",
+      "Não encontra looks por ocasião.",
+      "Fluxo não estimula compra por desejo."
+    ],
+    "desejos": [
+      "Lookbook editorial.",
+      "Novidades e tendências.",
+      "Cores marcantes.",
+      "Comparar estilos.",
+      "Comprar rápido pelo impulso."
+    ],
+    "recurso_chave": "Coleções, novidades, mais desejadas e vitrines por ocasião"
+  },
+  {
+    "id": "p03",
+    "nome": "Cliente Premium Exigente",
+    "resumo": "Quer acabamento impecável, HD lace, densidade alta e personalização.",
+    "dores": [
+      "Não confia sem macro da lace.",
+      "Não vê hairline de perto.",
+      "Não entende densidade real.",
+      "Não sabe o que justifica preço alto.",
+      "Falta garantia/qualidade documentada."
+    ],
+    "desejos": [
+      "Ficha técnica completa.",
+      "Fotos macro.",
+      "Comparativo HD vs transparent vs swiss lace.",
+      "Atendimento consultivo.",
+      "Prova de acabamento."
+    ],
+    "recurso_chave": "Galeria técnica com macro lace, cap interno e ficha premium"
+  },
+  {
+    "id": "p04",
+    "nome": "Cliente Prática do Dia a Dia",
+    "resumo": "Quer usar rápido, sem cola e com baixa manutenção.",
+    "dores": [
+      "Não tem tempo.",
+      "Tem medo de instalar errado.",
+      "Quer conforto.",
+      "Não quer depender de cola.",
+      "Não sabe nível de manutenção."
+    ],
+    "desejos": [
+      "Glueless.",
+      "Instalação rápida.",
+      "Baixa manutenção.",
+      "Tutoriais curtos.",
+      "Produtos seguros para rotina."
+    ],
+    "recurso_chave": "Filtros por dificuldade, manutenção e sem cola"
+  },
+  {
+    "id": "p05",
+    "nome": "Cliente Médica / Alopecia / Oncológica",
+    "resumo": "Compra por autoestima, conforto, discrição e acolhimento.",
+    "dores": [
+      "Sensibilidade no couro cabeludo.",
+      "Medo de parecer artificial.",
+      "Precisa de privacidade.",
+      "Não quer linguagem agressiva.",
+      "Tem receio de desconforto prolongado."
+    ],
+    "desejos": [
+      "Conforto real.",
+      "Discrição.",
+      "Atendimento privado.",
+      "Naturalidade.",
+      "Materiais suaves."
+    ],
+    "recurso_chave": "Linha Medical Comfort com linguagem sensível e especificações de conforto"
+  },
+  {
+    "id": "p06",
+    "nome": "Wigmaker Profissional",
+    "resumo": "Compra insumos, bases, frontals, closures e ferramentas.",
+    "dores": [
+      "Falta especificação técnica.",
+      "Não há medidas claras.",
+      "Não há kits profissionais.",
+      "Falta reposição rápida.",
+      "Não há diferenciação por material."
+    ],
+    "desejos": [
+      "Fichas técnicas completas.",
+      "Atacado/kits.",
+      "Frontals/closures separados.",
+      "Ferramentas confiáveis.",
+      "Organização por medida."
+    ],
+    "recurso_chave": "Categoria Wigmaker Tools e specs avançadas"
+  },
+  {
+    "id": "p07",
+    "nome": "Cliente Econômica Inteligente",
+    "resumo": "Quer custo-benefício, manutenção previsível e primeira compra segura.",
+    "dores": [
+      "Orçamento limitado.",
+      "Não entende variação de preço.",
+      "Tem medo de comprar barato e ruim.",
+      "Quer parcelamento/sinal.",
+      "Não sabe custo de manutenção."
+    ],
+    "desejos": [
+      "Preço por faixa.",
+      "Melhor custo-benefício.",
+      "Comparação básico/intermediário/premium.",
+      "Transparência.",
+      "Previsão de manutenção."
+    ],
+    "recurso_chave": "Comparador de valor, faixa de preço e custo total estimado"
+  },
+  {
+    "id": "p08",
+    "nome": "Cliente Evento / Urgência",
+    "resumo": "Precisa para festa, ensaio, casamento, viagem ou apresentação.",
+    "dores": [
+      "Prazo curto.",
+      "Não sabe o que fica pronto rápido.",
+      "Precisa de impacto visual.",
+      "Quer agenda disponível.",
+      "Tem medo de atraso."
+    ],
+    "desejos": [
+      "Pronta entrega.",
+      "Filtro por prazo.",
+      "Agenda rápida.",
+      "Looks de evento.",
+      "CTA direto para WhatsApp."
+    ],
+    "recurso_chave": "Filtro Evento Express + pronta entrega + prazo visível"
+  },
+  {
+    "id": "p09",
+    "nome": "Turista Caiu de Paraquedas",
+    "resumo": "Chegou por rede social/Google, gostou do visual, mas não entende o nicho.",
+    "dores": [
+      "Não entende o que está vendo.",
+      "Não sabe por onde começar.",
+      "Os nomes parecem confusos.",
+      "Não sabe se o produto serve para ela.",
+      "Preço e prazo parecem abstratos."
+    ],
+    "desejos": [
+      "Explicação do zero.",
+      "Recomendação guiada.",
+      "Linguagem simples.",
+      "Fotos educativas.",
+      "Baixo atrito para pedir ajuda."
+    ],
+    "recurso_chave": "Onboarding Me explica do zero"
+  },
+  {
+    "id": "p10",
+    "nome": "Cliente Pós-venda / Recompra",
+    "resumo": "Já comprou e precisa cuidar, ajustar, higienizar, reformar ou recomprar.",
+    "dores": [
+      "Esquece manutenção.",
+      "Não sabe armazenar.",
+      "Não sabe lavar.",
+      "Não sabe quando trocar cola/touca.",
+      "Não recebe incentivo para recompra."
+    ],
+    "desejos": [
+      "Lembretes.",
+      "Kits de cuidado.",
+      "Plano de manutenção.",
+      "Histórico da peça.",
+      "Desconto em recompra."
+    ],
+    "recurso_chave": "Pós-venda, histórico da peça e manutenção recorrente"
+  }
+]
