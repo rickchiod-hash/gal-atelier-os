@@ -8,86 +8,80 @@
 }
 
 :root {
-  /* ============================================
-     GAL ATELIER — NUBANK EDITION
-     Cores: Roxo Escuro #1A1A2E + Magenta #820AD1
-     ============================================ */
+   /* ============================================
+      GAL ATELIER — DESIGN SYSTEM V6 — EDITORIAL ATELIER
+      Cores: Atelier Blue Palette
+      ============================================ */
 
-  /* PRIMARY — Nubank Colors */
-  --nubank-dark: #1A1A2E;
-  --nubank-magenta: #820AD1;
-  --nubank-light: #F4F4F8;
-  --nubank-gray: #8A8A9A;
-  --nubank-white: #FFFFFF;
+   /* BASE COLORS — Atelier Blue */
+   --color-bg: #07111F; /* Navy Black (--charcoal) */
+   --color-bg-soft: #0B1F3A; /* Midnight Navy */
+   --color-surface: #102A43; /* Deep Navy (--blush) */
+   --color-surface-elevated: #132F4C; /* Blue Surface */
+   --color-text: #F8FAFC; /* Text Primary (--ivory) */
+   --color-text-secondary: #CBD5E1; /* Text Secondary */
+   --color-text-muted: #94A3B8; /* Text Muted */
 
-  /* BACKGROUND */
-  --color-bg: var(--nubank-dark);
-  --color-surface: #2D2D44;
-  --color-card: #363652;
+   /* ACCENTS (máximo 2% da página) */
+   --color-primary: #2563EB; /* Royal Blue (--color-brand) */
+   --color-primary-dark: #1D4ED8; /* Atelier Blue (--deep-espresso) */
+   --color-primary-soft: #60A5FA; /* Soft Blue (--rose) */
+   --color-accent: #38BDF8; /* Cyan Glow (--bronze) */
+   --color-premium: #D8B46A; /* Champagne Gold */
+   --color-border: rgba(56, 189, 248, 0.3); /* Cyan Glow transparent */
 
-  /* TEXT */
-  --color-text: var(--nubank-white);
-  --color-text-muted: var(--nubank-gray);
-  --color-text-dark: var(--nubank-dark);
+   /* SEMANTIC */
+   --color-success: #00C853;
+   --color-warning: #FF9100;
+   --color-error: #FF5252;
 
-  /* ACCENTS — Magenta */
-  --color-accent: var(--nubank-magenta);
-  --color-brand: var(--nubank-magenta);
-  --color-highlight: #A855F7;
+   /* LEGACY (fallback) - mantido para compatibilidade */
+   --ivory: #F8FAFC;
+   --charcoal: #07111F;
+   --blush: #102A43;
+   --bronze: #38BDF8;
+   --deep-espresso: #1D4ED8;
+   --rose: #60A5FA;
 
-  /* SEMANTIC */
-  --color-border: #4A4A6A;
-  --color-success: #00C853;
-  --color-warning: #FF9100;
-  --color-error: #FF5252;
+   /* Shadows — Blue glow */
+   --shadow-xs: 0 2px 8px rgba(56, 189, 248, 0.15);
+   --shadow-sm: 0 4px 16px rgba(56, 189, 248, 0.25);
+   --shadow-lg: 0 8px 32px rgba(56, 189, 248, 0.35);
+   --shadow-glow: 0 0 20px rgba(56, 189, 248, 0.5);
 
-  /* LEGACY (fallback) */
-  --ivory: #F4F4F8;
-  --charcoal: #1A1A2E;
-  --blush: #363652;
-  --bronze: #820AD1;
-  --deep-espresso: #1A1A2E;
-  --rose: #A855F7;
+   /* Radius — Sharp (Anti-SaaS, 2px max as per Design System V6) */
+   --radius-xs: 2px;
+   --radius-sm: 2px;
+   --radius-md: 4px;
+   --radius-lg: 8px;
 
-  /* Shadows — Purple glow */
-  --shadow-xs: 0 2px 8px rgba(138, 5, 190, 0.15);
-  --shadow-sm: 0 4px 16px rgba(138, 5, 190, 0.25);
-  --shadow-lg: 0 8px 32px rgba(138, 5, 190, 0.35);
-  --shadow-glow: 0 0 20px rgba(138, 5, 190, 0.5);
+   /* Spacing Fluid */
+   --space-1: clamp(0.375rem, 0.35rem + 0.15vw, 0.5rem);
+   --space-2: clamp(0.625rem, 0.55rem + 0.35vw, 0.875rem);
+   --space-3: clamp(0.875rem, 0.75rem + 0.6vw, 1.25rem);
+   --space-4: clamp(1.125rem, 0.95rem + 0.9vw, 1.75rem);
+   --space-5: clamp(1.5rem, 1.2rem + 1.5vw, 2.5rem);
+   --space-6: clamp(2rem, 1.5rem + 2.5vw, 3.5rem);
+   --space-8: clamp(3rem, 2rem + 4vw, 5rem);
+   --space-12: clamp(4rem, 2.5rem + 6vw, 7rem);
 
-  /* Radius — Sharp (Anti-SaaS, 2px max as per Design System V6) */
-  --radius-xs: 2px;
-  --radius-sm: 2px;
-  --radius-md: 4px;
-  --radius-lg: 8px;
+   /* Typography — Editorial Authority (V6) */
+   --font-display: 'Playfair Display', Georgia, serif;
+   --font-body: 'Inter', system-ui, sans-serif;
+   --font-caption: 'Inter', system-ui, sans-serif;
 
-  /* Spacing Fluid */
-  --space-1: clamp(0.375rem, 0.35rem + 0.15vw, 0.5rem);
-  --space-2: clamp(0.625rem, 0.55rem + 0.35vw, 0.875rem);
-  --space-3: clamp(0.875rem, 0.75rem + 0.6vw, 1.25rem);
-  --space-4: clamp(1.125rem, 0.95rem + 0.9vw, 1.75rem);
-  --space-5: clamp(1.5rem, 1.2rem + 1.5vw, 2.5rem);
-  --space-6: clamp(2rem, 1.5rem + 2.5vw, 3.5rem);
-  --space-8: clamp(3rem, 2rem + 4vw, 5rem);
-  --space-12: clamp(4rem, 2.5rem + 6vw, 7rem);
+   --text-xs: clamp(0.7rem, 0.68rem + 0.1vw, 0.8rem);
+   --text-sm: clamp(0.8rem, 0.78rem + 0.1vw, 0.9rem);
+   --text-base: clamp(0.95rem, 0.92rem + 0.15vw, 1.05rem);
+   --text-lg: clamp(1.1rem, 1rem + 0.4vw, 1.35rem);
+   --text-xl: clamp(1.4rem, 1.2rem + 1vw, 2rem);
+   --text-2xl: clamp(1.8rem, 1.4rem + 2vw, 3rem);
+   --text-3xl: clamp(2.4rem, 1.6rem + 4vw, 4.5rem);
+   --text-hero: clamp(3rem, 2rem + 5vw, 6rem);
 
-  /* Typography — Editorial Authority (V6) */
-  --font-display: 'Playfair Display', Georgia, serif;
-  --font-body: 'Inter', system-ui, sans-serif;
-  --font-caption: 'Inter', system-ui, sans-serif;
-
-  --text-xs: clamp(0.7rem, 0.68rem + 0.1vw, 0.8rem);
-  --text-sm: clamp(0.8rem, 0.78rem + 0.1vw, 0.9rem);
-  --text-base: clamp(0.95rem, 0.92rem + 0.15vw, 1.05rem);
-  --text-lg: clamp(1.1rem, 1rem + 0.4vw, 1.35rem);
-  --text-xl: clamp(1.4rem, 1.2rem + 1vw, 2rem);
-  --text-2xl: clamp(1.8rem, 1.4rem + 2vw, 3rem);
-  --text-3xl: clamp(2.4rem, 1.6rem + 4vw, 4.5rem);
-  --text-hero: clamp(3rem, 2rem + 5vw, 6rem);
-
-  /* Transitions — Polite */
-  --ease-polite: cubic-bezier(0.25, 0.1, 0.25, 1);
-  --duration-normal: 400ms;
+   /* Transitions — Polite */
+   --ease-polite: cubic-bezier(0.25, 0.1, 0.25, 1);
+   --duration-normal: 400ms;
 }
 
 /* ============================================
@@ -265,8 +259,88 @@ p {
 }
 
 /* ============================================
-   HERO SECTION
-   ============================================ */
+    DASHBOARD SECTION — Anti-Dashboard: Barra horizontal de insights
+    ============================================ */
+.dashboard-section {
+  padding-block: var(--space-8);
+}
+
+.dashboard-container {
+  width: 100%;
+}
+
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: var(--space-6);
+}
+
+.dashboard-header h2 {
+  font-family: var(--font-display);
+  font-size: var(--text-2xl);
+  color: var(--deep-espresso);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+}
+
+.dashboard-updated {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}
+
+/* Barra horizontal de insights — alternativa anti-dashboard aos cards */
+.insights-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-6);
+  background: var(--color-surface);
+  border-radius: var(--radius-sm);
+  padding: var(--space-5);
+  box-shadow: var(--shadow-xs);
+}
+
+.insight-item {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  min-width: 120px;
+}
+
+.insight-label {
+  font-size: var(--text-xs);
+  font-weight: 600;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: var(--space-1);
+}
+
+.insight-value {
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  color: var(--deep-espresso);
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+/* Valores numéricos grandes podem usar text-xl */
+.insight-value.numeric-large {
+  font-size: var(--text-xl);
+}
+
+/* Responsividade: em telas muito pequenas, empilha verticalmente */
+@media (max-width: 480px) {
+  .insights-bar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .insight-item {
+    align-items: flex-start;
+    min-width: auto;
+  }
+}
 .hero {
   position: relative;
   min-height: calc(100svh - 80px);

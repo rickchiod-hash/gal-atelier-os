@@ -15,6 +15,7 @@ on:
 env:
   JAVA_VERSION: '21'
   NODE_VERSION: '20'
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
 
 jobs:
   backend-unit-tests:
@@ -126,7 +127,7 @@ jobs:
         run: npm test -- --coverage --watchAll=false 2>/dev/null || true
 
       - name: 📊 Upload Coverage
-        uses: codecov/codecov-action@v3
+        uses: codecov/codecov-action@v6
         with:
           files: ./frontend/coverage/lcov.info
           flags: frontend
