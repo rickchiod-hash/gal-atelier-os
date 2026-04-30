@@ -90,10 +90,13 @@ jobs:
           fi
 
           # Create PR
-          PR_URL=$(gh pr create --base "$TARGET" --head "$SOURCE" --title "$TITLE" --body "$BODY" -q '.url')
-          echo "PR created: $PR_URL"
-          PR_NUM=$(echo $PR_URL | grep -oP '\d+$')
-          echo "pr_number=$PR_NUM" >> $GITHUB_OUTPUT
+          if gh pr create --base "$TARGET" --head "$SOURCE" --title "$TITLE" --body "$BODY" 2>/dev/null; then
+            PR_NUM=$(gh pr list --head "$SOURCE" --base "$TARGET" --json number -q '.[0].number')
+            echo "pr_number=$PR_NUM" >> $GITHUB_OUTPUT
+          else
+            echo "No changes to create PR"
+            echo "pr_number=" >> $GITHUB_OUTPUT
+          fi
 
       - name: Add Labels
         if: needs.detect-branch.outputs.is_feature == 'true'
