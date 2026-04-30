@@ -91,7 +91,7 @@ jobs:
           mvn jacoco:check -q || exit 1
 
       - name: 📈 Upload Coverage Reports
-        uses: codecov/codecov-action@v3
+        uses: codecov/codecov-action@v6
         with:
           files: ./backend/target/site/jacoco/jacoco.xml
           flags: backend-production

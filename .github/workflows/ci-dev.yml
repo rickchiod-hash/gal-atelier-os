@@ -62,7 +62,7 @@ jobs:
         run: mvn jacoco:report -q
 
       - name: 📈 Upload Coverage
-        uses: codecov/codecov-action@v3
+        uses: codecov/codecov-action@v6
         with:
           files: ./backend/target/site/jacoco/jacoco.xml
           flags: backend
