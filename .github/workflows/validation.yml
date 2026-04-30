@@ -181,11 +181,11 @@ jobs:
             echo "- $(basename $file)" >> $GITHUB_STEP_SUMMARY
           done
 
-   notification:
-     name: Notify • Results
-     runs-on: ubuntu-latest
-     needs: [health-check-develop, smoke-tests]
-     if: always()
+notification:
+      name: Notify • Results
+      runs-on: ubuntu-latest
+      needs: [smoke-tests, dependency-security-audit, lint-workflows]
+      if: always()
      steps:
        - name: 📢 Notify Status
          run: |

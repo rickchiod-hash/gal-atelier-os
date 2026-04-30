@@ -12,6 +12,7 @@ env:
   REGISTRY: ghcr.io
   JAVA_VERSION: '21'
   NODE_VERSION: '20'
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
 
 jobs:
   lint-and-test-backend:
@@ -64,7 +65,7 @@ jobs:
           mvn jacoco:report -q
 
       - name: 📈 Upload Coverage to Codecov
-        uses: codecov/codecov-action@v3
+        uses: codecov/codecov-action@v6
         with:
           files: ./backend/target/site/jacoco/jacoco.xml
           flags: backend
