@@ -310,7 +310,7 @@ jobs:
 
     steps:
       - name: 📢 Send Slack Notification
-        if: secrets.SLACK_WEBHOOK_URL != ''
+        if: ${{ secrets.SLACK_WEBHOOK_URL != '' }}
         uses: slackapi/slack-github-action@v3
         with:
           payload: |
@@ -339,5 +339,5 @@ jobs:
         continue-on-error: true
 
       - name: ℹ️ Skip Notification
-        if: secrets.SLACK_WEBHOOK_URL == ''
+        if: ${{ secrets.SLACK_WEBHOOK_URL == '' }}
         run: echo "SLACK_WEBHOOK_URL not configured, skipping notification"
