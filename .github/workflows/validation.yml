@@ -186,16 +186,14 @@ notification:
       runs-on: ubuntu-latest
       needs: [smoke-tests, dependency-security-audit, lint-workflows]
       if: always()
-     steps:
-       - name: 📢 Notify Status
-         run: |
-           echo "## Validation Results" >> $GITHUB_STEP_SUMMARY
-           echo "" >> $GITHUB_STEP_SUMMARY
-           echo "| Check | Status |" >> $GITHUB_STEP_SUMMARY
-           echo "|-------|--------|" >> $GITHUB_STEP_SUMMARY
-           echo "| Health Check (Develop) | ${{ needs.health-check-develop.result == 'success' && '✅' || needs.health-check-develop.result == 'failure' && '❌' || '⚠️' }} |" >> $GITHUB_STEP_SUMMARY
-           echo "| Health Check (Release) | ${{ needs.health-check-release.result == 'success' && '✅' || needs.health-check-release.result == 'failure' && '❌' || '⚠️' }} |" >> $GITHUB_STEP_SUMMARY
-           echo "| Smoke Tests | ${{ needs.smoke-tests.result == 'success' && '✅' || needs.smoke-tests.result == 'failure' && '❌' || '⚠️' }} |" >> $GITHUB_STEP_SUMMARY
-           echo "| Dependency Audit | ${{ needs.dependency-security-audit.result == 'success' && '✅' || needs.dependency-security-audit.result == 'failure' && '❌' || '⚠️' }} |" >> $GITHUB_STEP_SUMMARY
-           echo "| Workflow Lint | ${{ needs.lint-workflows.result == 'success' && '✅' || needs.lint-workflows.result == 'failure' && '❌' || '⚠️' }} |" >> $GITHUB_STEP_SUMMARY
+      steps:
+        - name: 📢 Notify Status
+          run: |
+            echo "## Validation Results" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "| Check | Status |" >> $GITHUB_STEP_SUMMARY
+            echo "|-------|--------|" >> $GITHUB_STEP_SUMMARY
+            echo "| Smoke Tests | ${{ needs.smoke-tests.result == 'success' && '✅' || needs.smoke-tests.result == 'failure' && '❌' || '⚠️' }} |" >> $GITHUB_STEP_SUMMARY
+            echo "| Dependency Audit | ${{ needs.dependency-security-audit.result == 'success' && '✅' || needs.dependency-security-audit.result == 'failure' && '❌' || '⚠️' }} |" >> $GITHUB_STEP_SUMMARY
+            echo "| Workflow Lint | ${{ needs.lint-workflows.result == 'success' && '✅' || needs.lint-workflows.result == 'failure' && '❌' || '⚠️' }} |" >> $GITHUB_STEP_SUMMARY
 
