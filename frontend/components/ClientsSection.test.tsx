@@ -33,7 +33,7 @@ describe('ClientsSection (CRM Concierge List)', () => {
       stageLabel={(stage) => stage} 
       whatsappReceiver="5511999999999" 
     />)
-    expect(screen.getByRole('region', { name: /clientes/i })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: /clientes ativos/i })).toBeInTheDocument()
   })
 
   it('renders client list', () => {
@@ -43,8 +43,8 @@ describe('ClientsSection (CRM Concierge List)', () => {
       stageLabel={(stage) => stage} 
       whatsappReceiver="5511999999999" 
     />)
-    const clients = screen.getAllByRole('listitem')
-    expect(clients.length).toBeGreaterThan(0)
+    const clients = document.querySelectorAll('.concierge-item')
+    expect(clients.length).toBe(2)
   })
 
   it('renders client names', () => {
@@ -55,6 +55,8 @@ describe('ClientsSection (CRM Concierge List)', () => {
       whatsappReceiver="5511999999999" 
     />)
     expect(screen.getByRole('heading', { level: 2 })).toHaveTextContent('Clientes ativos')
+    expect(screen.getByText('Ana Clara')).toBeInTheDocument()
+    expect(screen.getByText('Bruna Oliveira')).toBeInTheDocument()
   })
 
   it('renders status indicators', () => {
