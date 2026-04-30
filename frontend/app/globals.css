@@ -8,86 +8,81 @@
 }
 
 :root {
-  /* ============================================
-     GAL ATELIER — NUBANK EDITION
-     Cores: Roxo Escuro #1A1A2E + Magenta #820AD1
-     ============================================ */
+   /* ============================================
+      GAL ATELIER — BEAUTY PREMIUM
+      Cores: Warm Ivory #FAF5F0 + Deep Espresso #3D2B1F
+      ============================================ */
 
-  /* PRIMARY — Nubank Colors */
-  --nubank-dark: #1A1A2E;
-  --nubank-magenta: #820AD1;
-  --nubank-light: #F4F4F8;
-  --nubank-gray: #8A8A9A;
-  --nubank-white: #FFFFFF;
+   /* PRIMARY — Beauty Premium Colors */
+   --color-bg: #FAF5F0; /* Warm Ivory */
+   --color-surface: #FFFFFF; /* Pure White */
+   --color-card: #FFFFFF; /* Pure White */
+   --color-bg-muted: #F8F4F0; /* Ivory Mist */
 
-  /* BACKGROUND */
-  --color-bg: var(--nubank-dark);
-  --color-surface: #2D2D44;
-  --color-card: #363652;
+   /* TEXT */
+   --color-text: #2C2C2C; /* Charcoal Soft */
+   --color-text-muted: #8A8078; /* Dusty Taupe */
+   --color-text-dark: #1F1F1F; /* Almost Black */
 
-  /* TEXT */
-  --color-text: var(--nubank-white);
-  --color-text-muted: var(--nubank-gray);
-  --color-text-dark: var(--nubank-dark);
+   /* ACCENTS — Beauty Premium */
+   --color-accent: #A67C52; /* Bronze Soft */
+   --color-brand: #3D2B1F; /* Deep Espresso */
+   --color-rose: #C1978E; /* Rose Muted */
+   --color-champagne: #D8B46A; /* Champagne Gold */
+   --color-mauve: #B8A594; /* Muted Mauve */
 
-  /* ACCENTS — Magenta */
-  --color-accent: var(--nubank-magenta);
-  --color-brand: var(--nubank-magenta);
-  --color-highlight: #A855F7;
+   /* SEMANTIC */
+   --color-border: #E8DDD3; /* Blush */
+   --color-success: #8B7355; /* Olive Soft */
+   --color-warning: #D4B483; /* Sand Soft */
+   --color-error: #C76B6B; /* Rose Clay */
 
-  /* SEMANTIC */
-  --color-border: #4A4A6A;
-  --color-success: #00C853;
-  --color-warning: #FF9100;
-  --color-error: #FF5252;
+   /* LEGACY (fallback) */
+   --ivory: #FAF5F0;
+   --charcoal: #2C2C2C;
+   --blush: #E8DDD3;
+   --bronze: #A67C52;
+   --deep-espresso: #3D2B1F;
+   --rose: #C1978E;
 
-  /* LEGACY (fallback) */
-  --ivory: #F4F4F8;
-  --charcoal: #1A1A2E;
-  --blush: #363652;
-  --bronze: #820AD1;
-  --deep-espresso: #1A1A2E;
-  --rose: #A855F7;
+   /* Shadows — Soft, no glow */
+   --shadow-xs: 0 1px 3px rgba(0,0,0,0.05);
+   --shadow-sm: 0 2px 8px rgba(0,0,0,0.08);
+   --shadow-md: 0 4px 16px rgba(0,0,0,0.10);
+   --shadow-lg: 0 6px 24px rgba(0,0,0,0.12);
 
-  /* Shadows — Purple glow */
-  --shadow-xs: 0 2px 8px rgba(138, 5, 190, 0.15);
-  --shadow-sm: 0 4px 16px rgba(138, 5, 190, 0.25);
-  --shadow-lg: 0 8px 32px rgba(138, 5, 190, 0.35);
-  --shadow-glow: 0 0 20px rgba(138, 5, 190, 0.5);
+   /* Radius — Sharp, never pill-shaped */
+   --radius-xs: 2px;
+   --radius-sm: 4px;
+   --radius-md: 6px;
+   --radius-lg: 8px;
 
-  /* Radius — Rounded (Nubank style) */
-  --radius-xs: 4px;
-  --radius-sm: 4px;
-  --radius-md: 6px;
-  --radius-lg: 8px;
-  --radius-full: 9999px; /* Pill shape */
+   /* Spacing Fluid */
+   --space-1: clamp(0.375rem, 0.35rem + 0.15vw, 0.5rem);
+   --space-2: clamp(0.625rem, 0.55rem + 0.35vw, 0.875rem);
+   --space-3: clamp(0.875rem, 0.75rem + 0.6vw, 1.25rem);
+   --space-4: clamp(1.125rem, 0.95rem + 0.9vw, 1.75rem);
+   --space-5: clamp(1.5rem, 1.2rem + 1.5vw, 2.5rem);
+   --space-6: clamp(2rem, 1.5rem + 2.5vw, 3.5rem);
+   --space-8: clamp(3rem, 2rem + 4vw, 5rem);
+   --space-12: clamp(4rem, 2.5rem + 6vw, 7rem);
 
-  /* Spacing Fluid */
-  --space-1: clamp(0.375rem, 0.35rem + 0.15vw, 0.5rem);
-  --space-2: clamp(0.625rem, 0.55rem + 0.35vw, 0.875rem);
-  --space-3: clamp(0.875rem, 0.75rem + 0.6vw, 1.25rem);
-  --space-4: clamp(1.125rem, 0.95rem + 0.9vw, 1.75rem);
-  --space-5: clamp(1.5rem, 1.2rem + 1.5vw, 2.5rem);
-  --space-6: clamp(2rem, 1.5rem + 2.5vw, 3.5rem);
-  --space-8: clamp(3rem, 2rem + 4vw, 5rem);
-  --space-12: clamp(4rem, 2.5rem + 6vw, 7rem);
+   /* Typography — Editorial Authority */
+   --font-display: 'Playfair Display', Georgia, serif;
+   --font-body: 'Inter', system-ui, sans-serif;
 
-  /* Typography — Modern Sans (Nubank style) */
-  --font-display: 'Inter', system-ui, sans-serif;
-  --font-body: 'Inter', system-ui, sans-serif;
+   --text-xs: clamp(0.7rem, 0.68rem + 0.1vw, 0.8rem);
+   --text-sm: clamp(0.8rem, 0.78rem + 0.1vw, 0.9rem);
+   --text-base: clamp(0.95rem, 0.92rem + 0.15vw, 1.05rem);
+   --text-lg: clamp(1.1rem, 1rem + 0.4vw, 1.35rem);
+   --text-xl: clamp(1.4rem, 1.2rem + 1vw, 2rem);
+   --text-2xl: clamp(1.8rem, 1.4rem + 2vw, 3rem);
+   --text-3xl: clamp(2.4rem, 1.6rem + 4vw, 4.5rem);
+   --text-hero: clamp(3rem, 2rem + 5vw, 6rem);
 
-  --text-xs: clamp(0.7rem, 0.68rem + 0.1vw, 0.8rem);
-  --text-sm: clamp(0.8rem, 0.78rem + 0.1vw, 0.9rem);
-  --text-base: clamp(0.95rem, 0.92rem + 0.15vw, 1.05rem);
-  --text-lg: clamp(1.1rem, 1rem + 0.4vw, 1.35rem);
-  --text-xl: clamp(1.4rem, 1.2rem + 1vw, 2rem);
-  --text-2xl: clamp(1.8rem, 1.4rem + 2vw, 3rem);
-  --text-3xl: clamp(2.4rem, 1.6rem + 4vw, 4.5rem);
-  --text-hero: clamp(3rem, 2rem + 5vw, 6rem);
-
-  /* Transitions — Polite */
-  --ease-polite: cubic-bezier(0.25, 0.1, 0.25, 1);
-  --duration-normal: 400ms;
+   /* Transitions — Polite */
+   --ease-polite: cubic-bezier(0.25, 0.1, 0.25, 1);
+   --duration-normal: 350ms;
 }
 
 /* ============================================
