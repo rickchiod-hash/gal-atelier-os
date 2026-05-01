@@ -5,7 +5,7 @@ Este documento descreve os workflows de CI/CD do Gal Atelier OS.
 ## 🔄 Workflows Disponíveis
 
 ### 1. **ci-dev.yml** — Desenvolvimento
-- **Trigger**: Push para `dev` ou `feature/**`
+- **Trigger**: Push para `develop` ou `feature/**`
 - **Étapas**:
   - Lint Backend (FindBugs)
   - Testes Unitários Backend
@@ -15,13 +15,13 @@ Este documento descreve os workflows de CI/CD do Gal Atelier OS.
   - Build Docker Images (backend + frontend)
   - Notificação Slack
 
-### 2. **ci-homolog.yml** — Homologação
-- **Trigger**: Push para `homolog`
+### 2. **ci-release.yml** — Staging/Release Candidate
+- **Trigger**: Push para `release/v1.0.0`
 - **Étapas**:
   - Todas as verificações de DEV
   - Enforced Code Coverage (50% mínimo)
   - Security Scanning
-  - Deploy para Homolog (se configurado)
+  - Deploy para Staging (se configurado)
   - Notificação Slack
 
 ### 3. **ci-prod.yml** — Produção
@@ -107,8 +107,8 @@ SONAR_TOKEN              # SonarQube token
 ## 📊 Estatus Badge
 
 ```markdown
-[![CI - DEV](https://github.com/seu-user/gal-atelier-os/actions/workflows/ci-dev.yml/badge.svg?branch=dev)](https://github.com/seu-user/gal-atelier-os/actions/workflows/ci-dev.yml)
-[![CI - HOMOLOG](https://github.com/seu-user/gal-atelier-os/actions/workflows/ci-homolog.yml/badge.svg?branch=homolog)](https://github.com/seu-user/gal-atelier-os/actions/workflows/ci-homolog.yml)
+[![CI - DEVELOP](https://github.com/seu-user/gal-atelier-os/actions/workflows/ci-dev.yml/badge.svg?branch=develop)](https://github.com/seu-user/gal-atelier-os/actions/workflows/ci-dev.yml)
+[![CI - RELEASE](https://github.com/seu-user/gal-atelier-os/actions/workflows/ci-release.yml/badge.svg?branch=release/v1.0.0)](https://github.com/seu-user/gal-atelier-os/actions/workflows/ci-release.yml)
 [![CI - PROD](https://github.com/seu-user/gal-atelier-os/actions/workflows/ci-prod.yml/badge.svg?branch=main)](https://github.com/seu-user/gal-atelier-os/actions/workflows/ci-prod.yml)
 ```
 

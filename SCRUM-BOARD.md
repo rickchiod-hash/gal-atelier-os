@@ -102,11 +102,19 @@
 ### SESSÃO 2 (Frontend) — ⚠️ ONLY S2
 | Task ID | Task | US | Status | Hours Spent |
 |---------|------|----|--------|-------------|
-| T-09 | Importar Playfair Display | US-09 | ❌ To Do (CRITICAL) | 1h |
-| T-10 | Corrigir --font-display | US-09 | ❌ To Do (CRITICAL) | 0.5h |
-| T-11 | Quebrar page.tsx em componentes | US-10 | 📋 To Do | 6h |
-| T-12 | Extrair CSS inline | US-10 | 📋 To Do | 4h |
-| T-13 | Implementar Hero split editorial | US-11 | 📋 To Do | 3h |
+| T-09 | Importar Playfair Display | US-09 | ✅ Done | 1h |
+| T-10 | Corrigir --font-display | US-09 | ✅ Done | 0.5h |
+| T-11 | Quebrar page.tsx em componentes | US-10 | ✅ Done | 6h |
+| T-12 | Extrair CSS inline | US-10 | ✅ Done | 4h |
+| T-13 | Implementar Hero split editorial | US-11 | ✅ Done | 3h |
+| T-14 | Unificar paleta de cores (Nubank → Atelier Blue) | FE-07 | ✅ Done | 2h |
+| T-15 | Dashboard horizontal bar (anti-card) | FE-13 | ✅ Done | 3h |
+| T-16 | CRM Concierge List (anti-Kanban) | FE-14 | ✅ Done | 4h |
+| T-17 | Catalog Lookbook layout (anti-grid) | FE-15 | ✅ Done | 3h |
+| T-18 | Extrair AboutSection.tsx | FE-04 | ✅ Done | 1h |
+| T-19 | Extrair HistorySection.tsx | FE-04 | ✅ Done | 1h |
+| T-20 | Validar inputs border-bottom only | FE-11 | ✅ Done | 1h |
+| T-21 | Reduzir cores de acento para 2% | FE-08 | ✅ Done | 1h |
 
 ### SESSÃO 3 (Tests/Docs/CI) — ⚠️ ONLY S3
 | Task ID | Task | US | Status | Hours Spent |
