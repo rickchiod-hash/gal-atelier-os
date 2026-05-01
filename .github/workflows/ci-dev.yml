@@ -3,11 +3,11 @@ name: CI - DEVELOP Environment
 on:
   push:
     branches:
-      - develop
+      - dev
       - feature/**
   pull_request:
     branches:
-      - develop
+      - dev
 
 env:
   REGISTRY: ghcr.io

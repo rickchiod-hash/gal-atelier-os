@@ -3,8 +3,8 @@ name: Validation • Health Checks & Smoke Tests
 on:
   push:
     branches:
-      - develop
-      - release/**
+      - dev
+      - homolog
       - main
   schedule:
     - cron: '0 */6 * * *'
@@ -14,10 +14,10 @@ env:
   NODE_VERSION: '20'
 
 jobs:
-  health-check-develop:
-    name: Health • DEVELOP Environment
+  health-check-dev:
+    name: Health • DEV Environment
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/develop'
+    if: github.ref == 'refs/heads/dev'
     continue-on-error: true
 
     steps:
@@ -26,13 +26,13 @@ jobs:
 
       - name: 🏥 DEVELOP Check
         run: |
-          echo "Configure secrets.DEVELOP_BACKEND_URL in GitHub repo to enable"
+          echo "Configure secrets.DEV_BACKEND_URL in GitHub repo to enable"
           echo "Skipping - secrets not configured"
 
-  health-check-release:
-    name: Health • RELEASE Environment
+  health-check-homolog:
+    name: Health • HOMOLOG Environment
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/release'
+    if: github.ref == 'refs/heads/homolog'
     continue-on-error: true
 
     steps:
@@ -41,7 +41,7 @@ jobs:
 
       - name: 🏥 RELEASE Check
         run: |
-          echo "Configure secrets.RELEASE_ENDPOINT in GitHub repo to enable"
+          echo "Configure secrets.HOMOLOG_ENDPOINT in GitHub repo to enable"
           echo "Skipping - secrets not configured"
 
   smoke-tests:
@@ -106,7 +106,7 @@ jobs:
             sleep 2
           done
           echo "❌ Backend failed to start"
-          cat backend/log
+          cat backend/backend.log
           exit 1
 
       - name: 🧪 Smoke Test - Health

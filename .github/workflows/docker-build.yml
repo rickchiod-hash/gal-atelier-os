@@ -1,28 +1,7 @@
-name: Docker Build
+name: Docker Build (Legacy Manual)
 
 on:
-  push:
-    branches:
-      - feature/**
-      - develop
-      - release/**
-      - main
-    paths:
-      - backend/**
-      - frontend/**
-      - docker-compose.yml
-      - Dockerfile
-      - .github/workflows/docker-build.yml
-  pull_request:
-    branches:
-      - develop
-      - release/**
-      - main
-    paths:
-      - backend/**
-      - frontend/**
-      - docker-compose.yml
-      - Dockerfile
+  workflow_dispatch:
 
 env:
   JAVA_VERSION: '21'

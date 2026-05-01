@@ -4,8 +4,8 @@ on:
   push:
     branches:
       - feature/**
-      - develop
-      - release/**
+      - dev
+      - homolog
       - main
 
 permissions:
@@ -29,14 +29,14 @@ jobs:
           echo "is_feature=false" >> $GITHUB_OUTPUT
 
           if [[ "$BRANCH" == feature/* ]]; then
-            # feature/** → develop (target)
-            echo "target=develop" >> $GITHUB_OUTPUT
+            # feature/** → dev (target)
+            echo "target=dev" >> $GITHUB_OUTPUT
             echo "is_feature=true" >> $GITHUB_OUTPUT
-          elif [[ "$BRANCH" == "develop" ]]; then
-            # develop → release (target)
-            echo "target=release" >> $GITHUB_OUTPUT
-          elif [[ "$BRANCH" == release/* ]]; then
-            # release/** → main (target)
+          elif [[ "$BRANCH" == "dev" ]]; then
+            # dev → homolog (target)
+            echo "target=homolog" >> $GITHUB_OUTPUT
+          elif [[ "$BRANCH" == "homolog" ]]; then
+            # homolog → main (target)
             echo "target=main" >> $GITHUB_OUTPUT
           else
             echo "target=" >> $GITHUB_OUTPUT
@@ -78,10 +78,10 @@ jobs:
           if [[ "$SOURCE" == feature/* ]]; then
             TITLE="Feature: ${SOURCE#feature/}"
             BODY="Automated PR from feature branch to $TARGET."
-          elif [[ "$SOURCE" == "develop" ]]; then
-            TITLE="Promote to Release"
-            BODY="Automated PR from $SOURCE to release (homologacao)."
-          elif [[ "$SOURCE" == release/* ]]; then
+          elif [[ "$SOURCE" == "dev" ]]; then
+            TITLE="Promote to Homolog"
+            BODY="Automated PR from $SOURCE to homolog (staging)."
+          elif [[ "$SOURCE" == "homolog" ]]; then
             TITLE="Promote to Main"
             BODY="Automated PR from $SOURCE to main (producao)."
           else
@@ -146,5 +146,5 @@ jobs:
 
           if [ "${{ needs.detect-branch.outputs.is_feature }}" == "true" ]; then
             echo "" >> $GITHUB_STEP_SUMMARY
-            echo "🔄 Auto-merge enabled for feature → develop" >> $GITHUB_STEP_SUMMARY
+            echo "🔄 Auto-merge enabled for feature → dev" >> $GITHUB_STEP_SUMMARY
           fi

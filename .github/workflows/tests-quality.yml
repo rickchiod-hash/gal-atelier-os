@@ -1,16 +1,7 @@
-name: Tests & Quality Gates
+name: Tests & Quality Gates (Legacy Manual)
 
 on:
-  push:
-    branches:
-      - develop
-      - release/**
-      - main
-  pull_request:
-    branches:
-      - develop
-      - release/**
-      - main
+  workflow_dispatch:
 
 env:
   JAVA_VERSION: '21'
@@ -307,4 +298,3 @@ jobs:
           echo "| Frontend Unit Tests | ${{ needs.frontend-unit-tests.result == 'success' && '✅' || '❌' }} |" >> $GITHUB_STEP_SUMMARY
           echo "| Code Quality | ${{ needs.code-quality.result == 'success' && '✅' || '❌' }} |" >> $GITHUB_STEP_SUMMARY
           echo "| Code Style | ${{ needs.code-style.result == 'success' && '✅' || '❌' }} |" >> $GITHUB_STEP_SUMMARY
-
