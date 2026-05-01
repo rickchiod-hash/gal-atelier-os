@@ -1,8 +1,12 @@
 # ATHENA PR-FLOW DIAGNÓSTICO
 
+> Status deste documento: **Histórico (snapshot de 2026-04-29)**.
+>
+> O fluxo oficial atual do projeto foi atualizado para `feature/** → dev → homolog → main`.
+
 ## Resumo
 
-Este documento lista o estado atual do repositório, branches, workflows e riscos antes da refatoração de CI/CD.
+Este documento lista o estado atual do repositório, branches, workflows e riscos antes da refatoração de CI/CD. Não usar este arquivo como fonte canônica de branch atual.
 
 ## Branches
 

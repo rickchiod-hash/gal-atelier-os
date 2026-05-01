@@ -1,17 +1,6 @@
-name: CI
+name: CI (Legacy Manual)
 
 on:
-  push:
-    branches:
-      - feature/**
-      - develop
-      - release/**
-      - main
-  pull_request:
-    branches:
-      - develop
-      - release/**
-      - main
   workflow_dispatch:
 
 env:

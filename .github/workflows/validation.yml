@@ -32,7 +32,7 @@ jobs:
   health-check-release:
     name: Health • RELEASE Environment
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/release'
+    if: startsWith(github.ref, 'refs/heads/release/')
     continue-on-error: true
 
     steps:
@@ -106,7 +106,7 @@ jobs:
             sleep 2
           done
           echo "❌ Backend failed to start"
-          cat backend/log
+          cat backend/backend.log
           exit 1
 
       - name: 🧪 Smoke Test - Health
