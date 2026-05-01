@@ -97,7 +97,7 @@ jobs:
         run: |
           echo "[lint] pwd=$(pwd)"
           echo "[lint] node=$(node -v) npm=$(npm -v)"
-          echo "[lint] script=$(node -p 'require(\"./package.json\").scripts.lint')"
+          echo "[lint] script=$(node -e 'console.log(require(\"./package.json\").scripts.lint)')"
           npm run lint
 
       - name: 🏗️ Build Frontend
