@@ -9,6 +9,10 @@ on:
     branches:
       - dev
 
+concurrency:
+  group: ci-dev-${{ github.ref }}
+  cancel-in-progress: true
+
 env:
   REGISTRY: ghcr.io
   JAVA_VERSION: '21'

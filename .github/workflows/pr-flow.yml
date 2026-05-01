@@ -1,12 +1,7 @@
 name: PR Flow
 
 on:
-  push:
-    branches:
-      - feature/**
-      - dev
-      - homolog
-      - main
+  workflow_dispatch:
 
 permissions:
   contents: write
