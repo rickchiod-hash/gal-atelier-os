@@ -249,3 +249,5 @@ notepad SESSION-3-BACKLOG.md
 | AP-10 | Corrigir falha Slack no CI (skip quando webhook ausente) + harden logs lint frontend | US-41 | ✅ Done | 0.5h |
 
 | AP-11 | Consolidar todas correções em PR novo do Apollo (devido limitação de update em PR externo) | US-41 | ✅ Done | 0.5h |
+
+| AP-12 | Remover Slack do CI Dev e corrigir docker legacy manual com inputs (`push_images`, `run_compose_validation`) | US-41 | ✅ Done | 0.75h |
