@@ -1,9 +1,9 @@
 # SCRUM BOARD — Gal Atelier OS
 
-**Framework**: Scrum  
-**Sprint Length**: 2 weeks  
-**Sprints**: 4 Sprints (8 weeks total)  
-**Data Atual**: 2026-04-28  
+**Framework**: Scrum
+**Sprint Length**: 2 weeks
+**Sprints**: 4 Sprints (8 weeks total)
+**Data Atual**: 2026-04-28
 **Sprint Atual**: Sprint 1 (2026-04-28 a 2026-05-12)
 
 ---
@@ -257,6 +257,6 @@ aab7323 docs: update backlogs with Scrum structure and Session 3 progress
 
 ---
 
-**Última Atualização**: 2026-04-28 01:15 UTC  
-**Atualizado por**: Sessão 3 (Tests/Docs/CI)  
+**Última Atualização**: 2026-04-28 01:15 UTC
+**Atualizado por**: Sessão 3 (Tests/Docs/CI)
 **Próxima Atualização**: Após cada tarefa completada
