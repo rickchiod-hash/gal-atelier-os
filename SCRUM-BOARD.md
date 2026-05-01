@@ -241,3 +241,5 @@ notepad SESSION-3-BACKLOG.md
 | AP-06 | Corrigir gatilhos de branch (`dev/homolog/main`) em pipelines ativos e PR flow | US-41 | ✅ Done | 1h |
 
 | AP-07 | Reduzir para 1 workflow automático por push (desativar PR Flow automático + concurrency) | US-41 | ✅ Done | 0.5h |
+
+| AP-08 | Unificar PRs #44/#45/#46 em branch única de integração com estratégia de conflitos | US-41 | ✅ Done | 1h |
