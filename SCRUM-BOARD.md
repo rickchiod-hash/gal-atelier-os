@@ -261,3 +261,5 @@ notepad SESSION-3-BACKLOG.md
 | AP-16 | Corrigir lint CI: diagnostico node command + suporte a `.eslintrc` com `ESLINT_USE_FLAT_CONFIG=false` | US-41 | ✅ Done | 0.5h |
 
 | AP-17 | Criar `frontend/eslint.config.mjs` para compatibilidade com ESLint v9+ e estabilizar lint no CI | US-41 | ✅ Done | 0.5h |
+
+| AP-18 | Corrigir quebra de `npm ci` na PR #49 revertendo `eslint` para versão compatível com lockfile atual (10.2.1) | US-41 | ✅ Done | 0.5h |
