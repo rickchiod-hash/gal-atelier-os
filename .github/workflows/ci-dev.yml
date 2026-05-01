@@ -3,11 +3,11 @@ name: CI - DEVELOP Environment
 on:
   push:
     branches:
-      - dev
+      - develop
       - feature/**
   pull_request:
     branches:
-      - dev
+      - develop
 
 concurrency:
   group: ci-dev-${{ github.ref }}

@@ -3,10 +3,10 @@ name: CI/CD - RELEASE Environment
 on:
   push:
     branches:
-      - homolog
+      - release/**
   pull_request:
     branches:
-      - homolog
+      - release/**
 
 env:
   REGISTRY: ghcr.io
