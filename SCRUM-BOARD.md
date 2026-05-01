@@ -219,3 +219,51 @@ notepad SESSION-3-BACKLOG.md
 
 **Última Atualização**: 2026-04-28 17:30 UTC  
 **Atualizado por**: Sessão 3 (Tests/Docs/CI)
+
+---
+
+## ÉPICO 7: GOVERNANÇA MULTIAGENTE, DOCS E BRANCH FLOW (Apollo)
+| ID | User Story | Points | Sprint | Status |
+|----|------------|--------|--------|--------|
+| US-40 | Como PO, quero unificar documentação ativa para evitar conflito entre agentes | 5 | Sprint 1 | ✅ Done |
+| US-41 | Como time, quero normalizar fluxo de branches em `main/develop/release` | 3 | Sprint 1 | ✅ Done |
+| US-42 | Como time, quero mapear conflitos Venus/Hermes/Athena/Apollo antes de mudanças | 3 | Sprint 1 | ✅ Done |
+
+### Tarefas Apollo (primeira missão)
+| Task ID | Task | US Relacionado | Status | Hours Spent |
+|---------|------|----------------|--------|-------------|
+| AP-01 | Ler todos os `.md` e diagnosticar conteúdo ultrapassado/conflitante | US-40 | ✅ Done | 1.5h |
+| AP-02 | Criar roadmap de limpeza + governança documental | US-40 | ✅ Done | 1h |
+| AP-03 | Corrigir runbook Athena para alinhar `main` e fluxo oficial | US-41 | ✅ Done | 0.5h |
+| AP-04 | Definir matriz de conflitos entre Venus/Hermes/Athena/Apollo | US-42 | ✅ Done | 0.5h |
+
+| AP-05 | Limpar Actions duplicadas e manter workflows legados apenas manual (`workflow_dispatch`) | US-41 | ✅ Done | 1.5h |
+| AP-06 | Corrigir gatilhos de branch (`develop/release/main`) em pipelines ativos e PR flow | US-41 | ✅ Done | 1h |
+
+| AP-07 | Reduzir para 1 workflow automático por push (desativar PR Flow automático + concurrency) | US-41 | ✅ Done | 0.5h |
+
+| AP-08 | Unificar PRs #44/#45/#46 em branch única de integração com estratégia de conflitos | US-41 | ✅ Done | 1h |
+
+| AP-09 | Corrigir erro `next lint .` no CI e adicionar logs de diagnóstico do step de lint | US-41 | ✅ Done | 0.5h |
+
+| AP-10 | Corrigir falha Slack no CI (skip quando webhook ausente) + harden logs lint frontend | US-41 | ✅ Done | 0.5h |
+
+| AP-11 | Consolidar todas correções em PR novo do Apollo (devido limitação de update em PR externo) | US-41 | ✅ Done | 0.5h |
+
+| AP-12 | Remover Slack do CI Dev e corrigir docker legacy manual com inputs (`push_images`, `run_compose_validation`) | US-41 | ✅ Done | 0.75h |
+
+| AP-13 | Etapa FEATURE: hard-disable de jobs legados fora de `workflow_dispatch` para reduzir avalanche de Actions | US-41 | ✅ Done | 1h |
+
+| AP-14 | Revisão final: corrigir lint frontend (eslint CLI), type error CatalogSection e ktlint wildcard import no backend | US-41 | ✅ Done | 1h |
+
+| AP-15 | Revisão de compatibilidade ESLint/Next (fixar eslint em ^9 para evitar incompatibilidades de lint/build) | US-41 | ✅ Done | 0.5h |
+
+| AP-16 | Corrigir lint CI: diagnostico node command + suporte a `.eslintrc` com `ESLINT_USE_FLAT_CONFIG=false` | US-41 | ✅ Done | 0.5h |
+
+| AP-17 | Criar `frontend/eslint.config.mjs` para compatibilidade com ESLint v9+ e estabilizar lint no CI | US-41 | ✅ Done | 0.5h |
+
+| AP-18 | Corrigir quebra de `npm ci` na PR #49 revertendo `eslint` para versão compatível com lockfile atual (10.2.1) | US-41 | ✅ Done | 0.5h |
+
+| AP-19 | Endereçar review do PR #49: remover chave `if` duplicada no `docker-build.yml` summary job | US-41 | ✅ Done | 0.25h |
+
+| AP-20 | Resolver erro de lint CI: voltar para `next lint` (sem ponto) e remover comando `node -e` frágil no diagnóstico | US-41 | ✅ Done | 0.5h |
