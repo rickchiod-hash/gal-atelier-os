@@ -1,12 +1,7 @@
 name: PR Flow
 
 on:
-  push:
-    branches:
-      - feature/**
-      - develop
-      - release/**
-      - main
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -14,6 +9,7 @@ permissions:
 
 jobs:
   detect-branch:
+    if: github.event_name == 'workflow_dispatch'
     name: Detect
     runs-on: ubuntu-latest
     outputs:
@@ -46,7 +42,7 @@ jobs:
     name: Create PR
     needs: detect-branch
     runs-on: ubuntu-latest
-    if: needs.detect-branch.outputs.target != ''
+    if: github.event_name == 'workflow_dispatch' && needs.detect-branch.outputs.target != ''
     steps:
       - name: Checkout
         uses: actions/checkout@v6
@@ -80,7 +76,7 @@ jobs:
             BODY="Automated PR from feature branch to $TARGET."
           elif [[ "$SOURCE" == "develop" ]]; then
             TITLE="Promote to Release"
-            BODY="Automated PR from $SOURCE to release (homologacao)."
+            BODY="Automated PR from $SOURCE to release (staging)."
           elif [[ "$SOURCE" == release/* ]]; then
             TITLE="Promote to Main"
             BODY="Automated PR from $SOURCE to main (producao)."
@@ -111,6 +107,7 @@ jobs:
     needs: [detect-branch, create-pr]
     runs-on: ubuntu-latest
     if: |
+      github.event_name == 'workflow_dispatch' &&
       needs.detect-branch.outputs.is_feature == 'true' &&
       needs.create-pr.outputs.pr_number != ''
     steps:
@@ -131,7 +128,7 @@ jobs:
   summary:
     name: Summary
     needs: [detect-branch, create-pr]
-    if: always()
+    if: github.event_name == 'workflow_dispatch' && always()
     runs-on: ubuntu-latest
 
     steps:
