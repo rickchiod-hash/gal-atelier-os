@@ -3,20 +3,23 @@ import { render, screen } from '@testing-library/react'
 import { Header } from './Header'
 
 describe('Header', () => {
-  it('renders navigation', () => {
-    render(<Header />)
-    expect(screen.getByRole('navigation')).toBeInTheDocument()
+  it('renders header element', () => {
+    render(<Header whatsappReceiver="5511999999999" />)
+    expect(document.querySelector('header')).toBeInTheDocument()
   })
 
   it('renders logo text', () => {
-    render(<Header />)
+    render(<Header whatsappReceiver="5511999999999" />)
     expect(screen.getByText(/Gal Atelier/i)).toBeInTheDocument()
   })
 
-  it('renders navigation links', () => {
-    render(<Header />)
-    expect(screen.getByRole('link', { name: /início/i })).toBeInTheDocument()
-    expect(screen.getByRole('link', { name: /catálogo/i })).toBeInTheDocument()
-    expect(screen.getByRole('link', { name: /contato/i })).toBeInTheDocument()
+  it('renders quote button', () => {
+    render(<Header whatsappReceiver="5511999999999" />)
+    expect(screen.getByRole('link', { name: /orçamento/i })).toBeInTheDocument()
+  })
+
+  it('renders theme toggle button', () => {
+    render(<Header whatsappReceiver="5511999999999" />)
+    expect(screen.getByRole('button', { name: /modo escuro/i })).toBeInTheDocument()
   })
 })

@@ -12,6 +12,7 @@ env:
   REGISTRY: ghcr.io
   JAVA_VERSION: '21'
   NODE_VERSION: '20'
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
 
 jobs:
   lint-and-test-backend:
@@ -29,13 +30,31 @@ jobs:
           --health-cmd pg_isready
           --health-interval 10s
           --health-timeout 5s
-          --health-retries 5
+          --health-retries 10
         ports:
           - 5432:5432
 
     steps:
       - name: 📥 Checkout code
         uses: actions/checkout@v6
+
+      - name: ⏳ Wait for PostgreSQL
+        run: |
+          echo "⏳ Waiting for PostgreSQL to be ready..."
+          for i in {1..30}; do
+            if pg_isready -h localhost -p 5432 -U galatelier; then
+              echo "✅ PostgreSQL is ready!"
+              break
+            fi
+            echo "⏳ Attempt $i/30: PostgreSQL not ready yet..."
+            sleep 2
+          done
+          # Verify connection
+          PGPASSWORD=galatelier123 psql -h localhost -p 5432 -U galatelier -d galatelier -c "SELECT version();" || {
+            echo "❌ Failed to connect to PostgreSQL"
+            exit 1
+          }
+          echo "✅ PostgreSQL connection verified"
 
       - name: ☕ Setup Java
         uses: actions/setup-java@v5
@@ -47,9 +66,9 @@ jobs:
       - name: 🔍 Code Quality Checks
         working-directory: backend
         run: |
-          echo "🔍 Running FindBugs..."
+          echo "🔍 Running SpotBugs..."
           mvn spotbugs:check -q
-          echo "✅ FindBugs passed"
+          echo "✅ SpotBugs passed"
 
       - name: ✅ Run Tests with Coverage
         working-directory: backend
@@ -62,9 +81,15 @@ jobs:
           mvn test -q
           echo "📊 Generating coverage report..."
           mvn jacoco:report -q
+          # Verify report exists
+          if [ -f "target/site/jacoco/jacoco.xml" ]; then
+            echo "✅ Coverage report generated"
+          else
+            echo "⚠️ Coverage report not found"
+          fi
 
       - name: 📈 Upload Coverage to Codecov
-        uses: codecov/codecov-action@v3
+        uses: codecov/codecov-action@v6
         with:
           files: ./backend/target/site/jacoco/jacoco.xml
           flags: backend
@@ -98,18 +123,33 @@ jobs:
 
       - name: 📥 Install Dependencies
         working-directory: frontend
-        run: npm ci
+        run: |
+          echo "📥 Installing frontend dependencies..."
+          npm ci
+          echo "✅ Dependencies installed"
 
       - name: 🔍 ESLint Checks
         working-directory: frontend
-        run: npm run lint -- --max-warnings 0
+        run: |
+          echo "🔍 Running ESLint..."
+          npm run lint -- --max-warnings 0
+          echo "✅ Lint passed"
 
       - name: 🏗️ Build & Verify
         working-directory: frontend
         env:
           NEXT_PUBLIC_API_URL: 'http://backend:8080'
           NEXT_PUBLIC_WHATSAPP_RECEIVER: '5511914136961'
-        run: npm run build
+        run: |
+          echo "🏗️ Building frontend for HOMOLOG..."
+          npm run build
+          # Verify build output
+          if [ -d ".next" ]; then
+            echo "✅ Build successful - .next directory exists"
+          else
+            echo "❌ Build failed - .next directory not found"
+            exit 1
+          fi
 
   security-scan:
     name: Security • Dependency Scanning

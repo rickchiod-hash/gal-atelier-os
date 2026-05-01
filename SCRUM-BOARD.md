@@ -217,5 +217,6 @@ notepad SESSION-3-BACKLOG.md
 
 ---
 
-**Última Atualização**: 2026-04-28 17:30 UTC  
-**Atualizado por**: Sessão 3 (Tests/Docs/CI)
+**Última Atualização**: 2026-05-01 12:30 UTC  
+**Atualizado por**: Sessão 3 (Tests/Docs/CI)  
+**PR Limpo**: https://github.com/rickchiod-hash/gal-atelier-os/pull/new/feature/tests-ci-v2 (branch sem tokens no histórico)
