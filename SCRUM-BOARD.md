@@ -255,3 +255,5 @@ notepad SESSION-3-BACKLOG.md
 | AP-13 | Etapa FEATURE: hard-disable de jobs legados fora de `workflow_dispatch` para reduzir avalanche de Actions | US-41 | ✅ Done | 1h |
 
 | AP-14 | Revisão final: corrigir lint frontend (eslint CLI), type error CatalogSection e ktlint wildcard import no backend | US-41 | ✅ Done | 1h |
+
+| AP-15 | Revisão de compatibilidade ESLint/Next (fixar eslint em ^9 para evitar incompatibilidades de lint/build) | US-41 | ✅ Done | 0.5h |
