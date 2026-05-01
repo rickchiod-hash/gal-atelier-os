@@ -1,601 +1,277 @@
-# 🎀 Gal Atelier OS — Editorial Atelier V6
+# Gal Atelier OS — Sistema Operacional para Wigmakers
 
-> **Sistema de operação premium para wigmakers/perucas**: Briefing artesanal, orçamentos, Pix e integração WhatsApp em uma experiência de loja de luxo.
+Sistema operacional para wigmakers/perucas com estética **Editorial Atelier** (V6) — loja de luxo + atelier artesanal.
 
-[![CI - DEV](https://img.shields.io/badge/CI-DEV-blue?style=flat-square)](https://github.com/seu-user/gal-atelier-os/actions/workflows/ci-dev.yml)
-[![CI - HOMOLOG](https://img.shields.io/badge/CI-HOMOLOG-yellow?style=flat-square)](https://github.com/seu-user/gal-atelier-os/actions/workflows/ci-homolog.yml)
-[![CI - PRODUCTION](https://img.shields.io/badge/CI-PRODUCTION-green?style=flat-square)](https://github.com/seu-user/gal-atelier-os/actions/workflows/ci-prod.yml)
-[![Coverage](https://img.shields.io/badge/Coverage-70%25-brightgreen?style=flat-square)](https://codecov.io)
-[![SonarQube](https://img.shields.io/badge/Quality-SonarQube-blue?style=flat-square)](https://sonarcloud.io)
+## Stack
 
----
-
-## 📋 Visão Geral
-
-**Gal Atelier OS** é um sistema completo de **operação e vendas** para negócios de alta gama. Projetado como **Editorial Atelier** com:
-
-- ✨ **UX Premium**: Whitespace 40%, tipografia editorial, micro-accentos discretos
-- 🏗️ **Arquitetura Hexagonal**: Clean Code, testável, maintível
-- ⚙️ **Automação Completa**: CI/CD com GitHub Actions, testes automáticos, deploy contínuo
-- 🔒 **Enterprise Ready**: Security scanning, code quality gates, observabilidade
+- **Backend**: Kotlin 2.1.20 + Spring Boot 3.4.5 + Maven
+- **Frontend**: Next.js + TypeScript (Design System V6)
+- **Database**: PostgreSQL 16 + Flyway Migrations
+- **Architecture**: Hexagonal (Domain → Application → Adapter)
+- **Infrastructure**: Docker Compose
+- **Observability**: Logs com traceId, JaCoCo coverage
+- **AI Agents**: OpenCode para planejamento e execução
 
 ---
 
-## 🛠️ Stack Completo
+## Pré-requisitos
 
-### Backend
-
-| Tecnologia | Versão | Propósito |
-|-----------|--------|----------|
-| **Java** | 21+ | Runtime |
-| **Kotlin** | 2.1.x | Linguagem principal |
-| **Spring Boot** | 3.4.5 | Framework web |
-| **PostgreSQL** | 16 | Database |
-| **Flyway** | 11.5 | Database migrations |
-| **JUnit5 + MockK** | Latest | Testing framework |
-
-### Frontend
-
-| Tecnologia | Versão | Propósito |
-|-----------|--------|----------|
-| **Node.js** | 20+ | Runtime |
-| **TypeScript** | 5.3+ | Linguagem principal |
-| **Next.js** | 14+ | Framework React |
-| **Jest** | 29+ | Testing framework |
-| **ESLint + Prettier** | Latest | Code quality |
-
-### DevOps & Quality
-
-| Tool | Propósito | Status |
-|------|----------|--------|
-| **GitHub Actions** | CI/CD automation | ✅ 7 workflows (ci.yml, docker-build.yml, security.yml, pr-flow.yml, manual-promote.yml) |
-| **Docker** | Containerization | ✅ Backend + Frontend |
-| **JaCoCo** | Code coverage | ✅ 50-70% enforced |
-| **SpotBugs + PMD** | Bug detection | ✅ Enabled |
-| **SonarQube** | Code analysis | ✅ Optional |
-| **Gitleaks** | Secret scanning | ✅ Enabled |
-| **OWASP Dep Check** | Dependency audit | ✅ Enabled |
-| **Trivy** | Container scan | ✅ Enabled |
-| **Dependabot** | Dependencies update | ✅ Enabled (weekly) |
+- Java 21
+- Node.js 22+
+- Docker Desktop
+- Maven 3.9+
+- Git
 
 ---
 
-## 🚀 Início Rápido
-
-### 1. **Clone & Setup**
+## Como Rodar (Docker Compose - Recomendado)
 
 ```bash
-git clone https://github.com/seu-user/gal-atelier-os.git
+# Clone o repositório
+git clone <repo-url>
 cd gal-atelier-os
-```
 
-### 2. **Backend (Kotlin + Spring Boot)**
+# Suba todos os serviços
+docker compose -p gal-atelier-os up -d
 
-```bash
-cd backend
-
-# Install & verify
-mvn clean verify
-
-# Run locally
-mvn spring-boot:run
-
-# Tests with coverage
-mvn clean test jacoco:report
-open target/site/jacoco/index.html
-
-# Full quality checks
-mvn clean verify  # lint + test + coverage + SpotBugs + PMD
-```
-
-### 3. **Frontend (TypeScript + Next.js)**
-
-```bash
-cd frontend
-
-# Install dependencies
-npm ci
-
-# Development server
-npm run dev
-# → http://localhost:3000
-
-# Tests with coverage
-npm run test:ci
-open coverage/index.html
-
-# Build for production
-npm run build
-
-# Full quality checks
-npm run lint && npm run test:ci && npm run format:check
-```
-
-### 4. **Docker Compose (Recomendado)**
-
-```bash
-# From project root
-docker-compose up -d
-
-# Check status
-docker-compose ps
+# Verifique os containers
+docker compose -p gal-atelier-os ps
 
 # Logs
-docker-compose logs -f backend frontend
-
-# Stop
-docker-compose down
+docker compose -p gal-atelier-os logs -f
 ```
+
+### URLs (Docker)
+
+| Serviço | URL |
+|---------|-----|
+| Frontend | http://localhost:3000 |
+| Backend API | http://localhost:8080 |
+| Health Check | http://localhost:8080/api/health |
+| PostgreSQL | localhost:5432 |
 
 ---
 
-## 📍 URLs & Endpoints
+## Como Rodar (Local - Desenvolvimento)
 
-### Development
-
-```
-Frontend:     http://localhost:3000
-Backend API:  http://localhost:8080
-API Health:   http://localhost:8080/api/health
-API Docs:     http://localhost:8080/swagger-ui.html
-```
-
-### Environments
-
-```
-DEV       → Continuous development (branch: dev)
-HOMOLOG   → Staging/QA (branch: homolog)
-PRODUCTION→ Live (branch: main)
-```
-
----
-
-## 🧪 Testes & Qualidade
-
-### Rodar Localmente (Antes de Commitar)
+### Backend (Spring Boot)
 
 ```bash
-# Backend
 cd backend
-mvn clean verify  # Lint + Tests + Coverage + Quality
 
-# Frontend
+# Testes
+mvn -B clean verify
+
+# Rodar aplicação (dev profile)
+mvn spring-boot:run -Dspring-boot.run.profiles=local
+```
+
+### Frontend (Next.js)
+
+```bash
 cd frontend
-npm run test:ci && npm run lint
 
-# Ambos
-cd ..
-mvn -f backend clean verify
-npm --prefix frontend run test:ci && npm --prefix frontend run lint
-```
+# Instalar dependências
+npm install
 
-### Quality Gates por Ambiente
-
-| Ambiente | Build | Tests | Lint | Coverage | Security |
-|----------|-------|-------|------|----------|----------|
-| **DEV** | ✅ | ✅ | ✅ | - | - |
-| **HOMOLOG** | ✅ | ✅ | ✅ | **≥ 50%** | ✅ |
-| **PRODUCTION** | ✅ | ✅ | ✅ | **≥ 70%** | ✅✅ |
-
-### Tools
-
-**Backend:**
-- ✅ JaCoCo — Code coverage reporting
-- ✅ SpotBugs — Automatic bug detection
-- ✅ PMD — Code smell detection
-- ✅ Spotless — Code formatting
-
-**Frontend:**
-- ✅ Jest — Unit testing
-- ✅ Testing Library — Component testing
-- ✅ ESLint — Linting
-- ✅ Prettier — Formatting
-
-**Ambos:**
-- ✅ SonarQube — Comprehensive analysis (com token)
-- ✅ Codecov — Coverage tracking
-- ✅ Gitleaks — Secret scanning
-- ✅ OWASP Dependency Check — Vulnerability audit
-- ✅ Trivy — Container scanning
-
-**Coverage Reports:**
-- Backend: `backend/target/site/jacoco/index.html`
-- Frontend: `frontend/coverage/index.html`
-
----
-
-## 🔄 CI/CD & Automação
-
-### GitHub Actions Workflows
-
-```
-📋 .github/workflows/
-├── ci-dev.yml              ← Development (lint + test + build)
-├── ci-homolog.yml          ← Staging (+ coverage 50% + deploy)
-├── ci-prod.yml             ← Production (+ coverage 70% + release)
-├── tests-quality.yml       ← Full test suite + SonarQube
-├── docker.yml              ← Docker build & push
-└── validation.yml          ← Health checks (6h schedule)
-```
-
-### Fluxo Automático
-
-```
-Feature Branch
-  ↓ (push)
-ci-dev.yml runs
-  ├─ Lint (ESLint, Spotless, Prettier)
-  ├─ Unit Tests + Coverage
-  ├─ Docker Build
-  └─ Test Results
-  ↓ (PR + merge)
-dev merged
-  ↓
-Create release
-  ↓ (merge homolog)
-ci-homolog.yml runs
-  ├─ All dev checks
-  ├─ Coverage >= 50% enforced
-  ├─ Security scan
-  ├─ Deploy to HOMOLOG
-  └─ Slack notification
-  ↓
-Promote to production
-  ↓ (merge main + tag)
-ci-prod.yml runs
-  ├─ All homolog checks
-  ├─ Coverage >= 70% enforced
-  ├─ SpotBugs + PMD + SonarQube
-  ├─ OWASP + Trivy scan
-  ├─ Create GitHub Release
-  ├─ Deploy to PRODUCTION
-  └─ Slack + Email notification
-```
-
-**Monitor da Esteira:**
-```bash
-# List runs
-gh run list
-
-# Watch specific run
-gh run watch <RUN_ID>
-
-# View logs
-gh run view <RUN_ID> --log
-```
-
----
-
-## 📂 Estrutura do Projeto
-
-```
-gal-atelier-os/
-├── backend/                          # Spring Boot (Kotlin)
-│  ├── src/main/kotlin/com/galatelier/
-│  │  ├── controller/                # REST controllers
-│  │  ├── service/                   # Business logic (use cases)
-│  │  ├── repository/                # Data access (adapters)
-│  │  ├── domain/                    # Business entities
-│  │  └── config/                    # Configuration
-│  ├── src/test/kotlin/              # Unit & integration tests
-│  └── pom.xml                       # Maven config (JaCoCo, SpotBugs, PMD)
-│
-├── frontend/                         # Next.js (TypeScript)
-│  ├── app/                          # Page routes
-│  ├── components/                   # React components
-│  ├── __tests__/                    # Jest unit tests
-│  ├── jest.config.js                # Jest configuration
-│  ├── jest.setup.js                 # Jest setup
-│  ├── .prettierrc                   # Prettier config
-│  └── package.json                  # npm dependencies + scripts
-│
-├── .github/
-│  ├── workflows/                    # GitHub Actions (6 workflows)
-│  ├── WORKFLOWS.md                  # Workflow documentation
-│  └── SECRETS.md                    # Secret configuration guide
-│
-├── docs/                            # Documentation
-│  ├── ARCHITECTURE.md               # System design
-│  ├── DESIGN-SYSTEM.md              # UI/UX principles
-│  ├── SUPER-ROADMAP-V6.md           # Product roadmap
-│  └── API-CONTRACT.md               # API specification
-│
-├── docker-compose.yml               # Local development stack
-├── QUALITY-GATES.md                 # Testing & coverage guide
-├── TESTES-QUALIDADE-ESTEIRA.md      # Test execution guide
-├── BRANCH-STRATEGY.md               # Git branching strategy
-├── CI-CD-QUICKSTART.md              # Quick start guide
-└── README.md                        # This file
-```
-
----
-
-## 📚 Documentação
-
-| Documento | Descrição |
-|-----------|-----------|
-| **🚀-CI-CD-START-HERE.md** | Quick visual guide (Portuguese) |
-| **CI-CD-QUICKSTART.md** | 5-minute setup |
-| **QUALITY-GATES.md** | Complete testing & coverage guide |
-| **TESTES-QUALIDADE-ESTEIRA.md** | Test execution & tools |
-| **BRANCH-STRATEGY.md** | Git Flow & branching |
-| **.github/WORKFLOWS.md** | GitHub Actions details |
-| **.github/SECRETS.md** | Secret configuration |
-| **docs/ARCHITECTURE.md** | System architecture (hexagonal) |
-| **docs/DESIGN-SYSTEM.md** | V6 Editorial Atelier design |
-| **docs/API-CONTRACT.md** | API specification |
-
----
-
-## 🔐 Security & Best Practices
-
-✅ **Secrets Management**
-- Never commit `.env`, `.env.local`, or `.env.production`
-- Use GitHub Secrets for all sensitive data
-- Gitleaks scans every push to main
-
-✅ **Code Quality**
-- SpotBugs detects bugs automatically
-- PMD checks for code smells
-- ESLint enforces code style
-- Prettier auto-formats code
-
-✅ **Testing**
-- JUnit5 + MockK for backend
-- Jest + Testing Library for frontend
-- 50% minimum coverage (homolog)
-- 70% minimum coverage (production)
-
-✅ **Dependency Security**
-- OWASP Dependency Check on every build
-- npm audit for frontend packages
-- Maven dependency convergence rules
-- Trivy scans container images
-
----
-
-## 🎯 Ambientes & Deploy
-
-### Development (`dev` branch)
-
-```bash
-git checkout dev
-git checkout -b feature/sua-feature
-# ... code ...
-git push origin feature/sua-feature
-# → ci-dev.yml roda automaticamente
-```
-
-### Staging (`homolog` branch)
-
-```bash
-git checkout homolog
-git merge dev
-git push origin homolog
-# → ci-homolog.yml roda + deploy automático
-```
-
-### Production (`main` branch)
-
-```bash
-git checkout main
-git merge homolog
-git tag v1.0.0
-git push origin main --tags
-# → ci-prod.yml roda + GitHub Release + deploy
-```
-
----
-
-## 📊 Logs & Observabilidade
-
-### Logs Locais
-
-```
-K:\dev\logs\                    # Application logs
-K:\dev\logs\archive\            # Archived logs
-backend/target/logs/            # Backend logs
-```
-
-### Observabilidade
-
-Backend expõe:
-- `GET /api/health` — Health check
-- `GET /actuator/metrics` — Metrics
-- Structured logging com traceId
-- Request correlation
-
-Frontend:
-- Console logging (dev)
-- Error tracking (optional)
-- Performance monitoring (optional)
-
----
-
-## 🐛 Troubleshooting
-
-### "Tests failed locally"
-
-```bash
-# Backend
-cd backend
-mvn clean test -DskipITs
-
-# Frontend
-cd frontend
-npm run test -- --watchAll=false
-
-# Check Java/Node versions
-java -version
-node -version
-```
-
-### "Build fails: Port already in use"
-
-```bash
-# Kill process on port 8080
-lsof -i :8080 | grep LISTEN | awk '{print $2}' | xargs kill -9
-
-# Or use Docker to avoid port conflicts
-docker-compose up
-```
-
-### "Coverage too low"
-
-```bash
-# View coverage report
-mvn -f backend jacoco:report
-open backend/target/site/jacoco/index.html
-
-npm --prefix frontend run test:ci
-open frontend/coverage/index.html
-```
-
-### "GitHub Actions secret not found"
-
-```bash
-# Verify secrets configured
-gh secret list
-
-# Add missing secret
-gh secret set SECRET_NAME --body "value"
-
-# See: .github/SECRETS.md
-```
-
----
-
-## 🤝 Desenvolvimento Local
-
-### Recomendado: Docker Compose
-
-```bash
-docker-compose up -d
-
-# Verify
-docker-compose ps
-
-# Check logs
-docker-compose logs -f backend
-docker-compose logs -f frontend
-
-# Access
-curl http://localhost:8080/api/health
-open http://localhost:3000
-```
-
-### Alternativa: Local Maven + npm
-
-```bash
-# Terminal 1: Backend
-cd backend
-mvn spring-boot:run
-
-# Terminal 2: Frontend
-cd frontend
+# Rodar em modo desenvolvimento
 npm run dev
 
-# Terminal 3: Database (Docker)
-docker run --name postgres -e POSTGRES_PASSWORD=galatelier123 \
-  -e POSTGRES_DB=galatelier -p 5432:5432 postgres:16-alpine
+# Build de produção
+npm run build
 ```
 
 ---
 
-## 📈 Métricas & Performance
+## Configuração de Ambiente
 
-**Coverage Targets:**
-- Backend: 70% (production enforced)
-- Frontend: 50% (production enforced)
+### Variáveis (Backend)
+Crie `backend/src/main/resources/application-local.yml`:
 
-**Build Time:**
-- DEV: 10-15 minutes
-- HOMOLOG: 15-20 minutes
-- PRODUCTION: 20-30 minutes
+```yaml
+galatelier:
+  whatsappReceiver: "5511999999999"
+  pixKey: "sua-chave-pix"
+  pixMerchantName: "GAL ATELIER"
+  pixMerchantCity: "SAO PAULO"
+  aiProvider: "mock"
+```
 
-**Deploy Time:**
-- Docker pull + build: ~5 min
-- Container start: ~2 min
-- Health checks: ~1 min
+Ou use variáveis de ambiente:
+- `WHATSAPP_RECEIVER`
+- `PIX_KEY`
+- `PIX_MERCHANT_NAME`
+- `PIX_MERCHANT_CITY`
+- `AI_PROVIDER`
 
----
+### Banco de Dados (PostgreSQL)
 
-## 🎓 PRD & Roadmap
-
-- **PRD**: `docs/PRODUCT-PRD-VELOURA-BEAUTY-OS.md`
-- **Roadmap**: `docs/SUPER-ROADMAP-V6.md`
-- **Architecture**: `docs/ARCHITECTURE.md`
-- **Design System**: `docs/DESIGN-SYSTEM.md`
-
----
-
-## 👥 Team & Responsibility
-
-| Role | Responsibility |
-|------|-----------------|
-| **Frontend (Vênus)** | UI/UX, Components, Tests |
-| **Backend (Hermes)** | APIs, Business Logic, DB |
-| **DevOps** | CI/CD, Deployment, Monitoring |
-| **QA** | Testing, Quality Gates |
+O projeto usa **Flyway** para migrations:
+- `backend/src/main/resources/db/migration/V1__initial_schema.sql`
+- `backend/src/main/resources/db/migration/V2__add_campaigns_table.sql`
+- `backend/src/main/resources/db/migration/V3__add_process_photos.sql`
+- `backend/src/main/resources/db/migration/V4__add_whatsapp_templates.sql`
+- `backend/src/main/resources/db/migration/V5__add_customer_name_to_appointments.sql`
 
 ---
 
-## 📝 Commit Convention
+## Arquitetura
 
+O projeto segue **Arquitetura Hexagonal**:
+
+```
+adapter.input.web (Controllers)
+        ↓
+application.port.input (Use Cases)
+        ↓
+application.service (Use Case Implementations)
+        ↓
+domain (Entities, Value Objects, Policies)
+        ↓
+application.port.output (Output Ports)
+        ↓
+adapter.output (Adapters: JPA, Pix, WhatsApp)
+```
+
+### Regras:
+- Domain NÃO importa Spring
+- Controllers apenas traduzem HTTP
+- Use Cases orquestram regras de negócio
+- Policies calculam (ex: QuotePricingPolicy)
+- Adapters integram sistemas externos
+
+---
+
+## Design System V6 — Editorial Atelier
+
+### Filosofia
+- **NÃO é um dashboard SaaS** — É uma experiência de marca premium
+- Whitespace generoso (mínimo 40% vazio)
+- Tipografia: Playfair Display (títulos) + Inter (corpo)
+- Micro-accentos (máximo 2% da página)
+- Anti-dashboard: sem card-mania, sem Kanban colorido
+
+### Cores (Nubank Purple Palette)
+- `--nubank-dark: #1A1A2E` (80% da página)
+- `--nubank-light: #F4F4F8`
+- `--nubank-gray: #8A8A9A`
+- `--nubank-magenta: #820AD1` (accent - máximo 2%)
+
+### Tipografia
+- **H1**: Playfair Display 3.5rem, line-height 1.15
+- **H2**: Playfair Display 2.5rem
+- **Body**: Inter 1rem, line-height 1.7
+
+---
+
+## Testes
+
+### Backend
 ```bash
-# Feature
-git commit -m "feat(frontend): implement hero layout (US-11)"
+cd backend
+mvn test                    # Todos os testes
+mvn test -Dtest="com.galatelier.domain.model.*Test"  # Testes de domínio
+mvn test -Dtest="com.galatelier.application.service.*Test"  # Use cases
+```
 
-# Bug fix
-git commit -m "fix(backend): correct payment calculation"
-
-# Refactor
-git commit -m "refactor(backend): extract service"
-
-# Tests
-git commit -m "test(frontend): add Header tests"
-
-# Docs
-git commit -m "docs: update README"
-
-# Chore
-git commit -m "chore: bump dependencies"
+### Cobertura (JaCoCo)
+Após `mvn test`, abra:
+```
+backend/target/site/jacoco/index.html
 ```
 
 ---
 
-## 📞 Support & Resources
+## API Endpoints (Principais)
 
-- 📖 Full docs: See `docs/` directory
-- 🚀 Quick start: `CI-CD-QUICKSTART.md`
-- 🎯 Quality gates: `QUALITY-GATES.md`
-- 🔑 Secrets setup: `.github/SECRETS.md`
-- 🌳 Git strategy: `BRANCH-STRATEGY.md`
+| Método | Endpoint | Descrição |
+|--------|----------|-----------|
+| GET | `/api/health` | Health check |
+| POST | `/api/quotes` | Criar orçamento |
+| GET | `/api/quotes` | Listar orçamentos |
+| GET | `/api/quotes/metrics` | Métricas |
+| GET | `/api/services` | Catálogo (10 tipos) |
+| GET/POST/PATCH | `/api/customers` | Clientes |
+| GET/POST/PATCH | `/api/orders` | Pedidos |
+| GET/POST/PATCH | `/api/appointments` | Agenda |
+| GET/POST/PATCH | `/api/campaign` | Campanhas |
+| POST | `/api/webhook/pix` | Pix webhook |
 
 ---
 
-## 📋 Status
+## Scripts Disponíveis
 
+### Raiz do projeto:
+- `run-all-v5.ps1` — Orquestração completa (PowerShell)
+- `scripts/*.bat` — Scripts individuais (Windows)
+
+### Exemplos:
+```bash
+scripts/coverage.bat     # Gera relatório JaCoCo
+scripts/docker-logs.bat   # Logs do Docker
+scripts/stop.bat         # Para todos os serviços
 ```
-✅ Backend:         Production Ready (Kotlin + Spring Boot 3.4)
-✅ Frontend:        Production Ready (Next.js 14 + TypeScript)
-✅ CI/CD:           6 GitHub Actions workflows configured
-✅ Testing:         JaCoCo + Jest + SpotBugs + PMD
-✅ Security:        Gitleaks + OWASP + Trivy enabled
-✅ Documentation:   Comprehensive guides
-✅ Docker:          Docker Compose ready
-✅ Design System:   V6 Editorial Atelier applied
-🚀 PRODUCTION READY
-```
 
 ---
 
-## 📜 Licença
+## CI/CD
 
-Projeto privado © 2026 Gal Atelier
+GitHub Actions configurado (`.github/workflows/ci-cd.yml`):
+- **backend-test**: Java 21, `mvn test`
+- **frontend-build**: Node 22, `npm install && npm run build`
 
 ---
 
-**Última Atualização**: 2026-04-28
-**Versão**: v6.0.0-editorial-atelier
-**Status**: ✅ Production Ready
+## Documentação Adicional
+
+| Arquivo | Descrição |
+|---------|-----------|
+| `docs/ARCHITECTURE.md` | Arquitetura hexagonal |
+| `docs/ENGINEERING-STANDARDS.md` | Padrões de código |
+| `docs/DESIGN-SYSTEM.md` | Design System V6 completo |
+| `docs/OBSERVABILITY.md` | Logs, health, frontend observability |
+| `docs/PRODUCT-ROADMAP.md` | Roadmap de produto (Fases 1-3) |
+| `docs/SUPER-ROADMAP-V6.md` | V6 checklist completo |
+| `docs/ROADMAP-MELHORIAS-GAL-ATELIER.md` | 22-item melhorias |
+| `BACKLOG.md` | Backlog atualizado com status |
+| `SCRUM-BOARD.md` | Scrum board com User Stories |
+| `SESSION-3-BACKLOG.md` | Minha backlog (Tests/Docs/CI) |
+
+---
+
+## Contribuição
+
+1. Crie uma branch: `git checkout -b feature/sua-feature`
+2. Siga os padrões:
+   - Backend: `feat(backend)`, `fix(backend)`, `test(backend)`
+   - Frontend: `feat(frontend)`, `fix(frontend)`, `style(frontend)`
+   - Docs: `docs(product)`, `docs(architecture)`
+   - CI: `ci(cd)`
+3. Commits devem ser atômicos e descritivos
+4. Execute `mvn test` e `npm run build` antes do PR
+5. Abra um Pull Request
+
+---
+
+## Status Atual (2026-04-28)
+
+- ✅ **Fase 1 (MVP)**: Concluída
+- 🔄 **Fase 2 (Operação Real)**: Em progresso
+- ✅ **Fase 3 (V6 Visual Overhaul)**: Concluída (frontend parcial)
+- 🔄 **Sprint 1 (2026-04-28 a 2026-05-12)**: Em andamento
+- ✅ **Domain Tests**: Concluídos (10 arquivos de teste)
+
+---
+
+## Links Úteis
+
+- **Frontend**: http://localhost:3000
+- **Backend API**: http://localhost:8080
+- **Health**: http://localhost:8080/api/health
+- **JaCoCo**: `backend/target/site/jacoco/index.html`
+
+---
+
+## Licença
+
+Proprietária — Gal Atelier OS

@@ -1,0 +1,68 @@
+{
+  "hermes": {
+    "agent": "hermes",
+    "models": [
+      "opencode/big-pickle",
+      "opencode/minimax-m2.5-free",
+      "opencode/hy3-preview-free",
+      "opencode/nemotron-3-super-free",
+      "opencode/ling-2.6-flash",
+      "opencode/gpt-5-nano"
+    ]
+  },
+  "athena": {
+    "agent": "athena",
+    "models": [
+      "opencode/minimax-m2.5-free",
+      "opencode/nemotron-3-super-free",
+      "opencode/big-pickle",
+      "opencode/hy3-preview-free",
+      "opencode/ling-2.6-flash",
+      "opencode/gpt-5-nano"
+    ]
+  },
+  "venus": {
+    "agent": "venus",
+    "models": [
+      "opencode/ling-2.6-flash",
+      "opencode/hy3-preview-free",
+      "opencode/minimax-m2.5-free",
+      "opencode/big-pickle",
+      "opencode/nemotron-3-super-free",
+      "opencode/gpt-5-nano"
+    ]
+  },
+  "actions": {
+    "agent": "athena",
+    "models": [
+      "opencode/minimax-m2.5-free",
+      "opencode/nemotron-3-super-free",
+      "opencode/big-pickle",
+      "opencode/hy3-preview-free",
+      "opencode/ling-2.6-flash",
+      "opencode/gpt-5-nano"
+    ]
+  },
+  "kotlin": {
+    "agent": "kotlin-backend",
+    "models": [
+      "opencode/big-pickle",
+      "opencode/minimax-m2.5-free",
+      "opencode/nemotron-3-super-free",
+      "opencode/hy3-preview-free",
+      "opencode/ling-2.6-flash",
+      "opencode/gpt-5-nano"
+    ]
+  },
+  "frontend": {
+    "agent": "frontend-next",
+    "models": [
+      "opencode/ling-2.6-flash",
+      "opencode/hy3-preview-free",
+      "opencode/minimax-m2.5-free",
+      "opencode/big-pickle",
+      "opencode/nemotron-3-super-free",
+      "opencode/gpt-5-nano"
+    ]
+  }
+}

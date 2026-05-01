@@ -1,0 +1,5 @@
+opencode/hy3-preview-free
+opencode/minimax-m2.5-free
+opencode/nemotron-3-super-free
+opencode/ling-2.6-flash
+opencode/big-pickle
