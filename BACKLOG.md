@@ -1,7 +1,7 @@
 # BACKLOG — Gal Atelier OS
 
-**Data da Revisão**: 2026-04-28  
-**Revisor**: AI Code Reviewer (Sessão 3 - Tests/Docs/CI)  
+**Data da Revisão**: 2026-04-28
+**Revisor**: AI Code Reviewer (Sessão 3 - Tests/Docs/CI)
 **Status Atual**: Fase 2 em progresso, V6 Visual Overhaul ✅ (frontend parcial)
 
 ---
@@ -250,5 +250,5 @@
 
 ---
 
-**Última Atualização**: 2026-04-28 17:00 UTC  
+**Última Atualização**: 2026-04-28 17:00 UTC
 **Próxima Atualização**: Após conclusão de cada tarefa
