@@ -1,17 +1,7 @@
-name: Docker • Build & Push
+name: Docker • Build & Push (Legacy Manual)
 
 on:
-  push:
-    branches:
-      - develop
-      - release/**
-      - main
-    tags:
-      - 'v*'
-  pull_request:
-    branches:
-      - develop
-      - release/**
+  workflow_dispatch:
 
 env:
   REGISTRY: ghcr.io
@@ -145,4 +135,3 @@ jobs:
           echo "## Docker Images Built" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           docker image ls --format "table {{.Repository}}\t{{.Tag}}\t{{.Size}}"
-
