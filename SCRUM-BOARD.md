@@ -259,3 +259,5 @@ notepad SESSION-3-BACKLOG.md
 | AP-15 | Revisão de compatibilidade ESLint/Next (fixar eslint em ^9 para evitar incompatibilidades de lint/build) | US-41 | ✅ Done | 0.5h |
 
 | AP-16 | Corrigir lint CI: diagnostico node command + suporte a `.eslintrc` com `ESLINT_USE_FLAT_CONFIG=false` | US-41 | ✅ Done | 0.5h |
+
+| AP-17 | Criar `frontend/eslint.config.mjs` para compatibilidade com ESLint v9+ e estabilizar lint no CI | US-41 | ✅ Done | 0.5h |
