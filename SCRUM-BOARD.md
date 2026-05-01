@@ -247,3 +247,5 @@ notepad SESSION-3-BACKLOG.md
 | AP-09 | Corrigir erro `next lint .` no CI e adicionar logs de diagnóstico do step de lint | US-41 | ✅ Done | 0.5h |
 
 | AP-10 | Corrigir falha Slack no CI (skip quando webhook ausente) + harden logs lint frontend | US-41 | ✅ Done | 0.5h |
+
+| AP-11 | Consolidar todas correções em PR novo do Apollo (devido limitação de update em PR externo) | US-41 | ✅ Done | 0.5h |
