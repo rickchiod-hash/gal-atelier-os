@@ -97,8 +97,8 @@ jobs:
         run: |
           echo "[lint] pwd=$(pwd)"
           echo "[lint] node=$(node -v) npm=$(npm -v)"
-          echo "[lint] script=$(npm pkg get scripts.lint | tr -d '\"')"
-          npm run lint
+          echo "[lint] running: npx next lint"
+          npx next lint
 
       - name: 🏗️ Build Frontend
         working-directory: frontend
