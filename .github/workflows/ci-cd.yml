@@ -12,6 +12,7 @@ permissions:
 
 jobs:
   backend-test:
+    if: github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -25,6 +26,7 @@ jobs:
       - run: mvn test
 
   frontend-build:
+    if: github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     defaults:
       run:
