@@ -1,0 +1,234 @@
+name: Diagnostic • Run Diagnostics
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment to diagnose'
+        required: true
+        default: 'dev'
+        type: choice
+        options:
+          - dev
+          - homolog
+          - prod
+
+jobs:
+  diagnose-backend:
+    name: Backend • Diagnostic
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v6
+
+      - name: 🔍 Diagnose Backend
+        run: |
+          echo "🔍 Running backend diagnostics for ${{ github.event.inputs.environment }}..."
+
+          # Check Java version
+          echo "☕ Java version:"
+          java -version 2>&1 || echo "Java not installed"
+
+          # Check Maven version
+          echo "📦 Maven version:"
+          mvn -version || echo "Maven not installed"
+
+          # Check project structure
+          echo "📁 Project structure:"
+          ls -la backend/ || echo "Backend directory not found"
+
+          # Check pom.xml exists
+          if [ -f "backend/pom.xml" ]; then
+            echo "✅ pom.xml found"
+          else
+            echo "❌ pom.xml not found"
+          fi
+
+          # Check for compilation errors
+          echo "🔍 Checking for compilation errors..."
+          cd backend && mvn compile -q 2>&1 | head -50 || true
+
+      - name: 📊 Check Coverage Reports
+        run: |
+          echo "📊 Checking coverage reports..."
+          if [ -d "backend/target/site/jacoco" ]; then
+            echo "✅ JaCoCo reports found"
+            ls -la backend/target/site/jacoco/
+          else
+            echo "⚠️ No JaCoCo reports found"
+          fi
+
+  diagnose-frontend:
+    name: Frontend • Diagnostic
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v6
+
+      - name: 🔍 Diagnose Frontend
+        run: |
+          echo "🔍 Running frontend diagnostics for ${{ github.event.inputs.environment }}..."
+
+          # Check Node version
+          echo "📦 Node version:"
+          node -v || echo "Node not installed"
+
+          # Check npm version
+          echo "📦 npm version:"
+          npm -v || echo "npm not installed"
+
+          # Check project structure
+          echo "📁 Project structure:"
+          ls -la frontend/ || echo "Frontend directory not found"
+
+          # Check package.json exists
+          if [ -f "frontend/package.json" ]; then
+            echo "✅ package.json found"
+            echo "📋 Dependencies:"
+            cat frontend/package.json | grep -A 20 '"dependencies"' | head -25
+          else
+            echo "❌ package.json not found"
+          fi
+
+      - name: 🔍 Check Build Output
+        run: |
+          echo "🔍 Checking build output..."
+          if [ -d "frontend/.next" ]; then
+            echo "✅ .next directory found"
+            ls -la frontend/.next/
+          else
+            echo "⚠️ No .next directory found"
+          fi
+
+  diagnose-docker:
+    name: Docker • Diagnostic
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v6
+
+      - name: 🔍 Diagnose Docker
+        run: |
+          echo "🔍 Running Docker diagnostics..."
+
+          # Check Docker version
+          echo "🐳 Docker version:"
+          docker --version || echo "Docker not installed"
+
+          # Check Docker Compose
+          echo "🐳 Docker Compose version:"
+          docker-compose --version || echo "Docker Compose not installed"
+
+          # Check Dockerfile exists
+          echo "📁 Checking Dockerfiles..."
+          if [ -f "backend/Dockerfile" ]; then
+            echo "✅ backend/Dockerfile found"
+          else
+            echo "❌ backend/Dockerfile not found"
+          fi
+
+          if [ -f "frontend/Dockerfile" ]; then
+            echo "✅ frontend/Dockerfile found"
+          else
+            echo "❌ frontend/Dockerfile not found"
+          fi
+
+          # Check docker-compose.yml
+          if [ -f "docker-compose.yml" ]; then
+            echo "✅ docker-compose.yml found"
+            echo "📋 Services:"
+            grep -E "^\s+[a-z]+:" docker-compose.yml || true
+          else
+            echo "⚠️ docker-compose.yml not found"
+          fi
+
+  diagnose-secrets:
+    name: Secrets • Diagnostic
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 🔐 Check Secrets Configuration
+        run: |
+          echo "🔐 Checking secrets configuration..."
+
+          # Check if SLACK_WEBHOOK_URL is configured
+          if [ -n "${{ secrets.SLACK_WEBHOOK_URL }}" ]; then
+            echo "✅ SLACK_WEBHOOK_URL is configured"
+          else
+            echo "⚠️ SLACK_WEBHOOK_URL is not configured"
+          fi
+
+          # Check if other secrets are configured
+          echo "📋 Available secrets:"
+          echo "  - MAIL_SERVER: ${{ secrets.MAIL_SERVER != '' && 'configured' || 'not configured' }}"
+          echo "  - MAIL_PORT: ${{ secrets.MAIL_PORT != '' && 'configured' || 'not configured' }}"
+          echo "  - MAIL_USERNAME: ${{ secrets.MAIL_USERNAME != '' && 'configured' || 'not configured' }}"
+          echo "  - NOTIFY_EMAIL: ${{ secrets.NOTIFY_EMAIL != '' && 'configured' || 'not configured' }}"
+
+  diagnose-workflows:
+    name: Workflows • Diagnostic
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v6
+
+      - name: 🔍 Check Workflow Files
+        run: |
+          echo "🔍 Checking workflow files..."
+
+          # List all workflows
+          echo "📁 Available workflows:"
+          ls -la .github/workflows/
+
+          # Validate YAML syntax
+          echo "🔍 Validating YAML syntax..."
+          for workflow in .github/workflows/*.yml; do
+            echo "Checking $workflow..."
+            python3 -c "import yaml; yaml.safe_load(open('$workflow'))" 2>/dev/null && echo "  ✅ Valid" || echo "  ❌ Invalid"
+          done
+
+      - name: 📊 Generate Diagnostic Report
+        run: |
+          echo "📊 Generating diagnostic report..."
+
+          REPORT="diagnostic-report-${{ github.run_id }}.txt"
+
+          {
+            echo "=== Gal Atelier OS - Diagnostic Report ==="
+            echo "Date: $(date)"
+            echo "Environment: ${{ github.event.inputs.environment }}"
+            echo "Run ID: ${{ github.run_id }}"
+            echo ""
+            echo "=== Summary ==="
+            echo "All diagnostic checks completed."
+            echo "Review individual job outputs above for details."
+          } > "$REPORT"
+
+          echo "✅ Diagnostic report generated: $REPORT"
+
+  collect-logs:
+    name: Logs • Collection
+    runs-on: ubuntu-latest
+    needs: [diagnose-backend, diagnose-frontend, diagnose-docker, diagnose-secrets, diagnose-workflows]
+
+    steps:
+      - name: 📦 Collect Logs
+        run: |
+          echo "📦 Collecting diagnostic logs..."
+
+          # Create summary
+          echo "=== Diagnostic Summary ===" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Component | Status |" >> $GITHUB_STEP_SUMMARY
+          echo "|-----------|--------|" >> $GITHUB_STEP_SUMMARY
+          echo "| Backend | ${{ needs.diagnose-backend.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Frontend | ${{ needs.diagnose-frontend.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Docker | ${{ needs.diagnose-docker.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Secrets | ${{ needs.diagnose-secrets.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Workflows | ${{ needs.diagnose-workflows.result }} |" >> $GITHUB_STEP_SUMMARY
+
+          echo "✅ Diagnostic complete"

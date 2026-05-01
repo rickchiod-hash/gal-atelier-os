@@ -15,6 +15,7 @@ env:
   REGISTRY: ghcr.io
   JAVA_VERSION: '21'
   NODE_VERSION: '20'
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
 
 jobs:
   verify-security:
@@ -51,13 +52,31 @@ jobs:
           --health-cmd pg_isready
           --health-interval 10s
           --health-timeout 5s
-          --health-retries 5
+          --health-retries 10
         ports:
           - 5432:5432
 
     steps:
       - name: 📥 Checkout code
         uses: actions/checkout@v6
+
+      - name: ⏳ Wait for PostgreSQL
+        run: |
+          echo "⏳ Waiting for PostgreSQL to be ready..."
+          for i in {1..30}; do
+            if pg_isready -h localhost -p 5432 -U galatelier; then
+              echo "✅ PostgreSQL is ready!"
+              break
+            fi
+            echo "⏳ Attempt $i/30: PostgreSQL not ready yet..."
+            sleep 2
+          done
+          # Verify connection
+          PGPASSWORD=galatelier123 psql -h localhost -p 5432 -U galatelier -d galatelier -c "SELECT version();" || {
+            echo "❌ Failed to connect to PostgreSQL"
+            exit 1
+          }
+          echo "✅ PostgreSQL connection verified"
 
       - name: ☕ Setup Java
         uses: actions/setup-java@v5
@@ -69,8 +88,9 @@ jobs:
       - name: 🔍 Code Quality Analysis
         working-directory: backend
         run: |
-          echo "🔍 Running static analysis..."
+          echo "🔍 Running SpotBugs and PMD..."
           mvn spotbugs:check pmd:check -q
+          echo "✅ Static analysis passed"
 
       - name: ✅ Run Full Test Suite
         working-directory: backend
@@ -83,15 +103,23 @@ jobs:
           mvn clean test -q
           echo "📊 Generating JaCoCo report..."
           mvn jacoco:report -q
+          # Verify report exists
+          if [ -f "target/site/jacoco/jacoco.xml" ]; then
+            echo "✅ Coverage report generated"
+          else
+            echo "❌ Coverage report not found"
+            exit 1
+          fi
 
       - name: 🎯 Enforce Coverage Threshold
         working-directory: backend
         run: |
           echo "🎯 Enforcing minimum 70% coverage for production..."
           mvn jacoco:check -q || exit 1
+          echo "✅ Coverage threshold met"
 
       - name: 📈 Upload Coverage Reports
-        uses: codecov/codecov-action@v3
+        uses: codecov/codecov-action@v6
         with:
           files: ./backend/target/site/jacoco/jacoco.xml
           flags: backend-production
@@ -116,11 +144,17 @@ jobs:
 
       - name: 📥 Install Dependencies
         working-directory: frontend
-        run: npm ci
+        run: |
+          echo "📥 Installing frontend dependencies..."
+          npm ci
+          echo "✅ Dependencies installed"
 
       - name: 🔍 Strict Linting
         working-directory: frontend
-        run: npm run lint -- --max-warnings 0
+        run: |
+          echo "🔍 Running ESLint with strict mode..."
+          npm run lint -- --max-warnings 0
+          echo "✅ Lint passed"
 
       - name: 🏗️ Production Build
         working-directory: frontend
