@@ -265,7 +265,3 @@ notepad SESSION-3-BACKLOG.md
 | AP-18 | Corrigir quebra de `npm ci` na PR #49 revertendo `eslint` para versão compatível com lockfile atual (10.2.1) | US-41 | ✅ Done | 0.5h |
 
 | AP-19 | Endereçar review do PR #49: remover chave `if` duplicada no `docker-build.yml` summary job | US-41 | ✅ Done | 0.25h |
-
-| AP-20 | Resolver erro de lint CI: voltar para `next lint` (sem ponto) e remover comando `node -e` frágil no diagnóstico | US-41 | ✅ Done | 0.5h |
-
-| AP-21 | Mitigar falha `next lint` no runner (Next 16): remover lint dedicado no CI-DEV e manter build como gate | US-41 | ✅ Done | 0.5h |
