@@ -12,7 +12,7 @@
 - ✅ Revisão humana recomendada
 - ✅ CI obrigatória
 
-### Homolog → Master
+### Homolog → Main
 - ❌ Auto-merge NÃO
 - ✅ Revisão humana obrigatória
 - ✅ CI obrigatória
@@ -54,7 +54,7 @@ gh pr diff 123
 git revert -m 1 <merge_commit>
 
 # Push
-git push origin master
+git push origin main
 ```
 
 ---
