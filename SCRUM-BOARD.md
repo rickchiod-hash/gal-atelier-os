@@ -226,7 +226,7 @@ notepad SESSION-3-BACKLOG.md
 | ID | User Story | Points | Sprint | Status |
 |----|------------|--------|--------|--------|
 | US-40 | Como PO, quero unificar documentação ativa para evitar conflito entre agentes | 5 | Sprint 1 | ✅ Done |
-| US-41 | Como time, quero normalizar fluxo de branches em `main/dev/homolog` | 3 | Sprint 1 | ✅ Done |
+| US-41 | Como time, quero normalizar fluxo de branches em `main/develop/release` | 3 | Sprint 1 | ✅ Done |
 | US-42 | Como time, quero mapear conflitos Venus/Hermes/Athena/Apollo antes de mudanças | 3 | Sprint 1 | ✅ Done |
 
 ### Tarefas Apollo (primeira missão)
@@ -238,8 +238,10 @@ notepad SESSION-3-BACKLOG.md
 | AP-04 | Definir matriz de conflitos entre Venus/Hermes/Athena/Apollo | US-42 | ✅ Done | 0.5h |
 
 | AP-05 | Limpar Actions duplicadas e manter workflows legados apenas manual (`workflow_dispatch`) | US-41 | ✅ Done | 1.5h |
-| AP-06 | Corrigir gatilhos de branch (`dev/homolog/main`) em pipelines ativos e PR flow | US-41 | ✅ Done | 1h |
+| AP-06 | Corrigir gatilhos de branch (`develop/release/main`) em pipelines ativos e PR flow | US-41 | ✅ Done | 1h |
 
 | AP-07 | Reduzir para 1 workflow automático por push (desativar PR Flow automático + concurrency) | US-41 | ✅ Done | 0.5h |
 
 | AP-08 | Unificar PRs #44/#45/#46 em branch única de integração com estratégia de conflitos | US-41 | ✅ Done | 1h |
+
+| AP-09 | Corrigir erro `next lint .` no CI e adicionar logs de diagnóstico do step de lint | US-41 | ✅ Done | 0.5h |

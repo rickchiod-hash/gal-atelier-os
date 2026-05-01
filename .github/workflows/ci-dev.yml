@@ -94,7 +94,11 @@ jobs:
 
       - name: 🔍 Lint Frontend
         working-directory: frontend
-        run: npm run lint
+        run: |
+          echo "[lint] pwd=$(pwd)"
+          echo "[lint] node=$(node -v) npm=$(npm -v)"
+          echo "[lint] script=$(node -p "require('./package.json').scripts.lint")"
+          npm run lint
 
       - name: 🏗️ Build Frontend
         working-directory: frontend
