@@ -13,6 +13,7 @@ permissions:
 
 jobs:
   detect-branch:
+    if: github.event_name == 'workflow_dispatch'
     name: Detect
     runs-on: ubuntu-latest
     outputs:
@@ -45,7 +46,7 @@ jobs:
     name: Create PR
     needs: detect-branch
     runs-on: ubuntu-latest
-    if: needs.detect-branch.outputs.target != ''
+    if: github.event_name == 'workflow_dispatch' && needs.detect-branch.outputs.target != ''
     steps:
       - name: Checkout
         uses: actions/checkout@v6
@@ -128,7 +129,7 @@ jobs:
   summary:
     name: Summary
     needs: [detect-branch, create-pr]
-    if: always()
+    if: github.event_name == 'workflow_dispatch' && always()
     runs-on: ubuntu-latest
 
     steps:
