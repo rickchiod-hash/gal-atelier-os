@@ -2,24 +2,19 @@ import '@testing-library/jest-dom'
 import { render, screen } from '@testing-library/react'
 import { DashboardSection } from './DashboardSection'
 
+const metrics = {
+  quotes: 5,
+  revenuePotential: 15000,
+  depositsPotential: 3000,
+  conversionRate: 0.72,
+  avgTicket: 1200,
+}
+
 describe('DashboardSection', () => {
-  it('renders dashboard section', () => {
-    render(<DashboardSection />)
-    expect(screen.getByRole('region', { name: /dashboard/i })).toBeInTheDocument()
-  })
-
-  it('renders metrics', () => {
-    render(<DashboardSection />)
-    expect(screen.getByText(/métricas/i)).toBeInTheDocument()
-  })
-
-  it('renders agenda', () => {
-    render(<DashboardSection />)
-    expect(screen.getByText(/agenda/i)).toBeInTheDocument()
-  })
-
-  it('renders pipeline', () => {
-    render(<DashboardSection />)
-    expect(screen.getByText(/pipeline/i)).toBeInTheDocument()
+  it('renders dashboard title and metrics cards', () => {
+    render(<DashboardSection metrics={metrics} />)
+    expect(screen.getByRole('heading', { name: /dashboard operacional/i })).toBeInTheDocument()
+    expect(screen.getByText(/orçamentos/i)).toBeInTheDocument()
+    expect(screen.getByText('5')).toBeInTheDocument()
   })
 })

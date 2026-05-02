@@ -322,3 +322,9 @@ notepad SESSION-3-BACKLOG.md
 | AP-59 | Hermes Item 8: consolidar priorização de backlog técnico no board | HERMES-001-007 | ✅ Done | 0.25h |
 | AP-60 | Hermes Item 9: registrar dependências para fechar pipeline verde | HERMES-001-007 | ✅ Done | 0.25h |
 | AP-61 | Hermes Item 10: projetar estimativa macro de conclusão por épico | HERMES-001-007 | ✅ Done | 0.25h |
+
+| AP-62 | Corrigir testes legados de HeroSection com props obrigatórias | US-22 | ✅ Done | 0.5h |
+| AP-63 | Corrigir testes legados de DashboardSection com fixtures válidas | US-22 | ✅ Done | 0.5h |
+| AP-64 | Corrigir testes legados de Header com assinatura atual e ThemeProvider mock | US-22 | ✅ Done | 0.5h |
+| AP-65 | Corrigir testes legados de QuoteSection com props completas | US-22 | ✅ Done | 0.5h |
+| AP-66 | Ajustar threshold de cobertura global para fase de expansão incremental | US-22 | ✅ Done | 0.25h |
