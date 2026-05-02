@@ -6,7 +6,6 @@ on:
       - feature/**
       - develop
       - release/**
-      - main
 
 permissions:
   contents: write
@@ -80,7 +79,7 @@ jobs:
             BODY="Automated PR from feature branch to $TARGET."
           elif [[ "$SOURCE" == "develop" ]]; then
             TITLE="Promote to Release"
-            BODY="Automated PR from $SOURCE to release (homologacao)."
+            BODY="Automated PR from $SOURCE to release (staging)."
           elif [[ "$SOURCE" == release/* ]]; then
             TITLE="Promote to Main"
             BODY="Automated PR from $SOURCE to main (producao)."
@@ -110,9 +109,7 @@ jobs:
     name: Auto Merge
     needs: [detect-branch, create-pr]
     runs-on: ubuntu-latest
-    if: |
-      needs.detect-branch.outputs.is_feature == 'true' &&
-      needs.create-pr.outputs.pr_number != ''
+    if: needs.detect-branch.outputs.is_feature == 'true' && needs.create-pr.outputs.pr_number != ''
     steps:
       - name: Checkout
         uses: actions/checkout@v6

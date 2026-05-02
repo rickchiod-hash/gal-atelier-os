@@ -45,7 +45,7 @@ export function CatalogSection({ catalogFilter, setCatalogFilter, categories, fi
                     <span className="lookbook-featured-duration">{filteredCatalog[0].duration}</span>
                   </div>
                   <div className="lookbook-featured-tags">
-                    {filteredCatalog[0].technicalTags?.map((tag) => (
+                    {("technicalTags" in filteredCatalog[0] ? filteredCatalog[0].technicalTags : [])?.map((tag) => (
                       <span key={tag} className="lookbook-featured-tag">{tag}</span>
                     ))}
                   </div>
