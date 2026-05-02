@@ -273,3 +273,7 @@ notepad SESSION-3-BACKLOG.md
 | AP-22 | Reinstalar quality gate de lint: `.eslintrc` com `next/core-web-vitals` + lint real no CI-DEV | US-41 | ✅ Done | 0.75h |
 
 | AP-23 | Reativar PR Flow automático para promotion correta de `feature/**` -> `develop` | US-41 | ✅ Done | 0.5h |
+
+| AP-24 | Destravar CI-DEV em branch com lockfile divergente: usar `npm install` no frontend até sincronização final de lock | US-41 | ✅ Done | 0.25h |
+
+| AP-25 | Corrigir ESLint flat-config (ESLint 10) e evitar falha de artifact ausente no CI | US-41 | ✅ Done | 0.5h |

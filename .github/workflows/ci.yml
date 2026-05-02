@@ -100,6 +100,7 @@ jobs:
         with:
           name: frontend-test-results
           path: frontend/coverage
+          if-no-files-found: ignore
           retention-days: 7
 
   docker-compose:
