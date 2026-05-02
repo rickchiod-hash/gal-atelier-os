@@ -1,12 +1,102 @@
-{
+﻿{
   "$schema": "https://opencode.ai/config.json",
-  "default_agent": "plan",
+  "default_agent": "build",
   "share": "disabled",
+  "autoupdate": true,
+  "permission": "allow",
   "instructions": [
     "AGENTS.md",
     "docs/ARCHITECTURE.md",
     "docs/ENGINEERING-STANDARDS.md",
     "docs/DESIGN-SYSTEM.md",
-    "docs/OBSERVABILITY.md"
-  ]
+    "docs/OBSERVABILITY.md",
+    "docs/PRODUCT-ROADMAP.md",
+    "docs/NICHO-WIGMAKER-OPORTUNIDADES.md",
+    ".opencode/instructions/*.md"
+  ],
+  "agent": {
+    "plan": {
+      "permission": "allow"
+    },
+    "build": {
+      "permission": "allow"
+    },
+    "general": {
+      "permission": "allow"
+    },
+    "hermes": {
+      "permission": "allow",
+      "prompt": "Você é Hermes, agente responsável por planejamento técnico, backlog refinado, divisão de tarefas, análise de repositório, documentação, validação de arquitetura, execução de comandos, leitura de arquivos, edição de código, criação de scripts, organização de histórias e preparação de entregas completas. Trabalhe com autonomia total dentro do projeto. Sempre gere relatório final com arquivos alterados, decisões técnicas, riscos e próximos passos."
+    },
+    "athena": {
+      "permission": "allow",
+      "prompt": "Você é Athena, agente responsável por qualidade, CI/CD, testes, GitHub Actions, segurança de pipeline, revisão crítica, validação de builds, lint, typecheck, cobertura e estabilidade de release. Trabalhe com autonomia total dentro do projeto. Sempre reporte falhas, causa raiz e correção aplicada."
+    },
+    "venus": {
+      "permission": "allow",
+      "prompt": "Você é Venus, agente responsável por UX/UI, design system, catálogo visual, experiência comercial, layout, responsividade, copy visual, imagens, vitrines, refinamento estético e consistência de marca. Trabalhe com autonomia total dentro do projeto. Sempre reporte decisões visuais, componentes alterados e impacto na experiência."
+    }
+  },
+  "command": {
+    "status": {
+      "description": "Audita rapidamente o estado do projeto",
+      "agent": "hermes",
+      "template": "Execute uma auditoria objetiva do projeto. Use o estado atual do Git, estrutura de arquivos, scripts disponíveis e documentação carregada. Inclua: branch atual, arquivos modificados, scripts detectados, riscos, próximos passos e comandos recomendados. Use comandos de terminal se necessário."
+    },
+    "repo-audit": {
+      "description": "Auditoria profunda do repositório",
+      "agent": "hermes",
+      "subtask": true,
+      "template": "Analise profundamente o repositório atual. Leia README, package files, workflows, docs, estrutura de frontend/backend/scripts/prompts/tools e gere diagnóstico técnico completo. Entregue: problemas, riscos, gaps, oportunidades, arquivos relevantes, plano de ação, histórias refinadas e ordem de execução."
+    },
+    "ci-audit": {
+      "description": "Audita GitHub Actions, build, testes e release",
+      "agent": "athena",
+      "subtask": true,
+      "template": "Audite todo o fluxo de CI/CD do projeto. Leia .github/workflows, scripts de build/test/lint/typecheck e documentos de release. Valide feature -> develop -> release -> main. Entregue: falhas, riscos, melhorias, correções recomendadas e plano de PR."
+    },
+    "test": {
+      "description": "Executa e analisa testes",
+      "agent": "athena",
+      "template": "Execute os testes disponíveis do projeto, identifique falhas, explique causa raiz e proponha correção mínima segura. Se houver frontend e backend, avalie ambos. Gere resumo final com comandos usados e próximos passos."
+    },
+    "build": {
+      "description": "Executa build e corrige falhas",
+      "agent": "athena",
+      "template": "Execute o build do projeto, identifique erros de compilação, dependências quebradas, problemas de TypeScript/Kotlin/Java/Node e proponha correções. Se aplicar alterações, mantenha o escopo mínimo e reporte os arquivos modificados."
+    },
+    "lint": {
+      "description": "Executa lint/typecheck e sugere correções",
+      "agent": "athena",
+      "template": "Execute lint e typecheck quando disponíveis. Corrija problemas simples e liste problemas complexos. Preserve padrão do projeto e reporte arquivos alterados."
+    },
+    "ux-audit": {
+      "description": "Auditoria visual e UX do produto",
+      "agent": "venus",
+      "subtask": true,
+      "template": "Audite frontend, design system, componentes, catálogo, navegação, cores, responsividade e experiência comercial. Foque no nicho wigmaker/laces/perucas. Entregue críticas, melhorias, backlog visual, componentes afetados, tokens de design e plano de implementação."
+    },
+    "catalog-audit": {
+      "description": "Audita catálogo, produtos, fotos e copy",
+      "agent": "venus",
+      "subtask": true,
+      "template": "Audite o catálogo do Gal Atelier OS. Verifique quantidade de produtos, categorias, fotos, textos, tags, filtros, coleções, dores de cliente e oportunidades comerciais. Entregue proposta com mínimo de 30 produtos, estrutura de dados, fotos necessárias, copy melhorada e critérios de aceite."
+    },
+    "docs-sync": {
+      "description": "Atualiza documentação do projeto",
+      "agent": "hermes",
+      "template": "Leia a documentação existente e sincronize com o estado atual do projeto. Atualize README, arquitetura, engenharia, design system, observabilidade e roadmap quando necessário. Não invente fatos: derive tudo do repositório e sinalize lacunas."
+    },
+    "release-check": {
+      "description": "Checklist antes de release",
+      "agent": "athena",
+      "template": "Faça checklist completo de release. Verifique Git status, branch, workflows, build, testes, lint, versionamento, documentação, riscos e pendências. Entregue uma recomendação: pode seguir, precisa corrigir, ou bloquear release."
+    },
+    "full-review": {
+      "description": "Revisão completa por Hermes, Athena e Venus",
+      "agent": "hermes",
+      "subtask": true,
+      "template": "Faça uma revisão completa do projeto como Squad LaceLab. Simule três frentes: Hermes para produto/backlog/arquitetura, Athena para CI/testes/qualidade, Venus para UX/UI/catálogo/design. Entregue diagnóstico consolidado, críticas, plano de execução, riscos e tarefas refinadas."
+    }
+  }
 }

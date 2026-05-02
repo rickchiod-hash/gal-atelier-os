@@ -60,13 +60,31 @@ jobs:
           --health-cmd pg_isready
           --health-interval 10s
           --health-timeout 5s
-          --health-retries 5
+          --health-retries 10
         ports:
           - 5432:5432
 
     steps:
       - name: 📥 Checkout code
         uses: actions/checkout@v6
+
+      - name: ⏳ Wait for PostgreSQL
+        run: |
+          echo "⏳ Waiting for PostgreSQL to be ready..."
+          for i in {1..30}; do
+            if pg_isready -h localhost -p 5432 -U galatelier; then
+              echo "✅ PostgreSQL is ready!"
+              break
+            fi
+            echo "⏳ Attempt $i/30: PostgreSQL not ready yet..."
+            sleep 2
+          done
+          # Verify connection
+          PGPASSWORD=galatelier123 psql -h localhost -p 5432 -U galatelier -d galatelier -c "SELECT version();" || {
+            echo "❌ Failed to connect to PostgreSQL"
+            exit 1
+          }
+          echo "✅ PostgreSQL connection verified"
 
       - name: ☕ Setup Java
         uses: actions/setup-java@v5
@@ -81,7 +99,10 @@ jobs:
           DATABASE_URL: jdbc:postgresql://localhost:5432/galatelier
           DATABASE_USERNAME: galatelier
           DATABASE_PASSWORD: galatelier123
-        run: mvn clean package -DskipTests -q
+        run: |
+          echo "🏗️ Building backend..."
+          mvn clean package -DskipTests -q
+          echo "✅ Backend built successfully"
 
       - name: 🚀 Start Backend in background
         working-directory: backend

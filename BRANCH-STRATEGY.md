@@ -5,7 +5,9 @@ Guia completo para entender a estrutura de branches e ambientes do Gal Atelier O
 ## 🌳 Branch Strategy (Git Flow Simplified)
 
 ```
-main (production) ← homolog (staging) ← dev ← feature/xxx (developers)
+main (production) ← release/v1.0.0 (staging) ← develop ← feature/xxx (developers)
+```
+main (production) ← release/v1.0.0 ← develop ← feature/xxx (developers)
 ```
 
 ## Branches
@@ -23,19 +25,20 @@ main (production) ← homolog (staging) ← dev ← feature/xxx (developers)
   - ❌ Sem força push
   - ❌ Sem exclusão
 
-### `homolog` — Staging/QA
+### `release/v1.0.0` — Staging/QA
 - **Status**: Protected
-- **Description**: Ambiente de homologação/testes
-- **Merge from**: `dev` (via Pull Request)
-- **Triggers**: ci-homolog.yml
-- **Deploy**: Automático para homolog
+- **Description**: Ambiente de staging/pré-produção (release candidate)
+- **Merge from**: `develop` (via Pull Request)
+- **Triggers**: ci-release.yml
+- **Deploy**: Automático para staging
 - **Rules**:
   - ✅ Code coverage mínimo 50%
   - ✅ Security scan obrigatório
   - ⚠️ Sem force push
   - ✅ Requer 1 approval
+  - 📌 **OBSOLETO**: O branch `homolog` está marcado como legado. Use `release/v1.0.0` para novos fluxos.
 
-### `dev` — Development
+### `develop` — Development
 - **Status**: Semi-protected
 - **Description**: Desenvolvimento ativo
 - **Merge from**: `feature/**` (via Pull Request)
@@ -71,8 +74,8 @@ main (production) ← homolog (staging) ← dev ← feature/xxx (developers)
 ### 1️⃣ Iniciar feature
 
 ```bash
-git checkout dev
-git pull origin dev
+git checkout develop
+git pull origin develop
 git checkout -b feature/US-10-header-redesign
 
 # Code...
@@ -93,7 +96,7 @@ git push origin feature/US-10-header-redesign
 # 6. Click "Create pull request"
 ```
 
-### 3️⃣ Merge em dev
+### 3️⃣ Merge em develop
 
 ```bash
 # Após aprovação do PR
@@ -103,14 +106,14 @@ git push origin feature/US-10-header-redesign
 gh pr merge 123 --merge
 ```
 
-### 4️⃣ Release para homolog
+### 4️⃣ Release para staging (release/v1.0.0)
 
 ```bash
-git checkout homolog
-git pull origin homolog
-git merge dev
-git push origin homolog
-# → Automaticamente roda ci-homolog.yml + deploy
+git checkout release/v1.0.0
+git pull origin release/v1.0.0
+git merge develop
+git push origin release/v1.0.0
+# → Automaticamente roda ci-release.yml + deploy
 ```
 
 ### 5️⃣ Release para produção

@@ -50,17 +50,35 @@ docs(readme): update ARCHITECTURE.md
 ### Backend (Kotlin + Maven)
 ```bash
 cd backend && mvn test
+# 133+ testes devems passar
 ```
 
-### Frontend (Node + Jest)
+### Frontend Unit (Jest)
 ```bash
 cd frontend && npm test
+# Coverage threshold: 50%
 ```
 
-### Cobertura (JaCoCo)
+### Frontend E2E (Playwright)
 ```bash
-cd backend && mvn verify
-# Relatório: backend/target/site/jacoco/index.html
+cd frontend && npm run e2e
+# 18+ testes E2E
+```
+
+### CI/CD - Regras de Merge
+
+**Bloqueado se:**
+- `mvn test` falhar
+- `npm run build` falhar  
+- Coverage < 50%
+- Testes E2E falharem
+
+**Workflow CI:**
+```
+feature/* → develop → release/* → main
+     ↓          ↓           ↓
+  auto-     PR Required   PR Required
+  merge
 ```
 
 ## Design System (V6 — Editorial Atelier)
