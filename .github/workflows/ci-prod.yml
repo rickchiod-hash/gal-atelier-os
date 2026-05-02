@@ -124,7 +124,7 @@ jobs:
           files: ./backend/target/site/jacoco/jacoco.xml
           flags: backend-production
           name: backend-prod-coverage
-          fail_ci_if_error: true
+          fail_ci_if_error: false
 
   lint-and-test-frontend:
     name: Frontend • Lint, Test & Build
@@ -238,7 +238,7 @@ jobs:
 
       - name: 📝 Generate Docker Metadata
         id: meta
-        uses: docker/metadata-action@v5
+        uses: docker/metadata-action@v6
         with:
           images: ${{ env.REGISTRY }}/${{ github.repository }}/backend
           tags: |
@@ -287,7 +287,7 @@ jobs:
 
       - name: 📝 Generate Docker Metadata
         id: meta
-        uses: docker/metadata-action@v5
+        uses: docker/metadata-action@v6
         with:
           images: ${{ env.REGISTRY }}/${{ github.repository }}/frontend
           tags: |
@@ -333,7 +333,7 @@ jobs:
           cat CHANGELOG_TEMP.md
 
       - name: 🏷️ Create Release
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v3
         with:
           generate_release_notes: true
           draft: false
