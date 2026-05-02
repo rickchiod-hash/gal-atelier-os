@@ -16,7 +16,7 @@ class EmailNotificationControllerUnitTest {
     @Test
     fun `getSentEmails should return mocked records`() {
         whenever(emailAdapter.getSentEmails()).thenReturn(
-            listOf(EmailRecord(UUID.randomUUID(), "a@a.com", "Assunto", "Corpo", false, Instant.now(), true))
+            listOf(EmailRecord(UUID.randomUUID(), "a@a.com", "Assunto", "Corpo", false, Instant.now()))
         )
 
         val result = controller.getSentEmails()
