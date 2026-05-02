@@ -306,3 +306,19 @@ notepad SESSION-3-BACKLOG.md
 | AP-44 | Hermes Item 3: registrar avanço de tasks backend no board central | HERMES-001-007 | ✅ Done | 0.25h |
 | AP-45 | Hermes Item 4: priorizar controllers com impacto operacional (agenda/estoque/reviews) | HERMES-001-007 | ✅ Done | 0.25h |
 | AP-46 | Hermes Item 5: alinhar critérios de cobertura mínima para próximas tasks | HERMES-001-007 | ✅ Done | 0.25h |
+
+| AP-47 | Front Task 6: teste de AgendaEstoqueFinanceiroSection | US-10 | ✅ Done | 0.25h |
+| AP-48 | Front Task 7: teste de DashboardOperacionalSection | US-10 | ✅ Done | 0.25h |
+| AP-49 | Front Task 8: teste de PedidosProducaoSection | US-10 | ✅ Done | 0.25h |
+| AP-50 | Front Task 9: teste de PipelineCRMSection | US-10 | ✅ Done | 0.25h |
+| AP-51 | Front Task 10: teste de QuoteWizardSection | US-10 | ✅ Done | 0.25h |
+| AP-52 | Backend Task 6: teste unitário DiscountCouponController | US-18 | ✅ Done | 0.5h |
+| AP-53 | Backend Task 7: teste unitário SalesCommissionController | US-18 | ✅ Done | 0.5h |
+| AP-54 | Backend Task 8: teste unitário SegmentationController | US-18 | ✅ Done | 0.5h |
+| AP-55 | Backend Task 9: teste unitário EmailNotificationController | US-18 | ✅ Done | 0.5h |
+| AP-56 | Backend Task 10: teste unitário CustomerPortalController | US-18 | ✅ Done | 0.5h |
+| AP-57 | Hermes Item 6: atualizar plano de cobertura frontend por seções críticas | HERMES-001-007 | ✅ Done | 0.25h |
+| AP-58 | Hermes Item 7: atualizar plano de cobertura backend por controllers operacionais | HERMES-001-007 | ✅ Done | 0.25h |
+| AP-59 | Hermes Item 8: consolidar priorização de backlog técnico no board | HERMES-001-007 | ✅ Done | 0.25h |
+| AP-60 | Hermes Item 9: registrar dependências para fechar pipeline verde | HERMES-001-007 | ✅ Done | 0.25h |
+| AP-61 | Hermes Item 10: projetar estimativa macro de conclusão por épico | HERMES-001-007 | ✅ Done | 0.25h |
