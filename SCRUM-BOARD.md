@@ -328,3 +328,20 @@ notepad SESSION-3-BACKLOG.md
 | AP-64 | Corrigir testes legados de Header com assinatura atual e ThemeProvider mock | US-22 | ✅ Done | 0.5h |
 | AP-65 | Corrigir testes legados de QuoteSection com props completas | US-22 | ✅ Done | 0.5h |
 | AP-66 | Ajustar threshold de cobertura global para fase de expansão incremental | US-22 | ✅ Done | 0.25h |
+
+
+## ÉPICO 8: EXECUÇÃO FINAL (Backend + Frontend + QA)
+| ID | User Story | Points | Sprint | Status |
+|----|------------|--------|--------|--------|
+| US-43 | Como PO, quero concluir 10 melhorias backend com testes | 8 | Sprint 2 | 📋 To Do |
+| US-44 | Como PO, quero concluir 10 melhorias frontend com testes | 8 | Sprint 2 | 📋 To Do |
+| US-45 | Como PO, quero concluir 10 melhorias QA/CI com governança clara | 8 | Sprint 2 | 📋 To Do |
+
+### Tasks Execução Final
+| Task ID | Task | US Relacionado | Status | Hours Spent |
+|---------|------|----------------|--------|-------------|
+| AP-67 | Publicar guia atualizado das sessões (backend/frontend/qa) | US-45 | ✅ Done | 0.5h |
+| AP-68 | Criar pacote de 10 tasks backend no board | US-43 | ✅ Done | 0.25h |
+| AP-69 | Criar pacote de 10 tasks frontend no board | US-44 | ✅ Done | 0.25h |
+| AP-70 | Criar pacote de 10 tasks QA no board | US-45 | ✅ Done | 0.25h |
+| AP-71 | Instruir critério operacional de conclusão por sessão | US-45 | ✅ Done | 0.25h |
