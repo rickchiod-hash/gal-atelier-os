@@ -279,3 +279,5 @@ notepad SESSION-3-BACKLOG.md
 | AP-25 | Corrigir ESLint flat-config (ESLint 10) e evitar falha de artifact ausente no CI | US-41 | ✅ Done | 0.5h |
 
 | AP-26 | Restaurar determinismo no CI-DEV após sincronização: trocar `npm install` por `npm ci` no frontend | US-41 | ✅ Done | 0.25h |
+
+| AP-27 | Restringir PR Flow automático exclusivamente para `feature/** -> develop` para impedir PRs em base incorreta | US-41 | ✅ Done | 0.5h |
