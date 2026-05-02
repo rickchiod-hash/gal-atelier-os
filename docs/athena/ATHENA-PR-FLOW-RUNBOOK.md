@@ -5,7 +5,7 @@
 Fluxo automatizado de promotion de branches:
 
 ```
-feature/** → dev → homolog → master
+feature/** → dev → homolog → main
 ```
 
 ## Regras
@@ -23,7 +23,7 @@ feature/** → dev → homolog → master
 - Revisão humana recomendada
 - NÃO auto-merge
 
-### Homolog → Master
+### Homolog → Main
 - PR criado automaticamente
 - Revisão humana obrigatória
 - NÃO auto-merge
@@ -32,7 +32,7 @@ feature/** → dev → homolog → master
 
 | Workflow | Trigger | Ação |
 |----------|---------|------|
-| `ci.yml` | push/pull_request em feature/**, dev, homolog, master | Build + Test |
+| `ci.yml` | push/pull_request em feature/**, dev, homolog, main | Build + Test |
 | `docker-build.yml` | push em backend/**, frontend/**, docker-compose.yml | Docker Build |
 | `security.yml` | pull_request | Dependency Review + CodeQL |
 | `pr-flow.yml` | push em feature/**, dev, homolog | Auto PR creation |
@@ -64,7 +64,7 @@ gh pr checks PR_NUMBER
 
 Para o fluxo funcionar, as seguintes branches DEVEM existir:
 
-- `master` (produção)
+- `main` (produção)
 - `dev` (desenvolvimento)
 - `homolog` (homologação)
 
@@ -72,12 +72,12 @@ Para o fluxo funcionar, as seguintes branches DEVEM existir:
 
 ```bash
 # Criar dev
-git checkout master
+git checkout main
 git checkout -b dev
 git push origin dev
 
 # Criar homolog
-git checkout master
+git checkout main
 git checkout -b homolog
 git push origin homolog
 ```
@@ -94,3 +94,4 @@ Removido do fluxo. Motivação: não requerido nesta versão.
 
 **ATHENA V5.2**
 **Atualizado: 2026-04-29**
+> Nota de governança (2026-05-01): nomenclatura oficial de produção é `main`.
