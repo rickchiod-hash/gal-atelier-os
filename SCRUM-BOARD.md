@@ -287,3 +287,5 @@ notepad SESSION-3-BACKLOG.md
 | AP-29 | Refatoração backend Athena: remover imports wildcard e encapsular SecurityContext em método auxiliar | US-18 | ✅ Done | 1.5h |
 
 | AP-30 | Backend Athena: ampliar cobertura com testes de SecurityConfig e OrderController | US-18 | ✅ Done | 1.5h |
+
+| AP-31 | Corrigir compatibilidade de testes com Spring Boot 4 (`WebMvcTest`/`MockitoBean`) e dependência `@eslint/eslintrc` | US-18 | ✅ Done | 1h |
