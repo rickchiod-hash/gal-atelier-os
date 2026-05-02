@@ -2,7 +2,10 @@ package com.galatelier.adapter.input.web
 
 import com.galatelier.application.service.CustomerSegmentationService
 import com.galatelier.application.service.CustomerSegmentResponse
-import org.springframework.web.bind.annotation.*
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("/api/segmentation")

@@ -1,10 +1,6 @@
-name: CI/CD
+name: CI/CD (Legacy Manual)
 
 on:
-  pull_request:
-    branches: [develop, release, main]
-  push:
-    branches: [develop, release, main]
   workflow_dispatch:
 
 env:
@@ -16,6 +12,7 @@ permissions:
 
 jobs:
   backend-test:
+    if: github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -29,6 +26,7 @@ jobs:
       - run: mvn test
 
   frontend-build:
+    if: github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     defaults:
       run:
