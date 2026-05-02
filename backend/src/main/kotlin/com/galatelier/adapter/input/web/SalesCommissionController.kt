@@ -2,7 +2,13 @@ package com.galatelier.adapter.input.web
 
 import com.galatelier.adapter.output.persistence.entity.SalesCommissionEntity
 import com.galatelier.adapter.output.persistence.repository.SalesCommissionRepository
-import org.springframework.web.bind.annotation.*
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PatchMapping
+import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("/api/commissions")

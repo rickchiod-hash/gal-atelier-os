@@ -2,25 +2,34 @@ import '@testing-library/jest-dom'
 import { render, screen } from '@testing-library/react'
 import { QuoteSection } from './QuoteSection'
 
+const baseProps = {
+  apiUrl: 'http://localhost:8080',
+  loading: false,
+  setLoading: jest.fn(),
+  status: 'ok',
+  setStatus: jest.fn(),
+  quote: null,
+  setQuote: jest.fn(),
+  wizardStep: 1,
+  setWizardStep: jest.fn(),
+  quoteStatus: {},
+  showToast: jest.fn(),
+  load: jest.fn(async () => undefined),
+  money: (v: number) => `R$ ${v}`,
+  generatePDF: jest.fn(),
+}
+
 describe('QuoteSection', () => {
-  it('renders quote form section', () => {
-    render(<QuoteSection />)
-    expect(screen.getByRole('region', { name: /orçamento/i })).toBeInTheDocument()
+  it('renders quote section heading and submit action', () => {
+    render(<QuoteSection {...baseProps} />)
+    expect(screen.getByRole('heading', { name: /crie seu orçamento/i })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: /gerar orçamento completo/i })).toBeInTheDocument()
   })
 
-  it('renders form inputs with bottom-border style', () => {
-    render(<QuoteSection />)
-    const inputs = screen.getAllByRole('textbox')
-    expect(inputs.length).toBeGreaterThan(0)
-  })
-
-  it('renders submit button', () => {
-    render(<QuoteSection />)
-    expect(screen.getByRole('button', { name: /enviar|orçamento/i })).toBeInTheDocument()
-  })
-
-  it('renders form labels', () => {
-    render(<QuoteSection />)
-    expect(screen.getAllByText(/nome|email|telefone/i).length).toBeGreaterThan(0)
+  it('renders core form fields', () => {
+    render(<QuoteSection {...baseProps} />)
+    expect(screen.getByLabelText(/nome da cliente/i)).toBeInTheDocument()
+    expect(screen.getByLabelText(/whatsapp/i)).toBeInTheDocument()
+    expect(screen.getByLabelText(/serviço/i)).toBeInTheDocument()
   })
 })

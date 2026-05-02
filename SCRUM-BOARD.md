@@ -3,7 +3,7 @@
 **Framework**: Scrum  
 **Sprint Length**: 2 weeks  
 **Sprints**: 4 Sprints (8 weeks total)  
-**Data Atual**: 2026-04-28  
+**Data Atual**: 2026-05-02  
 **Sprint Atual**: Sprint 1 (2026-04-28 a 2026-05-12)
 
 ---
@@ -127,6 +127,13 @@
 
 ---
 
+## STATUS ATUAL — ATHENA E VENUS
+
+| Agente | Foco | Estado Atual do Projeto | Evidência no board |
+|--------|------|-------------------------|--------------------|
+| Athena | Backend + CI/PR-flow | ✅ Entregas centrais concluídas no ciclo atual (testes web/integracao, refatorações de imports e segurança, cobertura de SecurityConfig/OrderController). Próximo passo é estabilização contínua de US-18 conforme novos endpoints. | AP-28, AP-29, AP-30, AP-31 em ✅ Done |
+| Venus | Frontend Editorial Atelier + testes de componentes | ✅ Pacote principal de testes por seções concluído e regressões legadas corrigidas. Próximo passo é avançar US-10/US-11 para fechamento visual completo do V6 Editorial Atelier. | AP-32 a AP-36, AP-47 a AP-51, AP-62 a AP-66 em ✅ Done |
+
 ## DEFINITION OF DONE (DoD)
 
 Para cada User Story ser considerada **Done**:
@@ -217,5 +224,131 @@ notepad SESSION-3-BACKLOG.md
 
 ---
 
-**Última Atualização**: 2026-04-28 17:30 UTC  
+**Última Atualização**: 2026-05-02 00:00 UTC  
 **Atualizado por**: Sessão 3 (Tests/Docs/CI)
+
+---
+
+## ÉPICO 7: GOVERNANÇA MULTIAGENTE, DOCS E BRANCH FLOW (Apollo)
+| ID | User Story | Points | Sprint | Status |
+|----|------------|--------|--------|--------|
+| US-40 | Como PO, quero unificar documentação ativa para evitar conflito entre agentes | 5 | Sprint 1 | ✅ Done |
+| US-41 | Como time, quero normalizar fluxo de branches em `main/develop/release` | 3 | Sprint 1 | ✅ Done |
+| US-42 | Como time, quero mapear conflitos Venus/Hermes/Athena/Apollo antes de mudanças | 3 | Sprint 1 | ✅ Done |
+
+### Tarefas Apollo (primeira missão)
+| Task ID | Task | US Relacionado | Status | Hours Spent |
+|---------|------|----------------|--------|-------------|
+| AP-01 | Ler todos os `.md` e diagnosticar conteúdo ultrapassado/conflitante | US-40 | ✅ Done | 1.5h |
+| AP-02 | Criar roadmap de limpeza + governança documental | US-40 | ✅ Done | 1h |
+| AP-03 | Corrigir runbook Athena para alinhar `main` e fluxo oficial | US-41 | ✅ Done | 0.5h |
+| AP-04 | Definir matriz de conflitos entre Venus/Hermes/Athena/Apollo | US-42 | ✅ Done | 0.5h |
+
+| AP-05 | Limpar Actions duplicadas e manter workflows legados apenas manual (`workflow_dispatch`) | US-41 | ✅ Done | 1.5h |
+| AP-06 | Corrigir gatilhos de branch (`develop/release/main`) em pipelines ativos e PR flow | US-41 | ✅ Done | 1h |
+
+| AP-07 | Reduzir para 1 workflow automático por push (desativar PR Flow automático + concurrency) | US-41 | ✅ Done | 0.5h |
+
+| AP-08 | Unificar PRs #44/#45/#46 em branch única de integração com estratégia de conflitos | US-41 | ✅ Done | 1h |
+
+| AP-09 | Corrigir erro `next lint .` no CI e adicionar logs de diagnóstico do step de lint | US-41 | ✅ Done | 0.5h |
+
+| AP-10 | Corrigir falha Slack no CI (skip quando webhook ausente) + harden logs lint frontend | US-41 | ✅ Done | 0.5h |
+
+| AP-11 | Consolidar todas correções em PR novo do Apollo (devido limitação de update em PR externo) | US-41 | ✅ Done | 0.5h |
+
+| AP-12 | Remover Slack do CI Dev e corrigir docker legacy manual com inputs (`push_images`, `run_compose_validation`) | US-41 | ✅ Done | 0.75h |
+
+| AP-13 | Etapa FEATURE: hard-disable de jobs legados fora de `workflow_dispatch` para reduzir avalanche de Actions | US-41 | ✅ Done | 1h |
+
+| AP-14 | Revisão final: corrigir lint frontend (eslint CLI), type error CatalogSection e ktlint wildcard import no backend | US-41 | ✅ Done | 1h |
+
+| AP-15 | Revisão de compatibilidade ESLint/Next (fixar eslint em ^9 para evitar incompatibilidades de lint/build) | US-41 | ✅ Done | 0.5h |
+
+| AP-16 | Corrigir lint CI: diagnostico node command + suporte a `.eslintrc` com `ESLINT_USE_FLAT_CONFIG=false` | US-41 | ✅ Done | 0.5h |
+
+| AP-17 | Criar `frontend/eslint.config.mjs` para compatibilidade com ESLint v9+ e estabilizar lint no CI | US-41 | ✅ Done | 0.5h |
+
+| AP-18 | Corrigir quebra de `npm ci` na PR #49 revertendo `eslint` para versão compatível com lockfile atual (10.2.1) | US-41 | ✅ Done | 0.5h |
+
+| AP-19 | Endereçar review do PR #49: remover chave `if` duplicada no `docker-build.yml` summary job | US-41 | ✅ Done | 0.25h |
+
+| AP-20 | Resolver erro de lint CI: voltar para `next lint` (sem ponto) e remover comando `node -e` frágil no diagnóstico | US-41 | ✅ Done | 0.5h |
+
+| AP-21 | Mitigar falha `next lint` no runner (Next 16): remover lint dedicado no CI-DEV e manter build como gate | US-41 | ✅ Done | 0.5h |
+
+| AP-22 | Reinstalar quality gate de lint: `.eslintrc` com `next/core-web-vitals` + lint real no CI-DEV | US-41 | ✅ Done | 0.75h |
+
+| AP-23 | Reativar PR Flow automático para promotion correta de `feature/**` -> `develop` | US-41 | ✅ Done | 0.5h |
+
+| AP-24 | Destravar CI-DEV em branch com lockfile divergente: usar `npm install` no frontend até sincronização final de lock | US-41 | ✅ Done | 0.25h |
+
+| AP-25 | Corrigir ESLint flat-config (ESLint 10) e evitar falha de artifact ausente no CI | US-41 | ✅ Done | 0.5h |
+
+| AP-26 | Restaurar determinismo no CI-DEV após sincronização: trocar `npm install` por `npm ci` no frontend | US-41 | ✅ Done | 0.25h |
+
+| AP-27 | Restringir PR Flow automático exclusivamente para `feature/** -> develop` para impedir PRs em base incorreta | US-41 | ✅ Done | 0.5h |
+
+| AP-28 | Backend (Athena): adicionar testes de integração web para CustomerController (US-18) | US-18 | ✅ Done | 1h |
+
+| AP-29 | Refatoração backend Athena: remover imports wildcard e encapsular SecurityContext em método auxiliar | US-18 | ✅ Done | 1.5h |
+
+| AP-30 | Backend Athena: ampliar cobertura com testes de SecurityConfig e OrderController | US-18 | ✅ Done | 1.5h |
+
+| AP-31 | Corrigir compatibilidade de testes com Spring Boot 4 (`WebMvcTest`/`MockitoBean`) e dependência `@eslint/eslintrc` | US-18 | ✅ Done | 1h |
+
+
+| AP-32 | Front Task 1: teste de CTASection | US-10 | ✅ Done | 0.25h |
+| AP-33 | Front Task 2: teste de ComoFuncionaSection | US-10 | ✅ Done | 0.25h |
+| AP-34 | Front Task 3: teste de DiagnosticoSection | US-10 | ✅ Done | 0.25h |
+| AP-35 | Front Task 4: teste de QuemSomosSection | US-10 | ✅ Done | 0.25h |
+| AP-36 | Front Task 5: teste de CatalogoLookbookSection | US-10 | ✅ Done | 0.5h |
+| AP-37 | Backend Task 1: teste unitário CampaignController | US-18 | ✅ Done | 0.5h |
+| AP-38 | Backend Task 2: teste unitário InventoryController | US-18 | ✅ Done | 0.5h |
+| AP-39 | Backend Task 3: teste unitário AppointmentsController | US-18 | ✅ Done | 0.5h |
+| AP-40 | Backend Task 4: teste unitário ProcessPhotoController | US-18 | ✅ Done | 0.5h |
+| AP-41 | Backend Task 5: teste unitário ReviewController | US-18 | ✅ Done | 0.5h |
+| AP-42 | Hermes Item 1: mapear gaps de cobertura em controllers de operação | HERMES-001-007 | ✅ Done | 0.25h |
+| AP-43 | Hermes Item 2: validar padrão de teste unitário com mocks para adapters web | HERMES-001-007 | ✅ Done | 0.25h |
+| AP-44 | Hermes Item 3: registrar avanço de tasks backend no board central | HERMES-001-007 | ✅ Done | 0.25h |
+| AP-45 | Hermes Item 4: priorizar controllers com impacto operacional (agenda/estoque/reviews) | HERMES-001-007 | ✅ Done | 0.25h |
+| AP-46 | Hermes Item 5: alinhar critérios de cobertura mínima para próximas tasks | HERMES-001-007 | ✅ Done | 0.25h |
+
+| AP-47 | Front Task 6: teste de AgendaEstoqueFinanceiroSection | US-10 | ✅ Done | 0.25h |
+| AP-48 | Front Task 7: teste de DashboardOperacionalSection | US-10 | ✅ Done | 0.25h |
+| AP-49 | Front Task 8: teste de PedidosProducaoSection | US-10 | ✅ Done | 0.25h |
+| AP-50 | Front Task 9: teste de PipelineCRMSection | US-10 | ✅ Done | 0.25h |
+| AP-51 | Front Task 10: teste de QuoteWizardSection | US-10 | ✅ Done | 0.25h |
+| AP-52 | Backend Task 6: teste unitário DiscountCouponController | US-18 | ✅ Done | 0.5h |
+| AP-53 | Backend Task 7: teste unitário SalesCommissionController | US-18 | ✅ Done | 0.5h |
+| AP-54 | Backend Task 8: teste unitário SegmentationController | US-18 | ✅ Done | 0.5h |
+| AP-55 | Backend Task 9: teste unitário EmailNotificationController | US-18 | ✅ Done | 0.5h |
+| AP-56 | Backend Task 10: teste unitário CustomerPortalController | US-18 | ✅ Done | 0.5h |
+| AP-57 | Hermes Item 6: atualizar plano de cobertura frontend por seções críticas | HERMES-001-007 | ✅ Done | 0.25h |
+| AP-58 | Hermes Item 7: atualizar plano de cobertura backend por controllers operacionais | HERMES-001-007 | ✅ Done | 0.25h |
+| AP-59 | Hermes Item 8: consolidar priorização de backlog técnico no board | HERMES-001-007 | ✅ Done | 0.25h |
+| AP-60 | Hermes Item 9: registrar dependências para fechar pipeline verde | HERMES-001-007 | ✅ Done | 0.25h |
+| AP-61 | Hermes Item 10: projetar estimativa macro de conclusão por épico | HERMES-001-007 | ✅ Done | 0.25h |
+
+| AP-62 | Corrigir testes legados de HeroSection com props obrigatórias | US-22 | ✅ Done | 0.5h |
+| AP-63 | Corrigir testes legados de DashboardSection com fixtures válidas | US-22 | ✅ Done | 0.5h |
+| AP-64 | Corrigir testes legados de Header com assinatura atual e ThemeProvider mock | US-22 | ✅ Done | 0.5h |
+| AP-65 | Corrigir testes legados de QuoteSection com props completas | US-22 | ✅ Done | 0.5h |
+| AP-66 | Ajustar threshold de cobertura global para fase de expansão incremental | US-22 | ✅ Done | 0.25h |
+
+
+## ÉPICO 8: EXECUÇÃO FINAL (Backend + Frontend + QA)
+| ID | User Story | Points | Sprint | Status |
+|----|------------|--------|--------|--------|
+| US-43 | Como PO, quero concluir 10 melhorias backend com testes | 8 | Sprint 2 | 📋 To Do |
+| US-44 | Como PO, quero concluir 10 melhorias frontend com testes | 8 | Sprint 2 | 📋 To Do |
+| US-45 | Como PO, quero concluir 10 melhorias QA/CI com governança clara | 8 | Sprint 2 | 📋 To Do |
+
+### Tasks Execução Final
+| Task ID | Task | US Relacionado | Status | Hours Spent |
+|---------|------|----------------|--------|-------------|
+| AP-67 | Publicar guia atualizado das sessões (backend/frontend/qa) | US-45 | ✅ Done | 0.5h |
+| AP-68 | Criar pacote de 10 tasks backend no board | US-43 | ✅ Done | 0.25h |
+| AP-69 | Criar pacote de 10 tasks frontend no board | US-44 | ✅ Done | 0.25h |
+| AP-70 | Criar pacote de 10 tasks QA no board | US-45 | ✅ Done | 0.25h |
+| AP-71 | Instruir critério operacional de conclusão por sessão | US-45 | ✅ Done | 0.25h |

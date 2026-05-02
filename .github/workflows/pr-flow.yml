@@ -6,7 +6,6 @@ on:
       - feature/**
       - develop
       - release/**
-      - main
 
 permissions:
   contents: write
@@ -32,13 +31,8 @@ jobs:
             # feature/** → develop (target)
             echo "target=develop" >> $GITHUB_OUTPUT
             echo "is_feature=true" >> $GITHUB_OUTPUT
-          elif [[ "$BRANCH" == "develop" ]]; then
-            # develop → release (target)
-            echo "target=release" >> $GITHUB_OUTPUT
-          elif [[ "$BRANCH" == release/* ]]; then
-            # release/** → main (target)
-            echo "target=main" >> $GITHUB_OUTPUT
           else
+            # Promotion develop/release/main happens via manual-promote workflow.
             echo "target=" >> $GITHUB_OUTPUT
           fi
 
@@ -77,13 +71,7 @@ jobs:
           # Determine title and body
           if [[ "$SOURCE" == feature/* ]]; then
             TITLE="Feature: ${SOURCE#feature/}"
-            BODY="Automated PR from feature branch to $TARGET."
-          elif [[ "$SOURCE" == "develop" ]]; then
-            TITLE="Promote to Release"
-            BODY="Automated PR from $SOURCE to release (homologacao)."
-          elif [[ "$SOURCE" == release/* ]]; then
-            TITLE="Promote to Main"
-            BODY="Automated PR from $SOURCE to main (producao)."
+            BODY="Automated PR from feature branch to develop."
           else
             TITLE="Promote: $SOURCE → $TARGET"
             BODY="Automated PR from $SOURCE to $TARGET."
@@ -110,9 +98,7 @@ jobs:
     name: Auto Merge
     needs: [detect-branch, create-pr]
     runs-on: ubuntu-latest
-    if: |
-      needs.detect-branch.outputs.is_feature == 'true' &&
-      needs.create-pr.outputs.pr_number != ''
+    if: needs.detect-branch.outputs.is_feature == 'true' && needs.create-pr.outputs.pr_number != ''
     steps:
       - name: Checkout
         uses: actions/checkout@v6
@@ -146,5 +132,5 @@ jobs:
 
           if [ "${{ needs.detect-branch.outputs.is_feature }}" == "true" ]; then
             echo "" >> $GITHUB_STEP_SUMMARY
-            echo "🔄 Auto-merge enabled for feature → develop" >> $GITHUB_STEP_SUMMARY
+            echo "🔄 Auto-merge enabled for feature → develop only" >> $GITHUB_STEP_SUMMARY
           fi
