@@ -269,3 +269,7 @@ notepad SESSION-3-BACKLOG.md
 | AP-20 | Resolver erro de lint CI: voltar para `next lint` (sem ponto) e remover comando `node -e` frágil no diagnóstico | US-41 | ✅ Done | 0.5h |
 
 | AP-21 | Mitigar falha `next lint` no runner (Next 16): remover lint dedicado no CI-DEV e manter build como gate | US-41 | ✅ Done | 0.5h |
+
+| AP-22 | Reinstalar quality gate de lint: `.eslintrc` com `next/core-web-vitals` + lint real no CI-DEV | US-41 | ✅ Done | 0.75h |
+
+| AP-23 | Reativar PR Flow automático para promotion correta de `feature/**` -> `develop` | US-41 | ✅ Done | 0.5h |

@@ -1,7 +1,11 @@
 name: PR Flow
 
 on:
-  workflow_dispatch:
+  push:
+    branches:
+      - feature/**
+      - develop
+      - release/**
 
 permissions:
   contents: write
@@ -106,10 +110,7 @@ jobs:
     name: Auto Merge
     needs: [detect-branch, create-pr]
     runs-on: ubuntu-latest
-    if: |
-      github.event_name == 'workflow_dispatch' &&
-      needs.detect-branch.outputs.is_feature == 'true' &&
-      needs.create-pr.outputs.pr_number != ''
+    if: needs.detect-branch.outputs.is_feature == 'true' && needs.create-pr.outputs.pr_number != ''
     steps:
       - name: Checkout
         uses: actions/checkout@v6

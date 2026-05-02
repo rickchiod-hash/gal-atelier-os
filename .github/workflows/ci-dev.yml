@@ -97,8 +97,8 @@ jobs:
         run: |
           echo "[lint] pwd=$(pwd)"
           echo "[lint] node=$(node -v) npm=$(npm -v)"
-          echo "[lint] Next 16 lint command is unstable in this runner context."
-          echo "[lint] Dedicated lint skipped; build step remains the quality gate."
+          echo "[lint] script=$(npm pkg get scripts.lint | tr -d '\"')"
+          npm run lint
 
       - name: 🏗️ Build Frontend
         working-directory: frontend
