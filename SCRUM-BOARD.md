@@ -352,3 +352,4 @@ notepad SESSION-3-BACKLOG.md
 | AP-69 | Criar pacote de 10 tasks frontend no board | US-44 | ✅ Done | 0.25h |
 | AP-70 | Criar pacote de 10 tasks QA no board | US-45 | ✅ Done | 0.25h |
 | AP-71 | Instruir critério operacional de conclusão por sessão | US-45 | ✅ Done | 0.25h |
+| AP-72 | QA Item: corrigir preventivamente possíveis erros herdados de pipeline antes de abrir PR (compile/test/imports/assinaturas) | US-45 | ✅ Done | 0.5h |
