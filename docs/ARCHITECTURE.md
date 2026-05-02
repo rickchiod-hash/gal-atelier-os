@@ -49,10 +49,10 @@ adapter.output (Persistence, WhatsApp, Pix, Email)
 ## Branch Strategy
 
 ```
-feature/** → dev → homolog → master
+feature/** → dev → homolog → main
 ```
 
 - **feature/***: novas funcionalidades
 - **dev**: desenvolvimento (auto-merge enabled)
 - **homolog**: homologação (PR requerido)
-- **master**: produção (PR + revisão obrigatória)
+- **main**: produção (PR + revisão obrigatória)

@@ -3,7 +3,11 @@ package com.galatelier.adapter.input.web
 import com.galatelier.adapter.output.email.MockEmailAdapter
 import com.galatelier.adapter.output.email.EmailRecord
 import org.slf4j.LoggerFactory
-import org.springframework.web.bind.annotation.*
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RestController
 import java.time.Instant
 import java.util.UUID
 
