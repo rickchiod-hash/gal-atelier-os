@@ -289,3 +289,20 @@ notepad SESSION-3-BACKLOG.md
 | AP-30 | Backend Athena: ampliar cobertura com testes de SecurityConfig e OrderController | US-18 | ✅ Done | 1.5h |
 
 | AP-31 | Corrigir compatibilidade de testes com Spring Boot 4 (`WebMvcTest`/`MockitoBean`) e dependência `@eslint/eslintrc` | US-18 | ✅ Done | 1h |
+
+
+| AP-32 | Front Task 1: teste de CTASection | US-10 | ✅ Done | 0.25h |
+| AP-33 | Front Task 2: teste de ComoFuncionaSection | US-10 | ✅ Done | 0.25h |
+| AP-34 | Front Task 3: teste de DiagnosticoSection | US-10 | ✅ Done | 0.25h |
+| AP-35 | Front Task 4: teste de QuemSomosSection | US-10 | ✅ Done | 0.25h |
+| AP-36 | Front Task 5: teste de CatalogoLookbookSection | US-10 | ✅ Done | 0.5h |
+| AP-37 | Backend Task 1: teste unitário CampaignController | US-18 | ✅ Done | 0.5h |
+| AP-38 | Backend Task 2: teste unitário InventoryController | US-18 | ✅ Done | 0.5h |
+| AP-39 | Backend Task 3: teste unitário AppointmentsController | US-18 | ✅ Done | 0.5h |
+| AP-40 | Backend Task 4: teste unitário ProcessPhotoController | US-18 | ✅ Done | 0.5h |
+| AP-41 | Backend Task 5: teste unitário ReviewController | US-18 | ✅ Done | 0.5h |
+| AP-42 | Hermes Item 1: mapear gaps de cobertura em controllers de operação | HERMES-001-007 | ✅ Done | 0.25h |
+| AP-43 | Hermes Item 2: validar padrão de teste unitário com mocks para adapters web | HERMES-001-007 | ✅ Done | 0.25h |
+| AP-44 | Hermes Item 3: registrar avanço de tasks backend no board central | HERMES-001-007 | ✅ Done | 0.25h |
+| AP-45 | Hermes Item 4: priorizar controllers com impacto operacional (agenda/estoque/reviews) | HERMES-001-007 | ✅ Done | 0.25h |
+| AP-46 | Hermes Item 5: alinhar critérios de cobertura mínima para próximas tasks | HERMES-001-007 | ✅ Done | 0.25h |
