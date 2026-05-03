@@ -1,0 +1,74 @@
+{
+  "hermes": {
+    "agent": "hermes",
+    "purpose": "backlog, arquitetura, leitura de repo, planejamento tecnico",
+    "models": [
+      "opencode/big-pickle",
+      "opencode/minimax-m2.5-free",
+      "opencode/nemotron-3-super-free",
+      "opencode/hy3-preview-free",
+      "opencode/ling-2.6-flash",
+      "opencode/gpt-5-nano"
+    ]
+  },
+  "athena": {
+    "agent": "athena",
+    "purpose": "GitHub Actions, CI/CD, YAML, testes, Maven/npm",
+    "models": [
+      "opencode/minimax-m2.5-free",
+      "opencode/nemotron-3-super-free",
+      "opencode/big-pickle",
+      "opencode/hy3-preview-free",
+      "opencode/ling-2.6-flash",
+      "opencode/gpt-5-nano"
+    ]
+  },
+  "venus": {
+    "agent": "venus",
+    "purpose": "frontend, UX/UI, catalogo, copy, design system",
+    "models": [
+      "opencode/ling-2.6-flash",
+      "opencode/hy3-preview-free",
+      "opencode/minimax-m2.5-free",
+      "opencode/big-pickle",
+      "opencode/nemotron-3-super-free",
+      "opencode/gpt-5-nano"
+    ]
+  },
+  "actions": {
+    "agent": "athena",
+    "purpose": "GitHub Actions e Dependabot",
+    "models": [
+      "opencode/minimax-m2.5-free",
+      "opencode/nemotron-3-super-free",
+      "opencode/big-pickle",
+      "opencode/hy3-preview-free",
+      "opencode/ling-2.6-flash",
+      "opencode/gpt-5-nano"
+    ]
+  },
+  "kotlin": {
+    "agent": "kotlin-backend",
+    "purpose": "backend Kotlin/Spring/Micronaut",
+    "models": [
+      "opencode/big-pickle",
+      "opencode/minimax-m2.5-free",
+      "opencode/nemotron-3-super-free",
+      "opencode/hy3-preview-free",
+      "opencode/ling-2.6-flash",
+      "opencode/gpt-5-nano"
+    ]
+  },
+  "frontend": {
+    "agent": "frontend-next",
+    "purpose": "Next/TypeScript, componentes e UX",
+    "models": [
+      "opencode/ling-2.6-flash",
+      "opencode/hy3-preview-free",
+      "opencode/minimax-m2.5-free",
+      "opencode/big-pickle",
+      "opencode/nemotron-3-super-free",
+      "opencode/gpt-5-nano"
+    ]
+  }
+}
